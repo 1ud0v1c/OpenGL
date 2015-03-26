@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(CGILabs)
+project(TP0)
 
 ###  Settings  ###{{{
 set(CMAKE_CXX_FLAGS "-std=c++0x -DGL_GLEXT_PROTOTYPES -I/opt/X11/include") # Don't forget to define GL_GLEXT_PROTOTYPES to ensure that the glCreateShader and other prototypes are declared. Note we could do it in the main file via "#define GL_GLEXT_PROTOTYPES" before "#include <GL/glext.h>"
@@ -43,20 +43,10 @@ include_directories(${ASSIMP_INCLUDE_DIRS})
 link_directories(${ASSIMP_LIBRARY_DIRS})
 ###  ASSIMP  ###}}}
 
-###  internal util library  ###{{{
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-set(UTILS_SRC include/lightGlAPI.hpp utils/utils.cpp utils/shaders.cpp utils/vao.cpp utils/textures.cpp
-  utils/objloader.cpp utils/tangentspace.cpp utils/vboindexer.cpp)
-add_library(utils ${UTILS_SRC})
-###  internal util library  ###}}}
-
-###  Sub projects  ###{{{
-# 2A
-add_subdirectory(src)
-add_subdirectory(Textures)
-add_subdirectory(Shading)
-###  Sub projects  ###}}}
+###  The executable  ###{{{
+add_executable(glfwMinimal glfwMinimal.cpp utils.cpp camera.cpp vertex.cpp mesh.cpp)
+target_link_libraries(glfwMinimal ${GL_LIBRARIES}  ${GLFW3_STATIC_LIBRARIES}) # this is to save an image (for screenshots)
+###  The executable  ###}}}
 
 
 
@@ -79,4 +69,4 @@ copy_files("resources/*.obj" ${CMAKE_BINARY_DIR})
 copy_files("resources/*.glsl" ${CMAKE_BINARY_DIR})
 ###  Copying resources (shaders, images,...)  ###}}}
 
-# test: vim: set foldmethod=marker:
+# vim: set foldmethod=marker:
