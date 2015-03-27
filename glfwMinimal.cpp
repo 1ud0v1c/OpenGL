@@ -27,7 +27,8 @@ int main(void) {
 	Controls controls(window,cam,true);
 
 	while(running){
-		running = controls.handleActions();
+		GLfloat currentFrame = glfwGetTime();
+		running = controls.handleActions(currentFrame);
 		renderFrame();
 
 		if(uTime > 1) {

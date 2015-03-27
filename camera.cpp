@@ -39,6 +39,12 @@ void Camera::moveCamera(int direction) {
 	}
 }
 
+void Camera::handleDeltaTime(GLfloat currentFrame) {
+	GLfloat deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	speed = 5.0f * deltaTime;
+}
+
 glm::mat4 Camera::getView() {
 	return view;
 }

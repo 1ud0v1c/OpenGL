@@ -9,7 +9,7 @@
 class Controls {
 	public:
 		Controls(GLFWwindow* win, Camera* cam, bool hideCursor);
-		int handleActions();
+		int handleActions(GLfloat currentFrame);
 
 	private:
 		bool isWireframeActive;

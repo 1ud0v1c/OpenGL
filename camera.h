@@ -16,12 +16,15 @@ class Camera {
 		void setRadius(GLfloat rad);
 		GLfloat getRadius();
 		void moveCamera(int direction);
+		void handleDeltaTime(GLfloat currentFrame);
+
 
 	private:
 		float initialFoV = 45.0f;
 
 		GLfloat speed = 0.05;
 		GLfloat radius = 3.5f;
+		GLfloat lastFrame = 0; 
 
 		glm::mat4 view;
 		glm::mat4 projection;
