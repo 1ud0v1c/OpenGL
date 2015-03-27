@@ -1,12 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include "glfwMinimal.h"
-#include "utils.h"
-#include "camera.h"
 #include <glm/glm.hpp> 
 #include <glm/gtc/constants.hpp> 
 #include <glm/gtc/type_ptr.hpp>
+#include "glfwMinimal.h"
+#include "utils.h"
+#include "camera.h"
+#include "controls.h"
 
 using namespace std;
 
@@ -15,124 +16,117 @@ GLuint vao;
 unsigned int longueurIndex;
 float uTime = 0.0;
 GLFWwindow* window;
-Camera cam;
+Camera *cam = new Camera();
 
 int main(void) {
    int running = 1;
-   longueurIndex=0;
    float diff = 0.005;
+   longueurIndex=0;
 
    init();
+   Controls controls(window,cam);
 
    while(running){
-      if (glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS){
-	 running = 0;
-      }
-      if(glfwGetKey(window,GLFW_KEY_UP) == GLFW_PRESS) {
-	 cam.setRadius(cam.getRadius()-0.05);
-      }
-      if(glfwGetKey(window,GLFW_KEY_DOWN) == GLFW_PRESS) {
-	 cam.setRadius(cam.getRadius()+0.05);
-      }
-      renderFrame();
+	   running = controls.handleActions();
+	   renderFrame();
 
-      if(uTime > 1) {
-	 diff = -diff;
-      } else if(uTime < 0) {
-	 diff = -diff;
-      }
-      uTime += diff;
+	   if(uTime > 1) {
+		   diff = -diff;
+	   } else if(uTime < 0) {
+		   diff = -diff;
+	   }
+	   uTime += diff;
    }
    exit(0);
 }
 
 
 void make_resources(){
-   int width, height;
-   string tempv, tempf;
-   GLint lengthv, lengthf;
+	int width, height;
+	string tempv, tempf;
+	GLint lengthv, lengthf;
 
-   make_shaders(&tempv, &tempf, &lengthv, &lengthf);
-   init_shaders(&tempv, &tempf, &lengthv, &lengthf, &programId);
+	make_shaders(&tempv, &tempf, &lengthv, &lengthf);
+	init_shaders(&tempv, &tempf, &lengthv, &lengthf, &programId);
 
-   char* data = read_tga("../data/checkerboard.tga", width, height);
+	char* data = read_tga("../data/checkerboard.tga", width, height);
 
-   GLuint textureID=0;
-   glGenTextures(1, &textureID);
-   glBindTexture(GL_TEXTURE_2D, textureID);
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+	GLuint textureID=0;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-   int torusCount=50;
-   GLuint positionToreBuffer;
-   GLuint colorToreBuffer;
-   GLuint indexToreBuffer;
-   GLuint uvsBuffer;
+	int torusCount=50;
+	GLuint positionToreBuffer;
+	GLuint colorToreBuffer;
+	GLuint indexToreBuffer;
+	GLuint uvsBuffer;
 
-   Mesh *mesh= new Mesh();
-   makeATexturedTorus(mesh,1,0.25,torusCount);
+	Mesh *mesh= new Mesh();
+	makeATexturedTorus(mesh,1,0.25,torusCount);
 
-   glGenBuffers(1, &positionToreBuffer);
-   glBindBuffer(GL_ARRAY_BUFFER, positionToreBuffer);
-   glBufferData(GL_ARRAY_BUFFER, torusCount * torusCount * 3 * sizeof(float), mesh->getPositions().data(), GL_STATIC_DRAW);
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glGenBuffers(1, &positionToreBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, positionToreBuffer);
+	glBufferData(GL_ARRAY_BUFFER, torusCount * torusCount * 3 * sizeof(float), mesh->getPositions().data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-   glGenBuffers(1, &colorToreBuffer);
-   glBindBuffer(GL_ARRAY_BUFFER, colorToreBuffer);
-   glBufferData(GL_ARRAY_BUFFER, torusCount * torusCount * 4 * sizeof(float), mesh->getColors().data(), GL_STATIC_DRAW);
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glGenBuffers(1, &colorToreBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, colorToreBuffer);
+	glBufferData(GL_ARRAY_BUFFER, torusCount * torusCount * 4 * sizeof(float), mesh->getColors().data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-   glGenBuffers(1, &indexToreBuffer);
-   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexToreBuffer);
-   glBufferData(GL_ELEMENT_ARRAY_BUFFER, longueurIndex * sizeof(unsigned int), mesh->getIbos().data(), GL_STATIC_DRAW);
-   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glGenBuffers(1, &indexToreBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexToreBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, longueurIndex * sizeof(unsigned int), mesh->getIbos().data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-   glGenBuffers(1,&uvsBuffer);
-   glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
-   glBufferData(GL_ARRAY_BUFFER, longueurIndex * 2 * sizeof(unsigned int), mesh->getUvs().data(), GL_STATIC_DRAW);
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glGenBuffers(1,&uvsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, longueurIndex * 2 * sizeof(unsigned int), mesh->getUvs().data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-   glGenVertexArrays(1, &vao);
-   glBindVertexArray(vao);
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
 
-   glBindBuffer(GL_ARRAY_BUFFER, positionToreBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, positionToreBuffer);
 
-   GLint positionIndex = glGetAttribLocation(programId, "position");
-   glEnableVertexAttribArray(positionIndex);
-   glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	GLint positionIndex = glGetAttribLocation(programId, "position");
+	glEnableVertexAttribArray(positionIndex);
+	glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-   glBindBuffer(GL_ARRAY_BUFFER, colorToreBuffer);
-   GLint colorIndex = glGetAttribLocation(programId, "color");
-   glEnableVertexAttribArray(colorIndex);
-   glVertexAttribPointer(colorIndex, 4, GL_FLOAT, GL_FALSE, 0, 0);
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, colorToreBuffer);
+	GLint colorIndex = glGetAttribLocation(programId, "color");
+	glEnableVertexAttribArray(colorIndex);
+	glVertexAttribPointer(colorIndex, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-   glBindBuffer(GL_ARRAY_BUFFER,uvsBuffer);
-   GLint textIndex = glGetAttribLocation(programId, "texCoord");
-   glEnableVertexAttribArray(textIndex);
-   glVertexAttribPointer(textIndex,2,GL_FLOAT, GL_FALSE,0,0);
-   glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER,uvsBuffer);
+	GLint textIndex = glGetAttribLocation(programId, "texCoord");
+	glEnableVertexAttribArray(textIndex);
+	glVertexAttribPointer(textIndex,2,GL_FLOAT, GL_FALSE,0,0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexToreBuffer);
-   glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexToreBuffer);
+	glBindVertexArray(0);
 }
 
 
 inline glm::vec3 torusPoint(double theta, double phi, double R, double r) {
-   float x, y,z;
+	float x, y,z;
 
-   x = (R+r*cos(theta))*cos(phi);
-   y = (R+r*cos(theta))*sin(phi);
-   z = r*sin(theta);
+	x = (R+r*cos(theta))*cos(phi);
+	y = (R+r*cos(theta))*sin(phi);
+	z = r*sin(theta);
 
-   return glm::vec3(x,y,z); 
+	return glm::vec3(x,y,z); 
 }
 
 
@@ -167,14 +161,14 @@ void renderFrame(){
 	glEnable(GL_TEXTURE_2D);
 	glUseProgram(programId);
 
-	cam.update();
+	cam->update();
 
 	GLuint locTime = glGetUniformLocation(programId,"uTime");
 	glUniform1f(locTime,uTime);
 	GLuint locView = glGetUniformLocation(programId,"view");
-	glUniformMatrix4fv(locView, 1, GL_FALSE, glm::value_ptr(cam.getView()));
+	glUniformMatrix4fv(locView, 1, GL_FALSE, glm::value_ptr(cam->getView()));
 	GLint projLoc = glGetUniformLocation(programId, "projection");
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(cam.getProjection()));
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(cam->getProjection()));
 
 	glm::vec3 lightdirn = getLightDir();
 	glm::vec3 lightcolor(0.4,0.6,0.4);
@@ -199,8 +193,8 @@ void renderFrame(){
 }
 
 glm::vec3 getLightDir() {
-	glm::mat4 rotL=glm::rotate(glm::mat4(), -cam.getCamX(), glm::vec3(1,0,0));
-	rotL=glm::rotate(rotL, -cam.getCamZ(), glm::vec3(0,0,1));
+	glm::mat4 rotL=glm::rotate(glm::mat4(), -cam->getCamX(), glm::vec3(1,0,0));
+	rotL=glm::rotate(rotL, -cam->getCamZ(), glm::vec3(0,0,1));
 	glm::vec3 lightdirn=glm::normalize(glm::mat3(rotL)*glm::vec3(0.4,0.6,0.4));
 	return lightdirn;
 }

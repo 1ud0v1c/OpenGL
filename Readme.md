@@ -8,6 +8,7 @@
 
 ## In progress :
 
+- Controls
 - Vertex
 - Mesh
 - Scene
@@ -17,5 +18,4 @@
 ## Todo : 
 
 - Init/Game
-- Input/Output (Controls) 
 

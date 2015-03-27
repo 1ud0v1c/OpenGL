@@ -18,6 +18,8 @@ class Camera {
 		GLfloat getCamZ();
 
 	private:
+		float initialFoV = 45.0f;
+
 		GLfloat radius = 3.5f;
 		GLfloat camX = sin(glfwGetTime())*radius;
 		GLfloat camZ = cos(glfwGetTime())*radius;
