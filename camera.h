@@ -9,20 +9,19 @@
 
 class Camera {
 	public:
+		Camera();
 		glm::mat4 getView();
 		glm::mat4 getProjection();
 		void update();
 		void setRadius(GLfloat rad);
 		GLfloat getRadius();
-		GLfloat getCamX();
-		GLfloat getCamZ();
+		void moveCamera(int direction);
 
 	private:
 		float initialFoV = 45.0f;
 
+		GLfloat speed = 0.05;
 		GLfloat radius = 3.5f;
-		GLfloat camX = sin(glfwGetTime())*radius;
-		GLfloat camZ = cos(glfwGetTime())*radius;
 
 		glm::mat4 view;
 		glm::mat4 projection;
@@ -30,6 +29,9 @@ class Camera {
 		glm::vec3 cameraPos;
 		glm::vec3 cameraFront;
 		glm::vec3 cameraUp;
+
+		glm::vec3 cameraTarget;
+		glm::vec3 cameraDirection;
 };
 
 #endif

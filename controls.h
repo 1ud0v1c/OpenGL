@@ -8,7 +8,7 @@
 
 class Controls {
 	public:
-		Controls(GLFWwindow* win, Camera* cam);
+		Controls(GLFWwindow* win, Camera* cam, bool hideCursor);
 		int handleActions();
 
 	private:

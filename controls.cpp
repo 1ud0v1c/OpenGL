@@ -1,8 +1,11 @@
 #include "controls.h"
 
-Controls::Controls(GLFWwindow* win, Camera* cam) {
+Controls::Controls(GLFWwindow* win, Camera* cam, bool hideCursor) {
 	window = win;
 	camera = cam;
+	if(hideCursor) {
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
 }
 
 
@@ -12,16 +15,16 @@ int Controls::handleActions() {
 		running = 0;
 	}
 	if(glfwGetKey(window,GLFW_KEY_UP) == GLFW_PRESS) {
-		camera->setRadius(camera->getRadius()-0.05);
+		camera->moveCamera(1);
 	}
 	if(glfwGetKey(window,GLFW_KEY_DOWN) == GLFW_PRESS) {
-		camera->setRadius(camera->getRadius()+0.05);
+		camera->moveCamera(2);
 	}
 	if(glfwGetKey(window,GLFW_KEY_LEFT) == GLFW_PRESS) {
-		camera->setRadius(camera->getRadius()-0.05);
+		camera->moveCamera(3);
 	}
 	if(glfwGetKey(window,GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		camera->setRadius(camera->getRadius()+0.05);
+		camera->moveCamera(4);
 	}
 
 	if(glfwGetKey(window,GLFW_KEY_L) == GLFW_PRESS) {

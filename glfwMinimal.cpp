@@ -19,25 +19,25 @@ GLFWwindow* window;
 Camera *cam = new Camera();
 
 int main(void) {
-   int running = 1;
-   float diff = 0.005;
-   longueurIndex=0;
+	int running = 1;
+	float diff = 0.005;
+	longueurIndex=0;
 
-   init();
-   Controls controls(window,cam);
+	init();
+	Controls controls(window,cam,true);
 
-   while(running){
-	   running = controls.handleActions();
-	   renderFrame();
+	while(running){
+		running = controls.handleActions();
+		renderFrame();
 
-	   if(uTime > 1) {
-		   diff = -diff;
-	   } else if(uTime < 0) {
-		   diff = -diff;
-	   }
-	   uTime += diff;
-   }
-   exit(0);
+		if(uTime > 1) {
+			diff = -diff;
+		} else if(uTime < 0) {
+			diff = -diff;
+		}
+		uTime += diff;
+	}
+	exit(0);
 }
 
 
@@ -193,8 +193,9 @@ void renderFrame(){
 }
 
 glm::vec3 getLightDir() {
-	glm::mat4 rotL=glm::rotate(glm::mat4(), -cam->getCamX(), glm::vec3(1,0,0));
-	rotL=glm::rotate(rotL, -cam->getCamZ(), glm::vec3(0,0,1));
+	// glm::mat4 rotL=glm::rotate(glm::mat4(), -cam->getCamX(), glm::vec3(1,0,0));
+	// rotL=glm::rotate(rotL, -cam->getCamZ(), glm::vec3(0,0,1));
+	glm::mat4 rotL;
 	glm::vec3 lightdirn=glm::normalize(glm::mat3(rotL)*glm::vec3(0.4,0.6,0.4));
 	return lightdirn;
 }
