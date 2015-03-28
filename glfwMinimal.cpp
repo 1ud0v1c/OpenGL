@@ -68,7 +68,7 @@ void make_resources(){
 	// Texture
 	Text2D text;
 	GLuint TextureID = glGetUniformLocation(programId, "textTexture");
-	text.initText2D("../data/ubuntu_regular_24.tga");
+	text.initText2D("../data/ubuntu_regular_24.dds");
 
 	// Création du tore
 	int torusCount=50;

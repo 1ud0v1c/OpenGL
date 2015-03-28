@@ -4,7 +4,7 @@
 
 void Text2D::initText2D(const char * texturePath) {
 	// Initialize texture
-	text2DTextureID = loadTGATexture(texturePath);
+	text2DTextureID = loadDDS(texturePath);
 
 	// Initialize VBO
 	glGenBuffers(1, &text2DVertexBufferID);

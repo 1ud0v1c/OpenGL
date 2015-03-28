@@ -16,5 +16,6 @@ std::string file_contents(const char* file, int* size);
 static short le_short(unsigned char *bytes);
 bool loadOBJ(const char * path, std::vector<glm::vec3> & out_vertices, std::vector<glm::vec2> & out_uvs, std::vector<glm::vec3> & out_normals);
 GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path);
+GLuint loadDDS(const char * imagepath);
 
 #endif
