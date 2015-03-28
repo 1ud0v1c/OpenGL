@@ -76,6 +76,26 @@ char *read_tga(const char *filename, int& width, int& height) {
 	return pixels;
 }
 
+GLuint loadTGATexture(const std::string& imagepath, GLenum wrap_s, GLenum wrap_t, GLenum mag_filter, GLenum min_filter, bool anisotropy) {
+	int width = 256;
+	int height = 256;
+	char *data = read_tga(imagepath.c_str(),width,height);
+	GLuint textureID=0;
+
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
+	// Interpolation
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D); 
+
+	return textureID;
+}
+
 std::string file_contents(const char* file, int* size){
 	std::string resultat;
 	std::string line;
@@ -92,11 +112,9 @@ std::string file_contents(const char* file, int* size){
 	return resultat;
 }
 
-
 static short le_short(unsigned char *bytes) {
 	return bytes[0] | ((char)bytes[1] << 8);
 }
-
 
 bool loadOBJ(const char * path, std::vector<glm::vec3> & out_vertices, std::vector<glm::vec2> & out_uvs, std::vector<glm::vec3> & out_normals) {
 	printf("Loading OBJ file %s...\n", path);

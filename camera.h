@@ -21,7 +21,6 @@ class Camera {
 		void mouseCallback(GLFWwindow* window, double xpos, double ypos);
 
 	private:
-		static Camera* obj;
 		float initialFoV = 45.0f;
 		bool firstMouse = true;
 
