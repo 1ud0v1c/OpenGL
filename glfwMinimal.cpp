@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "camera.h"
 #include "controls.h"
+#include "text2D.h"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ int main(void) {
 	while(running){
 		GLfloat currentFrame = glfwGetTime();
 		running = controls.handleActions(currentFrame);
+		controls.getCurrentFPS();
 		renderFrame();
 
 		if(uTime > 1) {
@@ -63,6 +65,12 @@ void make_resources(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+	// Texture
+	Text2D text;
+	GLuint TextureID = glGetUniformLocation(programId, "textTexture");
+	text.initText2D("../data/ubuntu_regular_24.tga");
+
+	// Création du tore
 	int torusCount=50;
 	GLuint positionToreBuffer;
 	GLuint colorToreBuffer;

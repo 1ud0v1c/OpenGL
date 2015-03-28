@@ -11,8 +11,8 @@ uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
-	mat3 mat = mat3(vec3(cos(uTime),-sin(uTime), 0), vec3(sin(uTime), cos(uTime), 0), vec3(0, 0, 1));
-	gl_Position=projection*view*vec4(position*mat,1.0);
+	// mat3 mat = mat3(vec3(cos(uTime),-sin(uTime), 0), vec3(sin(uTime), cos(uTime), 0), vec3(0, 0, 1));
+	gl_Position=projection*view*vec4(position, 1.0); //*mat,1.0);
 	vColor = color;
 	Texcoord = texCoord;
 }

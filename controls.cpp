@@ -8,6 +8,9 @@ Controls::Controls(GLFWwindow* win, Camera* cam, bool hideCursor) {
 	}
 }
 
+void Controls::getCurrentFPS() {
+	double fps = timer.calculateFrameRate();
+}
 
 int Controls::handleActions(GLfloat currentFrame) {
 	int running = 1;

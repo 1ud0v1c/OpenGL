@@ -44,7 +44,7 @@ link_directories(${ASSIMP_LIBRARY_DIRS})
 ###  ASSIMP  ###}}}
 
 ###  The executable  ###{{{
-add_executable(glfwMinimal glfwMinimal.cpp utils.cpp camera.cpp vertex.cpp mesh.cpp controls.cpp game.cpp scene.cpp gameObject.cpp gameSphere.cpp)
+add_executable(glfwMinimal glfwMinimal.cpp utils.cpp camera.cpp vertex.cpp mesh.cpp controls.cpp game.cpp scene.cpp gameObject.cpp gameSphere.cpp timer.cpp text2D.cpp)
 target_link_libraries(glfwMinimal ${GL_LIBRARIES}  ${GLFW3_STATIC_LIBRARIES}) # this is to save an image (for screenshots)
 ###  The executable  ###}}}
 
