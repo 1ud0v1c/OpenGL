@@ -5,6 +5,7 @@
 #include "camera.h"
 
 Camera::Camera() {
+	obj = this;
 	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 	cameraDirection = glm::normalize(cameraPos - cameraTarget);
 
@@ -59,5 +60,40 @@ void Camera::setRadius(GLfloat rad) {
 
 GLfloat Camera::getRadius() {
 	return radius;
+}
+
+static void Camera::callback(GLFWwindow* window, double xpos, double ypos) {
+	obj->mouseCallback(window, xpos, ypos);
+}
+
+void Camera::mouseCallback(GLFWwindow* window, double xpos, double ypos) {
+	if (firstMouse) {
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	GLfloat xoffset = xpos - lastX;
+	GLfloat yoffset = lastY - ypos; 
+	lastX = xpos;
+	lastY = ypos;
+
+	GLfloat sensitivity = 0.05;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw   += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(front);
 }
 

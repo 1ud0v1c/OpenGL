@@ -17,11 +17,18 @@ class Camera {
 		GLfloat getRadius();
 		void moveCamera(int direction);
 		void handleDeltaTime(GLfloat currentFrame);
-
+		static void callback(GLFWwindow* window, double xpos, double ypos);
+		void mouseCallback(GLFWwindow* window, double xpos, double ypos);
 
 	private:
+		static Camera* obj;
 		float initialFoV = 45.0f;
+		bool firstMouse = true;
 
+		GLfloat lastX;
+		GLfloat lastY;
+		GLfloat yaw;
+		GLfloat pitch;
 		GLfloat speed = 0.05;
 		GLfloat radius = 3.5f;
 		GLfloat lastFrame = 0; 

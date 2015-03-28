@@ -11,6 +11,7 @@ Controls::Controls(GLFWwindow* win, Camera* cam, bool hideCursor) {
 
 int Controls::handleActions(GLfloat currentFrame) {
 	int running = 1;
+	glfwSetCursorPosCallback(window, &Camera::mouse_callback);
 	camera->handleDeltaTime(currentFrame);
 
 	if (glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS){
