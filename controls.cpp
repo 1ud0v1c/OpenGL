@@ -31,8 +31,7 @@ int Controls::handleActions(GLfloat currentFrame) {
 	if(glfwGetKey(window,GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		camera->moveCamera(4);
 	}
-
-	if(glfwGetKey(window,GLFW_KEY_L) == GLFW_PRESS) {
+	 	if(glfwGetKey(window,GLFW_KEY_L) == GLFW_PRESS) {
 		if(isWireframeActive) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			isWireframeActive = false;

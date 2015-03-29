@@ -25,7 +25,6 @@ int main(void) {
 	longueurIndex=0;
 	Game game;
 	game.init();
-	Controls controls(glfwGetCurrentContext(),cam,true);
 	game.run();
 }
 

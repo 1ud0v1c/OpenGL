@@ -4,7 +4,6 @@
 
 ## Todo 
 
-- Change main and use Game instead
 - Add Timer (1ud0v1c)
 
 ## In progress :
@@ -17,4 +16,4 @@
 - Object
 - Camera
 - Game
- 
+

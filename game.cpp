@@ -3,7 +3,7 @@
 #include "gameSphere.h"
 
 using namespace std;
- 
+
 Game::Game() {
 }
 
@@ -73,18 +73,16 @@ void Game::run() {
    float dt = 1/60;
    float time = 0;
    float time2 = 0;
+   int running = 1;
    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
    bool pressL=false;
-   while(!(glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS))
+   Controls controls(window,scene.getCamera(),true);
+
+   while(running)
    {
+      GLfloat currentFrame = glfwGetTime();
       glUseProgram(programm);
-      if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && pressL == false){
-	 if(type == GL_TRIANGLES) type = GL_LINES;
-	 else type = GL_TRIANGLES;
-	 scene.setType(type);
-	 pressL = true;
-      }
-      if(glfwGetKey(window, GLFW_KEY_L) == GLFW_RELEASE) pressL = false;
+      running = controls.handleActions(currentFrame);
       while(time<dt){
 	 time+=0.01;
       }

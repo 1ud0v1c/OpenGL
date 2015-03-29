@@ -14,7 +14,7 @@ void Scene::init(std::vector<GLuint> programms) {
 }
 
 void Scene::update(float time,GLFWwindow *window) {
-   // camera.update(time,window);
+   camera.update();
    glm::mat4 proj = camera.getProjection();
    glm::mat4 view = camera.getView();
    glm::mat4 ModelMatrix = glm::mat4(1.0);
@@ -58,4 +58,8 @@ void Scene::addObject(GameObject *object) {
    if(object->getName() =="tore") numberTore++;
    if(object->getName() =="sphere") numberSphere++;
    objects.push_back(object);
+}
+
+Camera* Scene::getCamera(){
+   return &camera;
 }

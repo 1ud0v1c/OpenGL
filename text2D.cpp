@@ -11,7 +11,7 @@ void Text2D::initText2D(const char * texturePath) {
 	glGenBuffers(1, &text2DUVBufferID);
 
 	// Initialize Shader
-	text2DShaderID = loadShaders("../data/text2D.v.glsl", "../data/text2D.f.glsl");
+	text2DShaderID = loadShaders("text2D.v.glsl", "text2D.f.glsl");
 	text2DUniformID = glGetUniformLocation(text2DShaderID, "textTexture");
 }
 
