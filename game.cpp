@@ -1,5 +1,6 @@
-#include "game.hpp"
+#include "game.h"
 #include "utils.h"
+#include "gameSphere.h"
 
 Game::Game() {
 }
@@ -66,7 +67,7 @@ void Game::run() {
       }
    }
    std::vector<float> toreOffset = {-2.0f,0.0f,0.0f};
-  // scene.addObject(new GameSphere("sphere",programm,0.25,glm::vec3(1,1,1),offset,"brick_colormap.tga"));
+   scene.addObject(new GameSphere("sphere",programm,0.25,glm::vec3(1,1,1),offset,"brick_colormap.tga"));
    scene.makeObject();
    float dt = 1/60;
    float time = 0;
