@@ -2,6 +2,8 @@
 #include "utils.h"
 #include "gameSphere.h"
 
+using namespace std;
+ 
 Game::Game() {
 }
 
@@ -41,14 +43,13 @@ void Game::initGLEW() {
 }
 
 void Game::make_resources() {
-
 }
 
 void Game::renderFrame() {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    glEnable(GL_DEPTH_TEST);
    scene.draw();
-   GLFWwindow *window = glfwGetCurrentContext();
+   window = glfwGetCurrentContext();
    glfwSwapBuffers(window);
    glfwPollEvents();
 }
@@ -67,7 +68,7 @@ void Game::run() {
       }
    }
    std::vector<float> toreOffset = {-2.0f,0.0f,0.0f};
-   scene.addObject(new GameSphere("sphere",programm,0.25,glm::vec3(1,1,1),offset,"brick_colormap.tga"));
+   scene.addObject(new GameSphere("sphere",programm,0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
    scene.makeObject();
    float dt = 1/60;
    float time = 0;
@@ -84,8 +85,9 @@ void Game::run() {
 	 pressL = true;
       }
       if(glfwGetKey(window, GLFW_KEY_L) == GLFW_RELEASE) pressL = false;
-      while(time<dt)
+      while(time<dt){
 	 time+=0.01;
+      }
       time=0;
       time2+=0.01;
       scene.update(time2,window);
@@ -109,7 +111,7 @@ std::string Game::file_contents(std::string file,GLint *length) {
 	 s+=line+"\n";
       }
       myfile.close();
-   } else std::cout << "fichier pas ouvert";
+   } else std::cout << "fichier " << file << " pas ouvert";
    *length=s.size();
    std::cout << s<<std::endl;
    return s;
