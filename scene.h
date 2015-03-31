@@ -1,9 +1,10 @@
 #ifndef SCENE_H
 #define SCENE_H
-#include "camera.h"
-#include "gameObject.h"
 #include <vector>
 #include <map>
+#include "camera.h"
+#include "gameObject.h"
+#include "gamePlayer.h"
 
 class Scene {
 	public:
@@ -24,6 +25,7 @@ class Scene {
 		std::map<std::string,GLuint> projID;
 		std::map<std::string,GLuint> timeID;
 		std::map<std::string,GLuint> programms;
+	        GamePlayer* getPlayer();
 };
 
 #endif

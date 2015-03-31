@@ -62,3 +62,10 @@ void Scene::addObject(GameObject *object) {
 	objects.push_back(object);
 }
 
+GamePlayer* Scene::getPlayer(){
+     for (auto object : objects){
+	  if (object->getName() == "Player"){
+	       return dynamic_cast<GamePlayer*>(object);
+	  }
+     }
+}
