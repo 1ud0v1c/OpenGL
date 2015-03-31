@@ -6,9 +6,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "glfwMinimal.h"
 #include "game.h"
-#include "camera.h"
-
-
 int main(void) {
 	Game game;
 	game.init();

@@ -61,3 +61,4 @@ void Scene::makeObject() {
 void Scene::addObject(GameObject *object) {
 	objects.push_back(object);
 }
+

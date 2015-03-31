@@ -6,6 +6,7 @@
 
 Camera::Camera() {
 }
+
 void Camera::update(float dt, GLFWwindow *window) {
 	static double lastTime = glfwGetTime();
 	glfwGetCursorPos(window, &xpos, &ypos);
