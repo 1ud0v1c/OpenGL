@@ -21,8 +21,6 @@ Camera* getCamera();
       std::vector<GLuint> transID;
       std::vector<GLuint> viewID;
       std::vector<GLuint> projID;
-      int numberTore;
-      int numberSphere;
       std::vector<GLuint> timeID;
       std::vector<GLuint> programms;
       GLuint programm;

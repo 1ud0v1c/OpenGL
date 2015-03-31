@@ -1,7 +1,6 @@
 #include "scene.h"
 Scene::Scene() {
-   numberTore = 0;
-   numberSphere = 0;
+
 }
 
 void Scene::init(std::vector<GLuint> programms) {
@@ -55,8 +54,6 @@ void Scene::makeObject() {
 }
 
 void Scene::addObject(GameObject *object) {
-   if(object->getName() =="tore") numberTore++;
-   if(object->getName() =="sphere") numberSphere++;
    objects.push_back(object);
 }
 
