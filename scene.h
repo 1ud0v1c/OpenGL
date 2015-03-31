@@ -1,28 +1,29 @@
 #ifndef SCENE_H
 #define SCENE_H
 #include "camera.h"
-#include "controls.h"
 #include "gameObject.h"
+#include <vector>
+#include <map>
 
 class Scene {
-   public:
-      Scene();
-      ~Scene();
-      void addObject(GameObject *object);
-      void draw();
-      void makeObject();
-      void setType(GLuint type);
-      void init(std::vector<GLuint> programms);
-      void update(float time,GLFWwindow *window);
-Camera* getCamera();
-   private:
-      std::vector<GameObject*> objects;
-      Camera camera;
-      std::vector<GLuint> transID;
-      std::vector<GLuint> viewID;
-      std::vector<GLuint> projID;
-      std::vector<GLuint> timeID;
-      std::vector<GLuint> programms;
-      GLuint programm;
+	public:
+		Scene();
+		Scene(GLuint programm);
+		~Scene();
+		void addObject(GameObject *object);
+		void draw();
+		void makeObject();
+		void setType(GLuint type);
+		void init(std::map<std::string,GLuint> programms);
+		void update(float time,GLFWwindow *window, float dt);
+	private:
+		std::vector<GameObject*> objects;
+		Camera camera;
+		std::map<std::string,GLuint> transID;
+		std::map<std::string,GLuint> viewID;
+		std::map<std::string,GLuint> projID;
+		std::map<std::string,GLuint> timeID;
+		std::map<std::string,GLuint> programms;
 };
+
 #endif
