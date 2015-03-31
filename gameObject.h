@@ -26,6 +26,10 @@ class GameObject {
 		void setUnit(int unit);
 		GLuint getProgramm();
 		std::string getName();
+
+		glm::vec3 getCenter();
+		int getRadius();
+		bool isColliding(GameObject* go);
 	protected:
 		int unit=0;
 		GLuint vao;
@@ -38,5 +42,7 @@ class GameObject {
 		GLuint texture;
 		GLuint textureID;
 		unsigned int vertexCount=0;
+
+		int radius;
 };
 #endif

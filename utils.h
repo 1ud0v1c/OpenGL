@@ -17,5 +17,6 @@ static short le_short(unsigned char *bytes);
 bool loadOBJ(const char * path, std::vector<glm::vec3> & out_vertices, std::vector<glm::vec2> & out_uvs, std::vector<glm::vec3> & out_normals);
 GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path);
 GLuint loadDDS(const char * imagepath);
-
+glm::vec3 getMaxPosition(std::vector<glm::vec3> positions);
+glm::vec3 getMinPosition(std::vector<glm::vec3> positions);
 #endif
