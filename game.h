@@ -23,7 +23,6 @@ class Game {
 		GLuint createShaders(const std::string & vertex, const std::string & fragment);
 		void run();
 		void shutDown(int i);
-		std::string file_contents(const std::string file,GLint *length);
 	private:
 		GLuint programm;
 		GLFWwindow *window;

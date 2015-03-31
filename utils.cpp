@@ -77,7 +77,7 @@ char *read_tga(const char *filename, int& width, int& height) {
 }
 
 
-std::string file_contents(const char* file, int* size){
+std::string file_contents(const std::string &file, int* size){
      std::string resultat;
      std::string line;
      std::ifstream stream(file);

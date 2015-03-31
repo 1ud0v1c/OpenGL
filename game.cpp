@@ -126,21 +126,6 @@ GLuint Game::createShaders(const std::string & vertex, const std::string & fragm
 	return programm;
 }
 
-std::string Game::file_contents(const std::string file,GLint *length) {
-	std::cout << "in"<<std::endl;
-	std::string s="";
-	std::string line;
-	std::ifstream myfile(file);
-	if (myfile.is_open()){
-		while ( getline (myfile,line) ){
-			s+=line+"\n";
-		}
-		myfile.close();
-	} else std::cout << "fichier " << file << " pas ouvert";
-	*length=s.size();
-	std::cout << s<<std::endl;
-	return s;
-}
 
 
 Game::~Game(){
