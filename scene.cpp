@@ -48,11 +48,3 @@ void Scene::draw() {
 void Scene::makeObject() {
 	level.makeObject();
 }
-
-/*GamePlayer* Scene::getPlayer(){
-     for (auto object : objects){
-	  if (object->getName() == "Player"){
-	       return dynamic_cast<GamePlayer*>(object);
-	  }
-     }
-}*/

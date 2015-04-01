@@ -5,7 +5,6 @@
 #include "camera.h"
 #include "level.h"
 #include "gameObject.h"
-#include "gamePlayer.h"
 
 class Scene {
 	public:
@@ -26,7 +25,7 @@ class Scene {
 		std::map<std::string,GLuint> timeID;
 		std::map<std::string,GLuint> programms;
 			Level level;
-		GamePlayer* getPlayer();
+//		GamePlayer* getPlayer();
 };
 
 #endif
