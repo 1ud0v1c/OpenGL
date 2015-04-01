@@ -53,3 +53,8 @@ void Level::draw() {
 Camera Level::getCamera() {
 	return camera;
 }
+
+Player* Level::getPlayer() {
+	return player; 
+}
+

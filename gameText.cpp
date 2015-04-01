@@ -28,6 +28,12 @@ void GameText::update(float dt) {
 	text = out.str(); 
 }
 
+void GameText::update(int lifes) {
+	std::ostringstream out;  
+	out << lifes << "x"; 
+	text = out.str(); 
+}
+
 void GameText::draw() {
 	unsigned int length = text.size();
 	vertices.clear();

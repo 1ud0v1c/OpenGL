@@ -11,6 +11,7 @@ class GameText : public GameObject {
 		void makeObject();
 		void draw();
 		void update(float dt);
+		void update(int lifes);
 
 	protected:
 		std::string police;

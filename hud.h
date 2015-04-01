@@ -10,14 +10,14 @@ class HUD {
 	public:
 		HUD();
 		HUD(std::map<std::string,GLuint> programms);
-		void init(); 
-		void update(Level &level, float dt);
+		void init(Level level); 
+		void update(Level level, float dt);
 		void draw();
 
 	protected:
+		Level level;
 		GameText *chrono;
 		GameText *lifes;
-		Level level;
 		std::map<std::string,GLuint> programms;
 
 };

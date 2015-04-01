@@ -18,6 +18,8 @@ class Level {
 		void addObject(GameObject *o);
 		void setType(GLuint type);
 		Camera getCamera();
+		Player* getPlayer();
+
 	private:
 		std::map<std::string,GLuint> programms;
 		std::vector<GameObject*> objects;

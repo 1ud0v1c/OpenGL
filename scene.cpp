@@ -16,7 +16,7 @@ void Scene::init(std::map<std::string,GLuint> programms) {
      level = Level(programms);
      level.init();
      hud = HUD(programms);
-     hud.init();
+     hud.init(level);
      //	light = Light(programms["minimal"]);
 }
 

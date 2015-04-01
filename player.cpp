@@ -1,10 +1,10 @@
 #include "player.h"
 
 Player::Player() {
-     lives = 3;
-     score = 0;
-     speed = 3.0f;	
-     direction = glm::vec3( cos(0.0f) * sin(3.14f), sin(0.0f), cos(0.0f) * cos(3.14f) );
+	lives = 3;
+	score = 0;
+	speed = 3.0f;	
+	direction = glm::vec3( cos(0.0f) * sin(3.14f), sin(0.0f), cos(0.0f) * cos(3.14f) );
 }
 
 void Player::update(float time,GLFWwindow *window, float dt){
@@ -21,16 +21,16 @@ void Player::update(float time,GLFWwindow *window, float dt){
 
 
 	direction=	 glm::vec3(
-			  cos(verticalAngle) * sin(horizontalAngle),
-			  sin(verticalAngle),
-			  cos(verticalAngle) * cos(horizontalAngle)
-			  );
+			cos(verticalAngle) * sin(horizontalAngle),
+			sin(verticalAngle),
+			cos(verticalAngle) * cos(horizontalAngle)
+			);
 
 	glm::vec3 right = glm::vec3(
-			  sin(horizontalAngle - 3.14f/2.0f),
-			  0,
-			  cos(horizontalAngle - 3.14f/2.0f)
-			  );
+			sin(horizontalAngle - 3.14f/2.0f),
+			0,
+			cos(horizontalAngle - 3.14f/2.0f)
+			);
 
 	up = glm::cross( right, direction );
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
