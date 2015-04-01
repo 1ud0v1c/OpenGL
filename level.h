@@ -4,6 +4,8 @@
 #include "gameObject.h"
 #include <map>
 #include "gameSphere.h"
+#include "player.h"
+
 class Level {
 	public:
 		Level();
@@ -17,10 +19,7 @@ class Level {
 	private:
 		std::map<std::string,GLuint> programms;
 		std::vector<GameObject*> objects;
-		
-
-
+		Player* player;
 };
-
 
 #endif

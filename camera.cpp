@@ -7,7 +7,7 @@
 Camera::Camera() {
 }
 
-void Camera::update(float dt, GLFWwindow *window) {
+void Camera::update(float dt, GLFWwindow *window, glm::vec3 position) {
 	static double lastTime = glfwGetTime();
 	glfwGetCursorPos(window, &xpos, &ypos);
 	double currentTime = glfwGetTime();
