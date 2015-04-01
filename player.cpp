@@ -1,5 +1,10 @@
 #include "player.h"
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dcb2fec473223ee141e8ea39741ab656cc1693d3
 Player::Player(float gravity) {
      lives = 3;
      score = 0;
