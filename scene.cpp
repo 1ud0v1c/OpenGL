@@ -21,19 +21,21 @@ void Scene::init(std::map<std::string,GLuint> programms) {
 }
 
 void Scene::update(float time,GLFWwindow *window, float dt) {
-     camera.update(time,window);
-     glm::mat4 proj = camera.getProjection();
-     glm::mat4 view = camera.getView();
-     glm::mat4 ModelMatrix = glm::mat4(1.0);
-     for(auto programm : programms) {
-	  glUseProgram(programm.second);
-	  glUniformMatrix4fv(transID[programm.first], 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-	  glUniformMatrix4fv(viewID[programm.first], 1, GL_FALSE, glm::value_ptr(view));
-	  glUniformMatrix4fv(projID[programm.first], 1, GL_FALSE, glm::value_ptr(proj));
-     }
-     glUseProgram(programms["minimal"]);
-     glUniform1f(timeID["minimal"],time);
-     hud.update(dt);
+
+	level.update(time,window,dt);
+	Camera camera = level.getCamera();
+	glm::mat4 proj = camera.getProjection();
+	glm::mat4 view = camera.getView();
+	glm::mat4 ModelMatrix = glm::mat4(1.0);
+	for(auto programm : programms) {
+		glUseProgram(programm.second);
+		glUniformMatrix4fv(transID[programm.first], 1, GL_FALSE, glm::value_ptr(ModelMatrix));
+		glUniformMatrix4fv(viewID[programm.first], 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(projID[programm.first], 1, GL_FALSE, glm::value_ptr(proj));
+	}
+	glUseProgram(programms["minimal"]);
+	glUniform1f(timeID["minimal"],time);
+	hud.update(level, dt);
 }
 
 void Scene::setType(GLuint type) {

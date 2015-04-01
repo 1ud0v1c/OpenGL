@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
+#include <iostream>
 
 class Player {
      public:
@@ -19,6 +20,8 @@ class Player {
 	  void changePos(double x, double y, double z);
 	  glm::vec3 getPos();
 	  void update(float time,GLFWwindow *window, float dt);
+	  glm::vec3 getUp();
+	  glm::vec3 getDir();
 
      private:
 	  int lives;
@@ -26,5 +29,10 @@ class Player {
 	  float speed;
 	  glm::vec3 position;
 	  glm::vec3 direction;
+	  glm::vec3 up;
+
+	float horizontalAngle = 3.14f;
+	float verticalAngle = 0.0f;
+	float initialFoV = 45.0f;
 };
 #endif

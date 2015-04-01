@@ -5,6 +5,7 @@
 #include <map>
 #include "gameSphere.h"
 #include "player.h"
+#include "camera.h"
 
 class Level {
 	public:
@@ -16,10 +17,12 @@ class Level {
 		void update(float time,GLFWwindow *window, float dt);
 		void addObject(GameObject *o);
 		void setType(GLuint type);
+		Camera getCamera();
 	private:
 		std::map<std::string,GLuint> programms;
 		std::vector<GameObject*> objects;
 		Player* player;
+		Camera camera;
 };
 
 #endif

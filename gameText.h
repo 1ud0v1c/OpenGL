@@ -5,7 +5,7 @@
 
 class GameText : public GameObject {
 	public:
-		GameText(const std::string &name, GLuint &programm, std::vector<float> &offset, const char* police, const char* text); 
+		GameText(const std::string &name, GLuint &programm, std::vector<float> &offset, const char* police, const char* text, int x, int y); 
 		~GameText();
 		GLuint getProgramm();
 		void makeObject();

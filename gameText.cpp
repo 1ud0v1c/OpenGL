@@ -4,12 +4,12 @@
 #include <sstream> 
 #include <iomanip>
 
-GameText::GameText(const std::string &name, GLuint &programm, std::vector<float> &offset, const char* police, const char* text) : GameObject(name,programm,offset) {
+GameText::GameText(const std::string &name, GLuint &programm, std::vector<float> &offset, const char* police, const char* text, int x, int y) : GameObject(name,programm,offset) {
 	this->police = std::string(police);
 	this->text = std::string(text);
 	textureID = loadDDS(police);
-	x = 10;
-	y = 500;
+	this->x = x;
+	this->y = y;
 	size = 40;
 }
 
@@ -24,7 +24,7 @@ void GameText::makeObject() {
 void GameText::update(float dt) {
 	deltaTime += dt;
 	std::ostringstream out;  
-	out << std::setprecision(3) << deltaTime; 
+	out << std::setprecision(2) << std::fixed << deltaTime; 
 	text = out.str(); 
 }
 

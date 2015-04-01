@@ -14,7 +14,7 @@
 class Camera {
 	public:
 		Camera();
-		void update(float deltaTime, GLFWwindow *window);
+		void update(float deltaTime, GLFWwindow *window,glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 		glm::mat4 getProjection();
 		glm::mat4 getView();
 	private:
