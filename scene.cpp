@@ -12,6 +12,8 @@ void Scene::init(std::map<std::string,GLuint> programms) {
 		projID[programm.first] = (glGetUniformLocation(programm.second, "proj"));
 		timeID[programm.first] = (glGetUniformLocation(programm.second, "time"));
 	}
+	level = Level(programms);
+	level.init();
 //	light = Light(programms["minimal"]);
 }
 
@@ -34,38 +36,21 @@ Scene::~Scene() {
 }
 
 void Scene::setType(GLuint type) {
-	for(auto o : objects) {
-		o->setType(type);
-	}
+		level.setType(type);
 }
 
 void Scene::draw() {
-	glUseProgram(programms["minimal"]);
-//	light.draw();
-	glUseProgram(0);
-	for(auto o : objects) {
-		glUseProgram(o->getProgramm());
-		o->draw();
-		glUseProgram(0);
-	}
+	level.draw();
 }
 
 void Scene::makeObject() {
-	int unit=0;
-	for(auto o : objects) {
-		o->makeObject();
-		o->setUnit(unit);
-		unit++;
-	}
-}
-void Scene::addObject(GameObject *object) {
-	objects.push_back(object);
+	level.makeObject();
 }
 
-GamePlayer* Scene::getPlayer(){
+/*GamePlayer* Scene::getPlayer(){
      for (auto object : objects){
 	  if (object->getName() == "Player"){
 	       return dynamic_cast<GamePlayer*>(object);
 	  }
      }
-}
+}*/

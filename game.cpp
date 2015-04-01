@@ -57,18 +57,6 @@ void Game::renderFrame() {
 void Game::run() {
 	scene = Scene();
 	scene.init(programms);
-	std::vector<float> offset;
-	for(int i=0;i<10;i++) {
-		for(int j=0;j<10;j++) {
-			for(int k=0;k<10;k++) {
-				offset.push_back(i);
-				offset.push_back(j);
-				offset.push_back(k);
-			}
-		}
-	}
-	std::vector<float> toreOffset = {-2.0f,0.0f,0.0f};
-	scene.addObject(new GameSphere("sphere",programm,0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
 	scene.makeObject();
 
 	float dt = 1/60.0f;
