@@ -10,6 +10,7 @@ class GameText : public GameObject {
 		GLuint getProgramm();
 		void makeObject();
 		void draw();
+		void update(float dt);
 
 	protected:
 		std::string police;
@@ -18,6 +19,7 @@ class GameText : public GameObject {
 		int y;
 		int size;
 		int i = 0;
+		float deltaTime; 
 		unsigned int text2DUniformID;
 		unsigned int positionBuffer;
 		unsigned int uvsBuffer;

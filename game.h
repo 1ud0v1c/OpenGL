@@ -25,11 +25,11 @@ class Game {
 		void run();
 		void shutDown(int i);
 	private:
+		const int width = 1024, height = 800;
 		GLuint programm;
 		GLFWwindow *window;
 		Scene scene;
 		GLuint MatrixID;
-		const int width = 1024, height = 800;
 		GLuint type;
 		GLuint diffuseID;
 		std::map<std::string,GLuint> programms;

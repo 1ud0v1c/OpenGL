@@ -1,7 +1,8 @@
 #include "gameText.h"
 #include "utils.h"
 #include <cstring>
-
+#include <sstream> 
+#include <iomanip>
 
 GameText::GameText(const std::string &name, GLuint &programm, std::vector<float> &offset, const char* police, const char* text) : GameObject(name,programm,offset) {
 	this->police = std::string(police);
@@ -9,7 +10,7 @@ GameText::GameText(const std::string &name, GLuint &programm, std::vector<float>
 	textureID = loadDDS(police);
 	x = 10;
 	y = 500;
-	size = 60;
+	size = 40;
 }
 
 GLuint GameText::getProgramm() {
@@ -20,8 +21,17 @@ void GameText::makeObject() {
 
 }
 
+void GameText::update(float dt) {
+	deltaTime += dt;
+	std::ostringstream out;  
+	out << std::setprecision(3) << deltaTime; 
+	text = out.str(); 
+}
+
 void GameText::draw() {
 	unsigned int length = text.size();
+	vertices.clear();
+	UVs.clear();
 
 	for(unsigned int i=0; i<length; i++) {
 		glm::vec2 vertex_up_left    = glm::vec2( x+i*size     , y+size );
@@ -78,7 +88,6 @@ void GameText::draw() {
 	}
 
 	text2DUniformID = glGetUniformLocation(programm, "textTexture");
-	// std::cout << "GameText >> makeObject() = text2DUniformID : " << text2DUniformID << std::endl;
 
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -91,7 +100,6 @@ void GameText::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
 	glBufferData(GL_ARRAY_BUFFER, UVs.size()*sizeof(glm::vec2), &UVs[0], GL_STATIC_DRAW);
 
-	std::cout << "GameText >> draw() = text2DUniformID : " << text2DUniformID << ", programm : " << programm << std::endl;
 	glBindVertexArray(vao);
 
 	glActiveTexture(GL_TEXTURE0);
