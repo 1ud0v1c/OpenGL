@@ -10,6 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
 #include "scene.h"
+#include "gameText.h"
 
 class Game {
 	public:

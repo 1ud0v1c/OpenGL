@@ -18,14 +18,14 @@ class Scene {
 		void init(std::map<std::string,GLuint> programms);
 		void update(float time,GLFWwindow *window, float dt);
 	private:
-		std::vector<GameObject*> objects;
 		Camera camera;
+		std::vector<GameObject*> objects;
 		std::map<std::string,GLuint> transID;
 		std::map<std::string,GLuint> viewID;
 		std::map<std::string,GLuint> projID;
 		std::map<std::string,GLuint> timeID;
 		std::map<std::string,GLuint> programms;
-	        GamePlayer* getPlayer();
+		GamePlayer* getPlayer();
 };
 
 #endif

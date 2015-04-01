@@ -12,6 +12,7 @@ GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<floa
 void GameObject::setUnit(int unit) {
      this->unit = unit;
 }
+
 GLuint GameObject::getProgramm() {
      return programm;
 }
