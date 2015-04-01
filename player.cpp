@@ -1,23 +1,28 @@
 #include "player.h"
 
-Player::Player() {
+
+
+Player::Player(float gravity) {
      lives = 3;
      score = 0;
-     speed = 3.0f;	
+     speed = 3.0f;
+	 this->gravity = gravity;
      direction = glm::vec3( cos(0.0f) * sin(3.14f), sin(0.0f), cos(0.0f) * cos(3.14f) );
 }
 
-void Player::update(float time,GLFWwindow *window, float dt){
+void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
+
 
 	float initialFoV = 45.0f;
 	double xpos, ypos;
+
 	float mouseSpeed = 0.009f;
 	static double lastTime = glfwGetTime();
 	glfwGetCursorPos(window, &xpos, &ypos);
 	double currentTime = glfwGetTime();
 	glfwSetCursorPos(window, 1024/2, 768/2);
-	horizontalAngle += mouseSpeed * dt * float(1024/2 - xpos );
-	verticalAngle += mouseSpeed * dt * float( 768/2 - ypos );
+//	horizontalAngle += mouseSpeed * dt * float(1024/2 - xpos );
+//	verticalAngle += mouseSpeed * dt * float( 768/2 - ypos );
 
 
 	direction=	 glm::vec3(
@@ -47,6 +52,21 @@ void Player::update(float time,GLFWwindow *window, float dt){
 	// Strafe left
 	if (glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_PRESS){
 		position -= right * dt * speed;
+	}
+
+	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
+		isJumping = true;
+		dy = 3;
+	}
+
+	dy -= gravity*dt;
+
+	position.y +=dy*dt;
+
+
+	if(position.y <0) {
+		position.y = 0;
+		isJumping = false;
 	}
 }
 

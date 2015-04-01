@@ -9,9 +9,9 @@ Level::Level() {
 }
 
 void Level::init() {
-
+	gravity = 9.81f;
 	std::vector<float> offset = {-2.0f,0.0f,0.0f};
-	player = new Player();
+	player = new Player(gravity);
 	addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
 }
 
@@ -19,8 +19,12 @@ void Level::addObject(GameObject *object)  {
 	objects.push_back(object);
 }
 
+std::vector<GameObject*> Level::getObjects() {
+	return objects;
+}
+
 void Level::update(float time,GLFWwindow *window, float dt) {
-	player->update(time,window,dt);
+	player->update(time,window,dt, objects);
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp());
 }
 
