@@ -26,16 +26,16 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 
 	direction=	 glm::vec3(
-			  cos(verticalAngle) * sin(horizontalAngle),
-			  sin(verticalAngle),
-			  cos(verticalAngle) * cos(horizontalAngle)
-			  );
+			cos(verticalAngle) * sin(horizontalAngle),
+			sin(verticalAngle),
+			cos(verticalAngle) * cos(horizontalAngle)
+			);
 
 	glm::vec3 right = glm::vec3(
-			  sin(horizontalAngle - 3.14f/2.0f),
-			  0,
-			  cos(horizontalAngle - 3.14f/2.0f)
-			  );
+			sin(horizontalAngle - 3.14f/2.0f),
+			0,
+			cos(horizontalAngle - 3.14f/2.0f)
+			);
 
 	up = glm::cross( right, direction );
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
