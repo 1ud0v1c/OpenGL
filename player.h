@@ -11,28 +11,27 @@
 #include <iostream>
 
 class Player {
-     public:
-	  Player();
-	  ~Player();
-	  int getLives();
-	  void modifyLives(int value);
-	  void modifyScore(double value);
-	  void changePos(double x, double y, double z);
-	  glm::vec3 getPos();
-	  void update(float time,GLFWwindow *window, float dt);
-	  glm::vec3 getUp();
-	  glm::vec3 getDir();
+   public:
+      Player();
+      ~Player();
+      int getLives();
+      void modifyLives(int value);
+      void modifyScore(double value);
+      void changePos(double x, double y, double z);
+      glm::vec3 getPos();
+      void update(float time,GLFWwindow *window, float dt);
+      glm::vec3 getUp();
+      glm::vec3 getDir();
 
-     private:
-	  int lives;
-	  double score;
-	  float speed;
-	  glm::vec3 position;
-	  glm::vec3 direction;
-	  glm::vec3 up;
-
-	float horizontalAngle = 3.14f;
-	float verticalAngle = 0.0f;
-	float initialFoV = 45.0f;
+   private:
+      int lives;
+      double score;
+      float speed;
+      glm::vec3 position;
+      glm::vec3 direction;
+      glm::vec3 up;
+      float horizontalAngle = 3.14f;
+      float verticalAngle = 0.0f;
+      float initialFoV = 45.0f;
 };
 #endif
