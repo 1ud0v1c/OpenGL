@@ -33,7 +33,7 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 	}
 	glUseProgram(programms["minimal"]);
 	glUniform1f(timeID["minimal"],time);
-	hud.update(dt);
+	hud.update(level, dt);
 }
 
 void Scene::setType(GLuint type) {

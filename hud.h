@@ -4,17 +4,20 @@
 #include <iostream>
 #include <map>
 #include "gameText.h"
+#include "level.h"
 
 class HUD {
 	public:
 		HUD();
 		HUD(std::map<std::string,GLuint> programms);
 		void init(); 
-		void update(float dt);
+		void update(Level &level, float dt);
 		void draw();
 
 	protected:
-		GameText *text;
+		GameText *chrono;
+		GameText *lifes;
+		Level level;
 		std::map<std::string,GLuint> programms;
 
 };
