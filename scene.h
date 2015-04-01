@@ -19,13 +19,14 @@ class Scene {
 		void update(float time,GLFWwindow *window, float dt);
 	private:
 		Camera camera;
+		std::vector<GameObject*> objects;
 		std::map<std::string,GLuint> transID;
 		std::map<std::string,GLuint> viewID;
 		std::map<std::string,GLuint> projID;
 		std::map<std::string,GLuint> timeID;
 		std::map<std::string,GLuint> programms;
-	       // GamePlayer* getPlayer();
 			Level level;
+		GamePlayer* getPlayer();
 };
 
 #endif

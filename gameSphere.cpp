@@ -39,7 +39,7 @@ void GameSphere::makeObject() {
 	}
 
 	textureID = glGetUniformLocation(programm, "colormap");
-	std::cout << textureName << std::endl;
+	// std::cout << textureName << std::endl;
 	texture = loadTGATexture(textureName);
 	GameObject::makeObject();
 }

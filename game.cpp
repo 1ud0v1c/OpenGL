@@ -12,6 +12,7 @@ void Game::init() {
 	initGLEW();
 	type = GL_TRIANGLES;
 	programms["minimal"] = createShaders("minimal.v.glsl","minimal.f.glsl");
+	programms["text2D"] = createShaders("text2D.v.glsl","text2D.f.glsl");
 	make_resources();
 }
 
@@ -23,8 +24,7 @@ void Game::initGLFW() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// Create a window of given size
-	window =glfwCreateWindow(width, height,
-			  "Minimal OpenGL application with GLFW", NULL, NULL);
+	window = glfwCreateWindow(width, height,"Minimal OpenGL application with GLFW", NULL, NULL);
 	if (!window) {
 		std::cerr<<"Could not open a window"<<std::endl;
 		shutDown(1);
@@ -64,8 +64,7 @@ void Game::run() {
 	float time2 = 0;
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	bool pressL=false;
-	while(!(glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS))
-	{
+	while(!(glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS)) {
 		glUseProgram(programm);
 		if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && pressL == false){
 			if(type == GL_TRIANGLES) type = GL_LINES;
