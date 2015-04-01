@@ -19,7 +19,7 @@ class GameText : public GameObject {
 		int y;
 		int size;
 		int i = 0;
-		float deltaTime; 
+		float deltaTime=0; 
 		unsigned int text2DUniformID;
 		unsigned int positionBuffer;
 		unsigned int uvsBuffer;
