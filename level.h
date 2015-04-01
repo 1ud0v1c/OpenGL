@@ -17,6 +17,7 @@ class Level {
 		void update(float time,GLFWwindow *window, float dt);
 		void addObject(GameObject *o);
 		void setType(GLuint type);
+		std::vector<GameObject*> getObjects();
 		Camera getCamera();
 		Player* getPlayer();
 
@@ -25,6 +26,7 @@ class Level {
 		std::vector<GameObject*> objects;
 		Player* player;
 		Camera camera;
+		float gravity;
 };
 
 #endif
