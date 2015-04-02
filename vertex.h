@@ -14,7 +14,7 @@ class Vertex {
 
 		void addPosition(int x, int y, int z);
 		void addPosition(glm::vec3 pos);
-		void addColor(int r, int g, int b, int o);
+		void addColor(float r, float g, float b, float o);
 		void addUv(glm::vec2 pos, glm::vec2 pos2, glm::vec2 pos3);
 		void addUv(glm::vec2 pos);
 		void addNormal(int x, int y, int z);

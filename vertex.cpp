@@ -16,7 +16,7 @@ glm::vec3 Vertex::getNormal() {
 	return normal;
 }
 
-void Vertex::addColor(int r, int g, int b, int o) {	
+void Vertex::addColor(float r, float g, float b, float o) {	
 	color = glm::vec4(r,g,b,o);
 }
 
