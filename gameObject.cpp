@@ -24,6 +24,8 @@ void GameObject::makeObject() {
 	GLuint textureBuffer;
 	GLuint instanceVBO;
 
+	std::cout << _name << " " << mesh.getPositions().size() <<std::endl;
+	std::cout << _name << " " << mesh.getUvs().size() <<std::endl;
 
 	glGenBuffers(1, &instanceVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);

@@ -17,7 +17,7 @@ void Scene::init(std::map<std::string,GLuint> programms) {
      level.init();
      hud = HUD(programms);
      hud.init(level);
-     //	light = Light(programms["minimal"]);
+    ///	light = Light(programms["minimal"]);
 }
 
 void Scene::update(float time,GLFWwindow *window, float dt) {

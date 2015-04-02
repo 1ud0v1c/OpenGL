@@ -11,7 +11,7 @@
 #include <GLFW/glfw3.h>
 
 char *read_tga(const char *filename, int& width, int& height);
-GLuint loadTGATexture(const std::string& imagepath, GLenum wrap_s=GL_REPEAT, GLenum wrap_t=GL_REPEAT, GLenum mag_filter=GL_LINEAR, GLenum min_filter=GL_LINEAR_MIPMAP_LINEAR, bool anisotropy=false);
+GLuint loadTGATexture(const std::string& imagepath, int width=256,int height=256,GLenum wrap_s=GL_REPEAT, GLenum wrap_t=GL_REPEAT, GLenum mag_filter=GL_LINEAR, GLenum min_filter=GL_LINEAR_MIPMAP_LINEAR, bool anisotropy=false);
 std::string file_contents(const std::string &file, int* size);
 static short le_short(unsigned char *bytes);
 GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path);

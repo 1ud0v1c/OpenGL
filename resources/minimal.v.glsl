@@ -16,4 +16,5 @@ void main() {
 	gl_Position=proj*view*vec4(position, 1.0);
 	vColor = color;
 	outVertexUv = vertexUv;
+	fNormal = normal;
 }
