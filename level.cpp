@@ -12,10 +12,10 @@ void Level::init() {
 	gravity = 9.81f;
 	std::vector<float> offset = {-2.0f,0.0f,0.0f};
 	player = new Player(gravity);
-//	 addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
-//	GameObject *wall = new GameObject("wall",programms["minimal"], offset);
-//	wall->loadOBJ("wall.obj");
-//	addObject(wall);
+	// addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
+	GameObject *wall = new GameObject("wall",programms["minimal"], offset);
+	wall->loadOBJ("wall.obj");
+	addObject(wall);
 	addObject(new SkyBox("sky",programms["minimal"],offset,"checkerboard.tga",256,256));
 }
 
@@ -40,16 +40,14 @@ void Level::setType(GLuint type) {
 
 
 void Level::makeObject() {
-
 	for(auto o : objects) {
 		o->makeObject();
 	}
 }
 
 void Level::draw() {
-
 	glUseProgram(programms["minimal"]);
-//	light.draw();
+	//	light.draw();
 	glUseProgram(0);
 	for(auto o : objects) {
 		glUseProgram(o->getProgramm());

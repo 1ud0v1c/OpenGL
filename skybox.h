@@ -12,8 +12,6 @@ class SkyBox: public GameObject {
 		void makeObject();
 		SkyBox(const std::string name,GLuint programm,std::vector<float> offset,const std::string &nameTexture, int width, int height );
 
-
-
 	private:
 		int width;
 		int height;
@@ -21,6 +19,4 @@ class SkyBox: public GameObject {
 
 };
 
-
 #endif
-
