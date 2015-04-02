@@ -3,7 +3,8 @@
 Player::Player(float gravity) {
    lives = 3;
    score = 0;
-   speed = 3.0f;	
+   speed = 3.0f;
+   this->gravity = gravity;
    direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
 }
 
@@ -57,6 +58,8 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	}
 
 	dy -= gravity*dt;
+
+	std::cout << position.y << " " << dy << std::endl;
 
 	position.y +=dy*dt;
 
