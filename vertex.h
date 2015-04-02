@@ -9,6 +9,7 @@ class Vertex {
 	public:
 		glm::vec3 getPosition(); 
 		glm::vec4 getColor(); 
+		glm::vec3 getNormal();
 		std::vector<glm::vec2> getUv();
 
 		void addPosition(int x, int y, int z);

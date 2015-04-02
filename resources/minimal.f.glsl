@@ -1,6 +1,7 @@
 #version 150
 
 in vec4 vColor;
+in vec3 fNormal;
 in vec2 outVertexUv;
 
 out vec4 out_color;
@@ -16,6 +17,6 @@ vec3 ComputeLightLambert(const in vec3 lightdirn, const in vec3 lightcolor, cons
 }
 
 void main() {
-//	vec3 lambert = ComputeLightLambert(lightdirn,lightcolor,glm::vec3(1,1,1),diffuse);
-	out_color= texture(colormap,outVertexUv)*vColor;
+	vec3 lambert = ComputeLightLambert(lightdirn,lightcolor, fNormal,diffuse);
+	out_color= texture(colormap,outVertexUv)*vColor+vec4(lambert,1);
 }

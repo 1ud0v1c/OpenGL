@@ -26,7 +26,6 @@ void GameSphere::makeObject() {
 			tmp.addUv(glm::vec2(0,0), glm::vec2(0,1), glm::vec2(1,1));
 			tmp.addUv(glm::vec2(0,0), glm::vec2(1,1), glm::vec2(1,0));
 			
-			vertexCount++;
 			mesh.addVertex(tmp);
 		}
 	}
