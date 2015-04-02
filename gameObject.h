@@ -15,11 +15,12 @@
 #include "mesh.h"
 
 class GameObject {
+
 	public:
 		GameObject(const std::string &name, GLuint &programm, std::vector<float> &offset);
 		~GameObject();
 		virtual void draw();
-		virtual void makeObject()=0;
+		virtual void makeObject();
 		glm::mat4 moveObject();
 		glm::vec3 translation;
 		void setType(GLuint type);
@@ -30,6 +31,8 @@ class GameObject {
 		glm::vec3 getCenter();
 		int getRadius();
 		bool isColliding(GameObject* go);
+		bool loadOBJ(const std::string  &path);
+
 	protected:
 		int unit=0;
 		GLuint vao;
@@ -41,8 +44,6 @@ class GameObject {
 		GLuint type;
 		GLuint texture;
 		GLuint textureID;
-		unsigned int vertexCount=0;
-
 		int radius;
 };
 #endif

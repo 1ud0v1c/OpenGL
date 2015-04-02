@@ -21,8 +21,8 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	glfwGetCursorPos(window, &xpos, &ypos);
 	double currentTime = glfwGetTime();
 	glfwSetCursorPos(window, 1024/2, 768/2);
-//	horizontalAngle += mouseSpeed * dt * float(1024/2 - xpos );
-//	verticalAngle += mouseSpeed * dt * float( 768/2 - ypos );
+	horizontalAngle += mouseSpeed * dt * float(1024/2 - xpos );
+	verticalAngle += mouseSpeed * dt * float( 768/2 - ypos );
 
 
 	direction=	 glm::vec3(
