@@ -99,9 +99,7 @@ static short le_short(unsigned char *bytes) {
 }
 
 
-GLuint loadTGATexture(const std::string& imagepath, GLenum wrap_s, GLenum wrap_t, GLenum mag_filter, GLenum min_filter, bool anisotropy)  {
-	int width = 256;
-	int height = 256;
+GLuint loadTGATexture(const std::string& imagepath, int width, int height,GLenum wrap_s, GLenum wrap_t, GLenum mag_filter, GLenum min_filter, bool anisotropy)  {
 	char *data = read_tga(imagepath.c_str(),width,height);
 	GLuint textureID=0;
 
