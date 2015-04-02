@@ -1,7 +1,5 @@
 #include "player.h"
 
-
-
 Player::Player(float gravity) {
      lives = 3;
      score = 0;
