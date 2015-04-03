@@ -18,5 +18,5 @@ vec3 ComputeLightLambert(const in vec3 lightdirn, const in vec3 lightcolor, cons
 
 void main() {
 	vec3 lambert = ComputeLightLambert(lightdirn,lightcolor, fNormal,diffuse);
-	out_color= vColor;
+	out_color = texture(colormap, outVertexUv); //*vColor;
 }

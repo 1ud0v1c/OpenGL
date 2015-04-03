@@ -55,3 +55,13 @@ std::vector<glm::vec3> Mesh::getNormals() {
 	return normals;
 }
 
+void Mesh::displayUvs() {
+	int i,j;
+	for (i = 0; i < vbos.size(); i++) {
+		std::vector<glm::vec2> uv = vbos[i].getUv();
+		for (j = 0; j < uv.size(); j++) {
+			std::cout << "Uv (x : " << uv[j].x << ", y : " << uv[j].y << ")" << std::endl;
+		}
+	}
+}
+

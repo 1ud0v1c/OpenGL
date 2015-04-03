@@ -11,6 +11,7 @@ class Mesh {
 		void addVertex(Vertex v);
 		void addIbo(unsigned int pos);
 		void addIbos(unsigned int pos, unsigned int pos2, unsigned int pos3);
+		void displayUvs();
 
 		std::vector<unsigned int> getIbos();
 		std::vector<glm::vec3> getPositions();

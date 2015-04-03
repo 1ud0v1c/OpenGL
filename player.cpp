@@ -1,11 +1,11 @@
 #include "player.h"
 
 Player::Player(float gravity) {
-   lives = 3;
-   score = 0;
-   speed = 3.0f;
-   this->gravity = gravity;
-   direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
+	lives = 3;
+	score = 0;
+	speed = 3.0f;
+	this->gravity = gravity;
+	direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
 }
 
 void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
@@ -58,11 +58,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	}
 
 	dy -= gravity*dt;
-
-	std::cout << position.y << " " << dy << std::endl;
-
 	position.y +=dy*dt;
-
 
 	if(position.y <0) {
 		position.y = 0;
@@ -71,32 +67,32 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 }
 
 int Player::getLives(){
-   return lives;
+	return lives;
 }
 
 void Player::modifyLives(int value){
-   lives += value;
+	lives += value;
 }
 
 void Player::modifyScore(double value){
-   score += value;
+	score += value;
 }
 
 void Player::changePos(double x, double y, double z){
-   position.x += x;
-   position.y += y;
-   position.z += z;
+	position.x += x;
+	position.y += y;
+	position.z += z;
 }
 
 glm::vec3 Player::getPos(){
-   return position;
+	return position;
 }
 
 glm::vec3 Player::getDir() {
-   return direction;
+	return direction;
 }
 
 glm::vec3 Player::getUp() {
-   return up;
+	return up;
 }
 

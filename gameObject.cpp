@@ -17,6 +17,9 @@ GLuint GameObject::getProgramm() {
 }
 
 void GameObject::makeObject() {
+	textureID = glGetUniformLocation(programm, "colormap");
+	texture = loadTGATexture(_name);
+
 	GLuint positionBuffer;
 	GLuint indexBuffer;
 	GLuint colorBuffer;
