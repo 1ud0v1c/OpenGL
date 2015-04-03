@@ -6,7 +6,7 @@
 #include "gameSphere.h"
 #include "player.h"
 #include "camera.h"
-#include "skybox.h"
+#include "gameCube.h"
 
 class Level {
 	public:

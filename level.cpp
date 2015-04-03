@@ -16,7 +16,6 @@ void Level::init() {
 	GameObject *wall = new GameObject("brick2.tga",programms["minimal"], offset);
 	wall->loadOBJ("wall.obj");
 	addObject(wall);
-	// addObject(new SkyBox("sky",programms["minimal"],offset,"checkerboard.tga",256,256));
 }
 
 void Level::addObject(GameObject *object)  {
