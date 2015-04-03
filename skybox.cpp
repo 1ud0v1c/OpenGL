@@ -15,15 +15,15 @@ Skybox::Skybox(GLuint program, std::string top, std::string bottom, std::string 
 
 void Skybox::loadCubemap() {
 	int width = 256, height = 256;
-	GLuint image;
+	char* image; 
 
 	glGenTextures(1, &textureID);
 	glActiveTexture(GL_TEXTURE0);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 	for(int i = 0; i < _faces.size(); i++) {
-		image = loadTGATexture(_faces[i]); 
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, &image);
+		image = read_tga(_faces[i].c_str(), width, height); 
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	}
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -47,6 +47,7 @@ void Skybox::update(glm::vec3 position) {
 
 void Skybox::init() {
 	glUseProgram(program);
+	loadCubemap();
 
 	GLfloat skyboxVertices[] = {
 		-SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,

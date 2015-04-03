@@ -17,7 +17,7 @@ void Scene::init(std::map<std::string,GLuint> programms) {
      level.init();
      hud = HUD(programms);
 	 hud.init(level);
-	 skybox = Skybox(programms["skybox"], "sky-top.tga", "sky-bot.tga", "sky-left.tga", "sky-right.tga", "sky-front.tga", "sky-back.tga");
+	 skybox = Skybox(programms["skybox"], "star-top.tga", "star-bot.tga", "star-left.tga", "star-right.tga", "star-front.tga", "star-back.tga");
 	 skybox.init();
 	 ///	light = Light(programms["minimal"]);
 }
