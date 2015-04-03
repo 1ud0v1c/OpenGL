@@ -8,7 +8,7 @@ HUD::HUD(std::map<std::string,GLuint> programms) {
 }
 
 void HUD::init(Level level) {
-	std::vector<float> offset;
+	std::vector<glm::vec3> offset;
 	Player *player = level.getPlayer();
 	std::ostringstream out;  
 	out << player->getLives() << "x"; 

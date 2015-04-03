@@ -1,9 +1,8 @@
 #include "gameCube.h"
 
-GameCube::GameCube(const std::string name, GLuint programm, std::vector<float> offset,const std::string &nameTexture, int width, int height) : GameObject(name,programm,offset) {
+GameCube::GameCube(const std::string name, GLuint programm, std::vector<glm::vec3> offset,const std::string &nameTexture, int width, int height) : GameObject(name,programm,offset,nameTexture) {
 	this->width = width;
 	this->height = height;
-	this->textureName = nameTexture;
 }
 
 
@@ -73,8 +72,6 @@ void GameCube::makeObject() {
 		mesh.addVertex(vertexes[i]);
 	}
 
-	textureID = glGetUniformLocation(programm, "colormap"); 
-	texture = loadTGATexture(textureName);
 
 	GameObject::makeObject();
 }

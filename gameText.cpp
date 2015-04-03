@@ -4,7 +4,7 @@
 #include <sstream> 
 #include <iomanip>
 
-GameText::GameText(const std::string &name, GLuint &programm, std::vector<float> &offset, const char* police, const char* text, int x, int y) : GameObject(name,programm,offset) {
+GameText::GameText(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const char* police, const char* text, int x, int y) : GameObject(name,programm,offset) {
 	this->police = std::string(police);
 	this->text = std::string(text);
 	textureID = loadDDS(police);

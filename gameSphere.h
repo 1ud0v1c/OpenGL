@@ -5,7 +5,7 @@
 
 class GameSphere : public GameObject {
 	public:
-		GameSphere(const std::string &name,GLuint &programm, double R, glm::vec3 color, std::vector<float> &offset, const std::string t="");
+		GameSphere(const std::string &name,GLuint &programm, double R, glm::vec3 color, std::vector<glm::vec3> &offset, const std::string t="");
 		~GameSphere();
 		void makeObject();
 		void draw();
@@ -14,7 +14,6 @@ class GameSphere : public GameObject {
 	private:
 		double R;
 		glm::vec3 colorValue;
-		std::string textureName;
 };
 
 #endif

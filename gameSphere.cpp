@@ -1,10 +1,9 @@
 #include "gameSphere.h"
 #include <iostream>
 
-GameSphere::GameSphere(const std::string &name, GLuint &programm,double R,glm::vec3 color,std::vector<float> &offset,const std::string t) : GameObject(name,programm,offset) {
+GameSphere::GameSphere(const std::string &name, GLuint &programm,double R,glm::vec3 color,std::vector<glm::vec3> &offset,const std::string t) : GameObject(name,programm,offset,t) {
 	this->R = R;
 	this->colorValue = color;
-	this->textureName = t;
 }
 
 void GameSphere::draw() {
@@ -37,9 +36,6 @@ void GameSphere::makeObject() {
 		}
 	}
 
-	textureID = glGetUniformLocation(programm, "colormap");
-	// std::cout << textureName << std::endl;
-	texture = loadTGATexture(textureName);
 	GameObject::makeObject();
 }
 

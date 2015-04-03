@@ -1,11 +1,12 @@
 #include <algorithm>
 #include "gameObject.h"
 
-GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<float> &offset) {
+GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm::vec3> &offset, const std::string &textureName) {
      _name = name;
      this->programm = programm;
      type = GL_TRIANGLES;
      this->offset = offset;
+	 this->textureName = textureName;
 }
 
 void GameObject::setUnit(int unit) {
@@ -17,8 +18,11 @@ GLuint GameObject::getProgramm() {
 }
 
 void GameObject::makeObject() {
-	textureID = glGetUniformLocation(programm, "colormap");
-	texture = loadTGATexture(_name);
+	if(textureName.size() >2) {
+		textureID = glGetUniformLocation(programm, "colormap");
+		texture = loadTGATexture(textureName);
+		std::cout << textureName << std::endl;
+	}
 
 	GLuint positionBuffer;
 	GLuint indexBuffer;
@@ -27,9 +31,11 @@ void GameObject::makeObject() {
 	GLuint textureBuffer;
 	GLuint instanceVBO;
 
+	std::cout << offset[0][0] << std::endl;
+
 	glGenBuffers(1, &instanceVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * offset.size(), offset.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * offset.size(), &offset[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &positionBuffer);
@@ -93,55 +99,55 @@ void GameObject::makeObject() {
 }
 
 std::string GameObject::getName() {
-     return _name;
+	return _name;
 }
 
 void GameObject::setType(GLuint type) {
-     this->type = type;
+	this->type = type;
 }
 
 void GameObject::draw() {
-     GLfloat fLargest;
-     glActiveTexture(GL_TEXTURE0);
-     glBindTexture(GL_TEXTURE_2D, texture);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-     glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargest);
-     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, fLargest);
-     glUniform1i(textureID, 0);
+	GLfloat fLargest;
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &fLargest);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, fLargest);
+	glUniform1i(textureID, 0);
 
-     glBindVertexArray(vao);
-     glDrawElementsInstanced(type, mesh.getIbos().size(), GL_UNSIGNED_INT, 0,offset.size()/3);
-     glBindVertexArray(0);
+	glBindVertexArray(vao);
+	glDrawElementsInstanced(type, mesh.getIbos().size(), GL_UNSIGNED_INT, 0,offset.size());
+	glBindVertexArray(0);
 }
 
 bool GameObject::isColliding(GameObject* go){
-     glm::vec3 center = getCenter();
-     glm::vec3 hitbox(radius+center.x, radius+center.y, radius+center.z);
-     
-     int other_radius = go->getRadius();
-     glm::vec3 other_center = go->getCenter();
-     glm::vec3 other_hitbox(other_radius-other_center.x, other_radius+other_center.y, other_radius-other_center.z);
-     
-     if (hitbox.x  >= other_hitbox.x){
-	  return true;
-     }
-     if (hitbox.z >= other_hitbox.z){
-	  return true;
-     }
-     return false;
+	glm::vec3 center = getCenter();
+	glm::vec3 hitbox(radius+center.x, radius+center.y, radius+center.z);
+
+	int other_radius = go->getRadius();
+	glm::vec3 other_center = go->getCenter();
+	glm::vec3 other_hitbox(other_radius-other_center.x, other_radius+other_center.y, other_radius-other_center.z);
+
+	if (hitbox.x  >= other_hitbox.x){
+		return true;
+	}
+	if (hitbox.z >= other_hitbox.z){
+		return true;
+	}
+	return false;
 }
 
 glm::vec3 GameObject::getCenter(){
-     glm::vec3 min;
-     glm::vec3 max;
-     std::vector<glm::vec3> positions = mesh.getPositions();
-     min = getMinPosition(positions);
-     max = getMaxPosition(positions);
-     return glm::vec3( (min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2); 
+	glm::vec3 min;
+	glm::vec3 max;
+	std::vector<glm::vec3> positions = mesh.getPositions();
+	min = getMinPosition(positions);
+	max = getMaxPosition(positions);
+	return glm::vec3( (min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2); 
 }
 
 int GameObject::getRadius(){
-     return radius;
+	return radius;
 }
 
 GameObject::~GameObject() { }

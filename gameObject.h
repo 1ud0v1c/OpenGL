@@ -17,7 +17,7 @@
 class GameObject {
 
 	public:
-		GameObject(const std::string &name, GLuint &programm, std::vector<float> &offset);
+		GameObject(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const std::string &textureName="");
 		~GameObject();
 		virtual void draw();
 		virtual void makeObject();
@@ -39,8 +39,8 @@ class GameObject {
 		GLuint programm;
 		std::string _name;
 		Mesh mesh;
-		std::vector<float> offset;
-
+		std::vector<glm::vec3> offset;
+		std::string textureName;
 		GLuint type;
 		GLuint texture;
 		GLuint textureID;

@@ -10,12 +10,17 @@ Level::Level() {
 
 void Level::init() {
 	gravity = 9.81f;
-	std::vector<float> offset = {-2.0f,0.0f,0.0f};
+	std::vector<glm::vec3> offset;
+	offset.push_back(glm::vec3(0.0f,-1.0f,0.0f));
 	player = new Player(gravity);
-	// addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
-	GameObject *wall = new GameObject("brick2.tga",programms["minimal"], offset);
-	wall->loadOBJ("wall.obj");
-	addObject(wall);
+	 addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
+//	GameObject *wall = new GameObject("brick2.tga",programms["minimal"], offset);
+//	wall->loadOBJ("wall.obj");
+//	addObject(wall);
+
+	GameObject *road = new GameObject("road",programms["minimal"], offset,"checkerboard.tga");
+	road->loadOBJ("road.obj");
+	addObject(road);
 }
 
 void Level::addObject(GameObject *object)  {
