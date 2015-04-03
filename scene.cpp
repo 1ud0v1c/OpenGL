@@ -22,6 +22,8 @@ void Scene::init(std::map<std::string,GLuint> programms) {
 	 ///	light = Light(programms["minimal"]);
 }
 
+
+
 void Scene::update(float time,GLFWwindow *window, float dt) {
 	level.update(time,window,dt);
 	Camera camera = level.getCamera();
@@ -37,6 +39,7 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 	glUseProgram(programms["minimal"]);
 	glUniform1f(timeID["minimal"],time);
 	hud.update(level, dt);
+	skybox.update(level.getPlayer()->getPos());
 }
 
 void Scene::setType(GLuint type) {

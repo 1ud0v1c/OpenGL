@@ -31,53 +31,65 @@ void Skybox::loadCubemap() {
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-}  
+}
+
+
+void Skybox::update(glm::vec3 position) {
+
+	glUseProgram(program);
+	GLuint positionBuffer;
+	GLuint loc =glGetUniformLocation(program, "offset");
+	glUniform3f(loc,position[0],position[1],position[2]);
+
+	glUseProgram(0);
+
+}
 
 void Skybox::init() {
 	glUseProgram(program);
 
 	GLfloat skyboxVertices[] = {
-		-30.0f,  30.0f, -30.0f,
-		-30.0f, -30.0f, -30.0f,
-		30.0f, -30.0f, -30.0f,
-		30.0f, -30.0f, -30.0f,
-		30.0f,  30.0f, -30.0f,
-		-30.0f,  30.0f, -30.0f,
+		-SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
+		-SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
+		-SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
 
-		-30.0f, -30.0f,  30.0f,
-		-30.0f, -30.0f, -30.0f,
-		-30.0f,  30.0f, -30.0f,
-		-30.0f,  30.0f, -30.0f,
-		-30.0f,  30.0f,  30.0f,
-		-30.0f, -30.0f,  30.0f,
+		-SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
+		-SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		-SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
+		-SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
+		-SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		-SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
 
-		30.0f, -30.0f, -30.0f,
-		30.0f, -30.0f,  30.0f,
-		30.0f,  30.0f,  30.0f,
-		30.0f,  30.0f,  30.0f,
-		30.0f,  30.0f, -30.0f,
-		30.0f, -30.0f, -30.0f,
+		SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
 
-		-30.0f, -30.0f,  30.0f,
-		-30.0f,  30.0f,  30.0f,
-		30.0f,  30.0f,  30.0f,
-		30.0f,  30.0f,  30.0f,
-		30.0f, -30.0f,  30.0f,
-		-30.0f, -30.0f,  30.0f,
+		-SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
+		-SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
+		-SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
 
-		-30.0f,  30.0f, -30.0f,
-		30.0f,  30.0f, -30.0f,
-		30.0f,  30.0f,  30.0f,
-		30.0f,  30.0f,  30.0f,
-		-30.0f,  30.0f,  30.0f,
-		-30.0f,  30.0f, -30.0f,
+		-SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		-SKYBOX_SIZE,  SKYBOX_SIZE,  SKYBOX_SIZE,
+		-SKYBOX_SIZE,  SKYBOX_SIZE, -SKYBOX_SIZE,
 
-		-30.0f, -30.0f, -30.0f,
-		-30.0f, -30.0f,  30.0f,
-		30.0f, -30.0f, -30.0f,
-		30.0f, -30.0f, -30.0f,
-		-30.0f, -30.0f,  30.0f,
-		30.0f, -30.0f,  30.0f
+		-SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		-SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE, -SKYBOX_SIZE,
+		-SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE,
+		SKYBOX_SIZE, -SKYBOX_SIZE,  SKYBOX_SIZE
 	};
 
 	glGenVertexArrays(1, &skyboxVAO);

@@ -8,6 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h> 
 #include <GLFW/glfw3.h>
+#define SKYBOX_SIZE 5
 
 class Skybox {
 	public:
@@ -17,6 +18,7 @@ class Skybox {
 		GLuint getProgramm();
 		void init();
 		void draw();
+		void update(glm::vec3 position);
 
 	private:
 		GLuint skyboxVAO, skyboxVBO;
