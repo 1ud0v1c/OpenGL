@@ -10,10 +10,12 @@
 #include <glm/gtc/constants.hpp>
 #include <iostream>
 #include "gameObject.h"
+#include "gameSphere.h"
+#include <map>
 
 class Player {
 	public:
-		Player(float gravity);
+		Player(float gravity,std::map<std::string , GLuint> programms);
 		~Player();
 		int getLives();
 		void modifyLives(int value);
@@ -23,6 +25,9 @@ class Player {
 		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects );
 		glm::vec3 getUp();
 		glm::vec3 getDir();
+		void init();
+		void movePlayer();
+		void draw();
 
 	private:
 		int lives;
@@ -32,6 +37,8 @@ class Player {
 		glm::vec3 direction;
 		glm::vec3 up;
 		float gravity;
+		GameObject *playerObject;
+		std::map<std::string , GLuint> programms;
 
 		float horizontalAngle = 3.14f;
 		float verticalAngle = 0.0f;

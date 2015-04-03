@@ -21,7 +21,7 @@ class GameObject {
 		~GameObject();
 		virtual void draw();
 		virtual void makeObject();
-		glm::mat4 moveObject();
+		void  moveObject(glm::vec3 pos);
 		glm::vec3 translation;
 		void setType(GLuint type);
 		void setUnit(int unit);

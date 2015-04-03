@@ -13,6 +13,17 @@ void GameObject::setUnit(int unit) {
      this->unit = unit;
 }
 
+
+void  GameObject::moveObject(glm::vec3 position) {
+
+	glUseProgram(programm);
+	GLuint positionBuffer;
+	GLuint loc =glGetUniformLocation(programm, "moveOffset");
+	glUniform3f(loc,position[0],position[1],position[2]);
+
+	glUseProgram(0);
+}
+
 GLuint GameObject::getProgramm() {
      return programm;
 }

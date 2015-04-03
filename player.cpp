@@ -1,11 +1,34 @@
 #include "player.h"
 
-Player::Player(float gravity) {
+Player::Player(float gravity, std::map<std::string , GLuint> programms) {
 	lives = 3;
 	score = 0;
 	speed = 3.0f;
+	this->programms = programms;
+
+	std::vector<glm::vec3> offset;
+	offset.push_back(glm::vec3(0.0f,-1.0f,-1.0f));
+	playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga");
 	this->gravity = gravity;
 	direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
+}
+
+void Player::init() {
+	glUseProgram(programms["player"]);
+	playerObject->makeObject();
+	glUseProgram(0);
+}
+
+void Player::movePlayer() {
+	playerObject->moveObject(position);	
+}
+
+void Player::draw() {
+
+	glUseProgram(programms["player"]);
+	playerObject->draw();
+
+	glUseProgram(0);
 }
 
 void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
@@ -24,16 +47,16 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 
 	direction=	 glm::vec3(
-			cos(verticalAngle) * sin(horizontalAngle),
-			sin(verticalAngle),
-			cos(verticalAngle) * cos(horizontalAngle)
-			);
+			  cos(verticalAngle) * sin(horizontalAngle),
+			  sin(verticalAngle),
+			  cos(verticalAngle) * cos(horizontalAngle)
+			  );
 
 	glm::vec3 right = glm::vec3(
-			sin(horizontalAngle - 3.14f/2.0f),
-			0,
-			cos(horizontalAngle - 3.14f/2.0f)
-			);
+			  sin(horizontalAngle - 3.14f/2.0f),
+			  0,
+			  cos(horizontalAngle - 3.14f/2.0f)
+			  );
 
 	up = glm::cross( right, direction );
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
@@ -64,6 +87,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 		position.y = 0;
 		isJumping = false;
 	}
+	movePlayer();
 }
 
 int Player::getLives(){
