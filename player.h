@@ -28,6 +28,7 @@ class Player {
 		void init();
 		void movePlayer();
 		void draw();
+		glm::vec3 getOffset();
 
 	private:
 		int lives;
@@ -45,5 +46,6 @@ class Player {
 		float initialFoV = 45.0f;
 		float dy = 0;
 		bool isJumping = false;
+		glm::vec3 offset;
 };
 #endif

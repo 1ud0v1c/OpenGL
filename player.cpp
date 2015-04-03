@@ -6,11 +6,16 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
 	speed = 3.0f;
 	this->programms = programms;
 
-	std::vector<glm::vec3> offset;
-	offset.push_back(glm::vec3(0.0f,-1.0f,-1.0f));
-	playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga");
+	std::vector<glm::vec3> offsetVect;
+	offsetVect.push_back(glm::vec3(0.0f,-1.0f,-1.0f));
+	playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offsetVect,"checkerboard.tga");
 	this->gravity = gravity;
 	direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
+	this->offset = offsetVect[0];
+}
+
+glm::vec3 Player::getOffset() {
+	return offset;
 }
 
 void Player::init() {
@@ -47,9 +52,9 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 
 	direction=	 glm::vec3(
-			  cos(verticalAngle) * sin(horizontalAngle),
-			  sin(verticalAngle),
-			  cos(verticalAngle) * cos(horizontalAngle)
+			  3*cos(verticalAngle) * sin(horizontalAngle),
+			  3*sin(verticalAngle),
+			  3*cos(verticalAngle) * cos(horizontalAngle)
 			  );
 
 	glm::vec3 right = glm::vec3(
@@ -60,24 +65,24 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 	up = glm::cross( right, direction );
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
-		position += direction * dt * speed;
+		position -= direction * dt * speed;
 	}
 	// Move backward
 	if (glfwGetKey( window,GLFW_KEY_DOWN ) == GLFW_PRESS){
-		position -= direction * dt * speed;
+		position += direction * dt * speed;
 	}
 	// Strafe right
 	if (glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_PRESS){
-		position += right * dt * speed;
+		position -= right * dt * speed*2.0f;
 	}
 	// Strafe left
 	if (glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_PRESS){
-		position -= right * dt * speed;
+		position += right * dt * speed*2.0f;
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
-		dy = 3;
+		dy = 10;
 	}
 
 	dy -= gravity*dt;

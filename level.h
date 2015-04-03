@@ -21,6 +21,7 @@ class Level {
 		std::vector<GameObject*> getObjects();
 		Camera getCamera();
 		Player* getPlayer();
+		void loadLevel();
 
 	private:
 		std::map<std::string,GLuint> programms;
@@ -28,6 +29,7 @@ class Level {
 		Player* player;
 		Camera camera;
 		float gravity;
+		int currentLevel;
 };
 
 #endif

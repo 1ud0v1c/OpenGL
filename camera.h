@@ -14,14 +14,14 @@
 class Camera {
 	public:
 		Camera();
-		void update(float deltaTime, GLFWwindow *window,glm::vec3 position, glm::vec3 direction, glm::vec3 up);
+		void update(float deltaTime, GLFWwindow *window,glm::vec3 position, glm::vec3 direction, glm::vec3 up, glm::vec3 offset);
 		glm::mat4 getProjection();
 		glm::mat4 getView();
 	private:
 		glm::vec3 position = glm::vec3( 0, 0, 5 );
 		float horizontalAngle = 3.14f;
 		float verticalAngle = 0.0f;
-		float initialFoV = 45.0f;
+		float initialFoV = 100.0f;
 		double xpos, ypos;
 		float speed = 3.0f; // 3 units / second
 		float mouseSpeed = 0.009f;
