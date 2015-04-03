@@ -13,9 +13,9 @@ void Level::init() {
 	std::vector<float> offset = {-2.0f,0.0f,0.0f};
 	player = new Player(gravity);
 	// addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
-	GameObject *wall = new GameObject("brick2.tga",programms["minimal"], offset);
-	wall->loadOBJ("wall.obj");
-	addObject(wall);
+	// GameObject *wall = new GameObject("brick2.tga",programms["minimal"], offset);
+	// wall->loadOBJ("wall.obj");
+	// addObject(wall);
 }
 
 void Level::addObject(GameObject *object)  {

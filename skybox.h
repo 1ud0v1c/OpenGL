@@ -11,10 +11,16 @@
 
 class Skybox {
 	public:
-		Skybox(std::string top, std::string bottom, std::string left, std::string right, std::string front, std::string back);
+		Skybox();
+		Skybox(GLuint program, std::string top, std::string bottom, std::string left, std::string right, std::string front, std::string back);
 		void loadCubemap();
+		GLuint getProgramm();
+		void init();
+		void draw();
 
 	private:
+		GLuint skyboxVAO, skyboxVBO;
+		GLuint program;
 		GLuint textureID;
 		std::vector<std::string> _faces;
 };

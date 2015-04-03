@@ -13,6 +13,7 @@ void Game::init() {
 	type = GL_TRIANGLES;
 	programms["minimal"] = createShaders("minimal.v.glsl","minimal.f.glsl");
 	programms["text2D"] = createShaders("text2D.v.glsl","text2D.f.glsl");
+	programms["skybox"] = createShaders("skybox.v.glsl","skybox.f.glsl");
 	make_resources();
 }
 

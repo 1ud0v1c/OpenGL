@@ -7,6 +7,7 @@
 #include "level.h"
 #include "gameObject.h"
 #include "hud.h"
+#include "skybox.h"
 
 class Scene {
 	public:
@@ -28,6 +29,7 @@ class Scene {
 		std::map<std::string,GLuint> timeID;
 		std::map<std::string,GLuint> programms;
 		Level level;
+		Skybox skybox;
 		//		GamePlayer* getPlayer();
 };
 

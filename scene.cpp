@@ -16,12 +16,13 @@ void Scene::init(std::map<std::string,GLuint> programms) {
      level = Level(programms);
      level.init();
      hud = HUD(programms);
-     hud.init(level);
-    ///	light = Light(programms["minimal"]);
+	 hud.init(level);
+	 skybox = Skybox(programms["skybox"], "sky-top.tga", "sky-bot.tga", "sky-left.tga", "sky-right.tga", "sky-front.tga", "sky-back.tga");
+	 skybox.init();
+	 ///	light = Light(programms["minimal"]);
 }
 
 void Scene::update(float time,GLFWwindow *window, float dt) {
-
 	level.update(time,window,dt);
 	Camera camera = level.getCamera();
 	glm::mat4 proj = camera.getProjection();
@@ -39,16 +40,17 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 }
 
 void Scene::setType(GLuint type) {
-     level.setType(type);
+	level.setType(type);
 }
 
 void Scene::draw() {
-     level.draw();
-     hud.draw();
+	level.draw();
+	hud.draw();
+	skybox.draw();
 }
 
 void Scene::makeObject() {
-     level.makeObject();
+	level.makeObject();
 }
 
 Scene::~Scene() {
