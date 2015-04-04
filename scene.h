@@ -8,6 +8,7 @@
 #include "gameObject.h"
 #include "hud.h"
 #include "skybox.h"
+#include "player.h"
 #include <irrKlang.h>
 using namespace irrklang;
 
@@ -21,6 +22,8 @@ class Scene {
 		void setType(GLuint type);
 		void init(std::map<std::string,GLuint> programms, ISoundEngine *soundEngine);
 		void update(float time,GLFWwindow *window, float dt);
+		bool isOver();
+	
 	private:
 		Camera camera;
 		HUD hud;

@@ -4,6 +4,7 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
 	lives = 3;
 	score = 0;
 	speed = 3.0f;
+	invicibleTime = 0;
 	this->programms = programms;
 
 	std::vector<glm::vec3> offsetVect;
@@ -82,7 +83,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
-		dy = 10;
+		dy = 5;
 	}
 
 	dy -= gravity*dt;
@@ -93,13 +94,29 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 		isJumping = false;
 	}
 
+	if(invicibleTime < 1 && isInvicible==true) {
+		invicibleTime += dt;
+	}else {
+		isInvicible = false;
+		invicibleTime = 0;
+	}
+	
+
 	for(auto object : objects) {
 		if(object->getName()!="road") {
 			if(playerObject->isColliding(object)) {
 				std::cout << object->getName() << " touch" <<std::endl;
+				if(object->getName() == "wall" && isInvicible==false){
+					lives -= 1;
+					isInvicible = true;
+				}else if(object->getName() == "bonusLife"){
+					lives += 1;
+				}else if(object->getName() == "bonusScore"){
+					score += 250.0;
+				}else if(object->getName() == "bonusSpeed"){
+					speed += 1.0f;
+				}
 			} else {
-
-				std::cout << "do not touch " << std::endl;
 			}
 		}
 	}
@@ -108,6 +125,10 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 int Player::getLives(){
 	return lives;
+}
+
+double Player::getScore(){
+	return score;
 }
 
 void Player::modifyLives(int value){

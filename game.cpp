@@ -1,6 +1,7 @@
 #include "game.h"
 #include "utils.h"
 #include "gameSphere.h"
+#include "player.h"
 
 using namespace irrklang;
 using namespace std;
@@ -65,12 +66,13 @@ void Game::run() {
 	scene = Scene();
 	scene.init(programms, soundEngine);
 	scene.makeObject();
+
 	float dt = 1/60.0f;
 	float time = 0;
 	float time2 = 0;
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	bool pressL=false;
-	while(!(glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS)) {
+	while(!(glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS) ) {
 		glUseProgram(programm);
 		if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && pressL == false){
 			if(type == GL_TRIANGLES) type = GL_LINES;
@@ -84,6 +86,7 @@ void Game::run() {
 		time=0;
 		time2+=0.01;
 		scene.update(time2,window,dt);
+		if(scene.isOver()) break;
 		glfwPollEvents();
 		renderFrame();
 	}

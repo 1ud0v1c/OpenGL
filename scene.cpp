@@ -41,6 +41,16 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 	glUniform1f(timeID["minimal"],time);
 	hud.update(level, dt);
 	skybox.update(level.getPlayer()->getPos());
+
+}
+
+bool Scene::isOver() {
+	std::cout << level.getPlayer()->getLives() << std::endl;
+	if(level.getPlayer()->getLives()<=0) {
+		std::cout << "Game Over " << std::endl;
+			return true;
+	}
+	else return false;
 }
 
 void Scene::setType(GLuint type) {
@@ -56,6 +66,7 @@ void Scene::draw() {
 void Scene::makeObject() {
 	level.makeObject();
 }
+
 
 Scene::~Scene() {
 

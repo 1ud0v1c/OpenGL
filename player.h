@@ -17,18 +17,20 @@ class Player {
 	public:
 		Player(float gravity,std::map<std::string , GLuint> programms);
 		~Player();
-		int getLives();
 		void modifyLives(int value);
 		void modifyScore(double value);
 		void changePos(double x, double y, double z);
-		glm::vec3 getPos();
 		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects );
-		glm::vec3 getUp();
-		glm::vec3 getDir();
 		void init();
 		void movePlayer();
 		void draw();
 		glm::vec3 getOffset();
+		glm::vec3 getPos();
+		int getLives();
+		double getScore();
+		glm::vec3 getUp();
+		glm::vec3 getDir();
+
 
 	private:
 		int lives;
@@ -40,7 +42,8 @@ class Player {
 		float gravity;
 		GameObject *playerObject;
 		std::map<std::string , GLuint> programms;
-
+		float invicibleTime;
+		bool isInvicible = false;
 		float horizontalAngle = 3.14f;
 		float verticalAngle = 0.0f;
 		float initialFoV = 45.0f;

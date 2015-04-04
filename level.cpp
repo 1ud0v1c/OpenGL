@@ -115,7 +115,7 @@ std::vector<GameObject*> Level::getObjects() {
 }
 
 void Level::update(float time,GLFWwindow *window, float dt) {
-	player->update(time,window,dt, objects);
+	player->update(time,window,dt, partLevel[currentPart]);
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
 
 }
