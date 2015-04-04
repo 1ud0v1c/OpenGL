@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "gameObject.h"
 
-GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm::vec3> &offset, const std::string &textureName, bool isDynamic) {
+GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm::vec3> &offset, const std::string &textureName, bool isDynamic, float angle) {
 	_name = name;
 	radius = 0;
 	this->programm = programm;
@@ -9,6 +9,7 @@ GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm:
 	this->offset = offset;
 	this->textureName = textureName;
 	this->isDynamic = isDynamic;
+	this->angle = angle;
 
 
 }
@@ -32,12 +33,22 @@ GLuint GameObject::getProgramm() {
 	return programm;
 }
 
+
+void GameObject::rotate(float angle, glm::vec3 axis) {
+	for(auto &point : points) {
+		point = glm::rotate(point,angle, axis);
+	}
+}
+
 void GameObject::makeObject() {
 	if(textureName.size() >2) {
 		textureID = glGetUniformLocation(programm, "colormap");
 		texture = loadTGATexture(textureName);
 	}
 
+	points = mesh.getPositions();
+	if(this->angle!=0)
+		rotate(this->angle,glm::vec3(0,1,0));
 
 	GLuint positionBuffer;
 	GLuint indexBuffer;
@@ -54,7 +65,7 @@ void GameObject::makeObject() {
 
 	glGenBuffers(1, &positionBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
-	glBufferData(GL_ARRAY_BUFFER, mesh.getPositions().size() * sizeof(glm::vec3), mesh.getPositions().data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(glm::vec3), points.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &colorBuffer);
@@ -164,8 +175,8 @@ bool GameObject::is_Dynamic() {
 }
 
 std::vector<glm::vec3> GameObject::initCenter(){
-	
-		std::vector<glm::vec3> centers;
+
+	std::vector<glm::vec3> centers;
 	glm::vec3 min;
 	glm::vec3 max;
 	std::vector<glm::vec3> positions = mesh.getPositions();
@@ -176,8 +187,8 @@ std::vector<glm::vec3> GameObject::initCenter(){
 	}
 	if( isDynamic){
 		glm::vec3 c =glm::vec3( (min.x+max.x)/2+position.x+offset[0].x,
-								(min.y+max.y)/2+position.y+offset[0].y, 
-								(min.z+max.z)/2+position.z+offset[0].z); 
+				  (min.y+max.y)/2+position.y+offset[0].y, 
+				  (min.z+max.z)/2+position.z+offset[0].z); 
 		centers.push_back(c);
 		return centers;
 	}

@@ -14,6 +14,7 @@ void Mesh::addIbos(unsigned int pos, unsigned int pos2, unsigned int pos3) {
 	ibos.push_back(pos3);
 }
 
+
 std::vector<unsigned int> Mesh::getIbos() {
 	return ibos;
 }

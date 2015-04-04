@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <sstream>
 #include "utils.h"
 #include "mesh.h"
@@ -17,7 +18,7 @@
 class GameObject {
 
 	public:
-		GameObject(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const std::string &textureName="",bool isDynamiv=false);
+		GameObject(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const std::string &textureName="",bool isDynamiv=false,float angle=0);
 		~GameObject();
 		virtual void draw();
 		virtual void makeObject();
@@ -29,6 +30,7 @@ class GameObject {
 		std::string getName();
 
 		std::vector<glm::vec3>  initCenter();
+		void rotate(float angle, glm::vec3 axis);
 		double getRadius();
 		bool isColliding(GameObject* go);
 		bool loadOBJ(const std::string  &path);
@@ -41,6 +43,7 @@ class GameObject {
 		std::string _name;
 		Mesh mesh;
 		std::vector<glm::vec3> offset;
+		std::vector<glm::vec3> points;
 		std::string textureName;
 		GLuint type;
 		GLuint texture;
@@ -48,5 +51,6 @@ class GameObject {
 		double radius;
 		glm::vec3 position;
 		bool isDynamic;
+		float angle;
 };
 #endif

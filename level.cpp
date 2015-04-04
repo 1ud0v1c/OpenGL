@@ -3,6 +3,7 @@
 
 Level::Level(std::map<std::string,GLuint> programms) {
 	this->programms = programms;
+	currentPart = 0;
 }
 
 Level::Level() {
@@ -24,26 +25,25 @@ void Level::loadLevel(const std::string path) {
 
 }
 
-void Level::init() {
-	currentLevel = 0;
-	gravity = 9.81f;
-	std::vector<glm::vec3> offsetRoad;
-	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,0.0f));
-	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,4.4f));
-	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,8.8f));
+void Level::nextPart() {
+	currentPart++;
 
 	std::vector<glm::vec3> offset;
-	offset.push_back(glm::vec3(0.0f,-1.0f,0.0f));
-	offset.push_back(glm::vec3(0.0f,-1.0f,4.4f));
-//	offset.push_back(glm::vec3(0.0f,-1.0f,8.8f));
+	std::vector<glm::vec3> offsetRoad;
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,currentPart*178.0f));
+	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,currentPart*178.0f));
+	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,currentPart*178.0f));
 
-	loadLevel("./level/level0.txt");
+	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
+	road->loadOBJ("road.obj");
+	addObject(road);
 
-/*	int j = 0;
+
+	int j = 0;
 	int i=0;
 	for(auto pos : tabLevel) {
 		if(pos==1) {
-			offset.push_back(glm::vec3(-178.0f/2 + j*178/15,-1.0f,4.4f*i));
+			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-178.0f/2 + j*178/15+178*currentPart));
 		}
 		j++;
 
@@ -51,15 +51,49 @@ void Level::init() {
 			i++;
 			j=0;
 		}
-	}*/
+	}
+
+	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
+	wall->loadOBJ("wall.obj");
+	addObject(wall);
+}
+
+void Level::init() {
+	currentLevel = 0;
+	gravity = 9.81f;
+	std::vector<glm::vec3> offsetRoad;
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,0.0f));
+	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,0.0f));
+	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,0.0f));
+
+	std::vector<glm::vec3> offset;
+	offset.push_back(glm::vec3(0.0f,-1.0f,0.0f));
+	offset.push_back(glm::vec3(4.4f,-1.0f,0.0f));
+	//	offset.push_back(glm::vec3(0.0f,-1.0f,8.8f));
+
+	loadLevel("./level/level0.txt");
+
+	int j = 0;
+	int i=0;
+	for(auto pos : tabLevel) {
+		if(pos==1) {
+			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-178.0f/2 + j*178/15));
+		}
+		j++;
+
+		if(j==column) {
+			i++;
+			j=0;
+		}
+	}
 
 	player = new Player(gravity,programms);
 	player->init();
-	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga");
+	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
 	wall->loadOBJ("wall.obj");
 	addObject(wall);
 
-	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga");
+	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
 	road->loadOBJ("road.obj");
 	addObject(road);
 
@@ -67,7 +101,7 @@ void Level::init() {
 }
 
 void Level::addObject(GameObject *object)  {
-	objects.push_back(object);
+	partLevel[currentPart].push_back(object);
 }
 
 std::vector<GameObject*> Level::getObjects() {
@@ -77,17 +111,18 @@ std::vector<GameObject*> Level::getObjects() {
 void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, objects);
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
+
 }
 
 void Level::setType(GLuint type) {
-	for(auto o : objects) {
+	for(auto o : partLevel[currentPart]) {
 		o->setType(type);
 	}
 }
 
 
 void Level::makeObject() {
-	for(auto o : objects) {
+	for(auto o : partLevel[currentPart]) {
 		o->makeObject();
 	}
 }
@@ -96,7 +131,7 @@ void Level::draw() {
 	glUseProgram(programms["minimal"]);
 	//	light.draw();
 	glUseProgram(0);
-	for(auto o : objects) {
+	for(auto o : partLevel[currentPart]) {
 		glUseProgram(o->getProgramm());
 		o->draw();
 		glUseProgram(0);

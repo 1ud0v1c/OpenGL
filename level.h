@@ -9,6 +9,7 @@
 #include "gameCube.h"
 #include <iostream>
 #include <vector>
+#include <array>
 
 class Level {
 	public:
@@ -23,15 +24,18 @@ class Level {
 		std::vector<GameObject*> getObjects();
 		Camera getCamera();
 		Player* getPlayer();
-void loadLevel(const std::string path);
+		void loadLevel(const std::string path);
+		void nextPart();
 
 	private:
 		std::map<std::string,GLuint> programms;
 		std::vector<GameObject*> objects;
+		std::array < std::vector<GameObject*>,3 > partLevel;
 		Player* player;
 		Camera camera;
 		float gravity;
 		int currentLevel;
+		int currentPart;
 		int line,column;
 		std::vector<int> tabLevel;
 };
