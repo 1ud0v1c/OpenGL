@@ -3,6 +3,7 @@
 
 GameSphere::GameSphere(const std::string &name, GLuint &programm,double R,glm::vec3 color,std::vector<glm::vec3> &offset,const std::string t) : GameObject(name,programm,offset,t) {
 	this->R = R;
+	radius = R;
 	this->colorValue = color;
 }
 

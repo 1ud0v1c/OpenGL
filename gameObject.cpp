@@ -2,15 +2,16 @@
 #include "gameObject.h"
 
 GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm::vec3> &offset, const std::string &textureName) {
-     _name = name;
-     this->programm = programm;
-     type = GL_TRIANGLES;
-     this->offset = offset;
-	 this->textureName = textureName;
+	_name = name;
+	radius = 0;
+	this->programm = programm;
+	type = GL_TRIANGLES;
+	this->offset = offset;
+	this->textureName = textureName;
 }
 
 void GameObject::setUnit(int unit) {
-     this->unit = unit;
+	this->unit = unit;
 }
 
 
@@ -20,12 +21,12 @@ void  GameObject::moveObject(glm::vec3 position) {
 	GLuint positionBuffer;
 	GLuint loc =glGetUniformLocation(programm, "moveOffset");
 	glUniform3f(loc,position[0],position[1],position[2]);
-
+	offset.push_back(position);
 	glUseProgram(0);
 }
 
 GLuint GameObject::getProgramm() {
-     return programm;
+	return programm;
 }
 
 void GameObject::makeObject() {
@@ -137,12 +138,15 @@ bool GameObject::isColliding(GameObject* go){
 
 	int other_radius = go->getRadius();
 	glm::vec3 other_center = go->getCenter();
-	glm::vec3 other_hitbox(other_radius-other_center.x, other_radius+other_center.y, other_radius-other_center.z);
+	glm::vec3 other_hitbox(other_radius+other_center.x, other_radius+other_center.y, other_radius+other_center.z);
 
 	if (hitbox.x  >= other_hitbox.x){
 		return true;
 	}
 	if (hitbox.z >= other_hitbox.z){
+		return true;
+	}
+	if (hitbox.y >= other_hitbox.y){
 		return true;
 	}
 	return false;
@@ -154,10 +158,17 @@ glm::vec3 GameObject::getCenter(){
 	std::vector<glm::vec3> positions = mesh.getPositions();
 	min = getMinPosition(positions);
 	max = getMaxPosition(positions);
-	return glm::vec3( (min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2); 
+	if(radius ==0){
+		radius = (max.x+max.y+max.z+min.x+min.y+min.z)/2;
+	}
+	if( _name == "sphere"){
+		return glm::vec3( (min.x+max.x+offset.back().x)/2, (min.y+max.y+offset.back().y)/2, (min.z+max.z+offset.back().z)/2); 
+	}else{
+		return glm::vec3( (min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2); 
+	}
 }
 
-int GameObject::getRadius(){
+double GameObject::getRadius(){
 	return radius;
 }
 

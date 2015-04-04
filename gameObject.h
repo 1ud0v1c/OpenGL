@@ -29,7 +29,7 @@ class GameObject {
 		std::string getName();
 
 		glm::vec3 getCenter();
-		int getRadius();
+		double getRadius();
 		bool isColliding(GameObject* go);
 		bool loadOBJ(const std::string  &path);
 
@@ -44,6 +44,6 @@ class GameObject {
 		GLuint type;
 		GLuint texture;
 		GLuint textureID;
-		int radius;
+		double radius;
 };
 #endif
