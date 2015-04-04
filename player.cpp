@@ -97,8 +97,16 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 		if(object->getName()!="road") {
 			if(playerObject->isColliding(object)) {
 				std::cout << object->getName() << " touch" <<std::endl;
+				if(object->getName() == "wall"){
+					lives -= 1;
+				}else if(object->getName() == "bonusLife"){
+					lives += 1;
+				}else if(object->getName() == "bonusScore"){
+					score += 250.0;
+				}else if(object->getName() == "bonusSpeed"){
+					speed += 1.0f;
+				}
 			} else {
-
 				std::cout << "do not touch " << std::endl;
 			}
 		}
@@ -108,6 +116,10 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 int Player::getLives(){
 	return lives;
+}
+
+double Player::getScore(){
+	return score;
 }
 
 void Player::modifyLives(int value){

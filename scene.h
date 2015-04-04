@@ -19,6 +19,7 @@ class Scene {
 		void setType(GLuint type);
 		void init(std::map<std::string,GLuint> programms);
 		void update(float time,GLFWwindow *window, float dt);
+		Player* getPlayer();
 	private:
 		Camera camera;
 		HUD hud;

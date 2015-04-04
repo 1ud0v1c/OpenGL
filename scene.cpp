@@ -56,6 +56,10 @@ void Scene::makeObject() {
 	level.makeObject();
 }
 
+Player* Scene::getPlayer(){
+	return level.getPlayer();
+}
+
 Scene::~Scene() {
 
 }
