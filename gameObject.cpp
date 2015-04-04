@@ -32,7 +32,6 @@ void GameObject::makeObject() {
 	if(textureName.size() >2) {
 		textureID = glGetUniformLocation(programm, "colormap");
 		texture = loadTGATexture(textureName);
-		std::cout << textureName << std::endl;
 	}
 
 	GLuint positionBuffer;
@@ -42,7 +41,6 @@ void GameObject::makeObject() {
 	GLuint textureBuffer;
 	GLuint instanceVBO;
 
-	std::cout << offset[0][0] << std::endl;
 
 	glGenBuffers(1, &instanceVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);

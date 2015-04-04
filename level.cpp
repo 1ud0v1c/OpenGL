@@ -8,26 +8,47 @@ Level::Level() {
 
 }
 
-void loadLevel() {
+void Level::loadLevel(const std::string path) {
+	std::ifstream data_input; 
+	data_input.open(path);
+	double d;
+
+	std::vector<double> v;
+	data_input >> line;
+	data_input >> column;
+	while (data_input >> d) { 
+		tabLevel.push_back(d); 
+	} 
+
 
 }
 
 void Level::init() {
 	currentLevel = 0;
 	gravity = 9.81f;
+	std::vector<glm::vec3> offsetRoad;
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,0.0f));
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,4.4f));
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,8.8f));
+
 	std::vector<glm::vec3> offset;
-	offset.push_back(glm::vec3(0.0f,-2.0f,0.0f));
-	offset.push_back(glm::vec3(0.0f,-2.0f,4.4f));
-	offset.push_back(glm::vec3(0.0f,-2.0f,8.8f));
+	offset.push_back(glm::vec3(0.0f,-1.0f,0.0f));
+	offset.push_back(glm::vec3(0.0f,-1.0f,4.4f));
+	offset.push_back(glm::vec3(0.0f,-1.0f,8.8f));
 
 	player = new Player(gravity,programms);
 	player->init();
-	//	 addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
-		GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga");
-		wall->loadOBJ("wall.obj");
-		addObject(wall);
 
-	GameObject *road = new GameObject("road",programms["minimal"], offset,"roat_texture_256.tga");
+
+	loadLevel("./level/level0.txt");
+
+
+	//	 addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
+	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga");
+	wall->loadOBJ("wall.obj");
+	addObject(wall);
+
+	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga");
 	road->loadOBJ("road.obj");
 	addObject(road);
 
