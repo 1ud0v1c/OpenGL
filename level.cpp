@@ -36,11 +36,26 @@ void Level::init() {
 	offset.push_back(glm::vec3(0.0f,-1.0f,4.4f));
 	offset.push_back(glm::vec3(0.0f,-1.0f,8.8f));
 
+	loadLevel("./level/level0.txt");
+
+	int j = 0;
+	int i=0;
+	for(auto pos : tabLevel) {
+		if(pos==1) {
+			offset.push_back(glm::vec3(-178.0f/2 + j*178/15,-1.0f,4.4f*i));
+		}
+		j++;
+
+		if(j==column) {
+			i++;
+			j=0;
+		}
+	}
+
 	player = new Player(gravity,programms);
 	player->init();
 
 
-	loadLevel("./level/level0.txt");
 
 
 	//	 addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
