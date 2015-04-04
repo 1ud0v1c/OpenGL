@@ -17,7 +17,7 @@
 class GameObject {
 
 	public:
-		GameObject(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const std::string &textureName="");
+		GameObject(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const std::string &textureName="",bool isDynamiv=false);
 		~GameObject();
 		virtual void draw();
 		virtual void makeObject();
@@ -28,10 +28,11 @@ class GameObject {
 		GLuint getProgramm();
 		std::string getName();
 
-		glm::vec3 getCenter();
-		int getRadius();
+		std::vector<glm::vec3>  initCenter();
+		double getRadius();
 		bool isColliding(GameObject* go);
 		bool loadOBJ(const std::string  &path);
+		bool is_Dynamic();
 
 	protected:
 		int unit=0;
@@ -44,6 +45,8 @@ class GameObject {
 		GLuint type;
 		GLuint texture;
 		GLuint textureID;
-		int radius;
+		double radius;
+		glm::vec3 position;
+		bool isDynamic;
 };
 #endif

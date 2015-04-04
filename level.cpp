@@ -1,3 +1,4 @@
+#include <iostream>
 #include "level.h"
 
 Level::Level(std::map<std::string,GLuint> programms) {
@@ -34,11 +35,11 @@ void Level::init() {
 	std::vector<glm::vec3> offset;
 	offset.push_back(glm::vec3(0.0f,-1.0f,0.0f));
 	offset.push_back(glm::vec3(0.0f,-1.0f,4.4f));
-	offset.push_back(glm::vec3(0.0f,-1.0f,8.8f));
+//	offset.push_back(glm::vec3(0.0f,-1.0f,8.8f));
 
 	loadLevel("./level/level0.txt");
 
-	int j = 0;
+/*	int j = 0;
 	int i=0;
 	for(auto pos : tabLevel) {
 		if(pos==1) {
@@ -50,15 +51,10 @@ void Level::init() {
 			i++;
 			j=0;
 		}
-	}
+	}*/
 
 	player = new Player(gravity,programms);
 	player->init();
-
-
-
-
-	//	 addObject(new GameSphere("sphere",programms["minimal"],0.25,glm::vec3(1,1,1),offset,"checkerboard.tga"));
 	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga");
 	wall->loadOBJ("wall.obj");
 	addObject(wall);

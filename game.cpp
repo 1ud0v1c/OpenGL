@@ -27,7 +27,7 @@ void Game::initGLFW() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	// Create a window of given size
-	window = glfwCreateWindow(width, height,"Minimal OpenGL application with GLFW", NULL, NULL);
+	window = glfwCreateWindow(width, 600,"Minimal OpenGL application with GLFW", NULL, NULL);
 	if (!window) {
 		std::cerr<<"Could not open a window"<<std::endl;
 		shutDown(1);

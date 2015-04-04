@@ -10,7 +10,7 @@ class GameCube : public GameObject {
 	public:
 		void draw();
 		void makeObject();
-		GameCube(const std::string name,GLuint programm,std::vector<glm::vec3> offset,const std::string &nameTexture, int width, int height );
+		GameCube(const std::string name,GLuint programm,std::vector<glm::vec3> offset,const std::string &nameTexture, int width, int height, bool isDynamic=false );
 
 	private:
 		int width;

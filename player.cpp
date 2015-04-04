@@ -7,8 +7,8 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
 	this->programms = programms;
 
 	std::vector<glm::vec3> offsetVect;
-	offsetVect.push_back(glm::vec3(-178.0f/2,-1.0f,4.4f));
-	playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offsetVect,"checkerboard.tga");
+	offsetVect.push_back(glm::vec3(0.0f,0.0f,0.0f));
+	playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offsetVect,"checkerboard.tga",true);
 	this->gravity = gravity;
 	direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
 	this->offset = offsetVect[0];
@@ -91,6 +91,17 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	if(position.y <0) {
 		position.y = 0;
 		isJumping = false;
+	}
+
+	for(auto object : objects) {
+		if(object->getName()!="road") {
+			if(playerObject->isColliding(object)) {
+			//	std::cout << object->getName() << " touch" <<std::endl;
+			} else {
+
+			//	std::cout << "do not touch " << std::endl;
+			}
+		}
 	}
 	movePlayer();
 }

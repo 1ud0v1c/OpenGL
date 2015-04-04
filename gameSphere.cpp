@@ -1,8 +1,9 @@
 #include "gameSphere.h"
 #include <iostream>
 
-GameSphere::GameSphere(const std::string &name, GLuint &programm,double R,glm::vec3 color,std::vector<glm::vec3> &offset,const std::string t) : GameObject(name,programm,offset,t) {
+GameSphere::GameSphere(const std::string &name, GLuint &programm,double R,glm::vec3 color,std::vector<glm::vec3> &offset,const std::string t, bool isDynamic) : GameObject(name,programm,offset,t, isDynamic) {
 	this->R = R;
+	radius = R;
 	this->colorValue = color;
 }
 

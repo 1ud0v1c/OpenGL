@@ -1,16 +1,20 @@
 #include <algorithm>
 #include "gameObject.h"
 
-GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm::vec3> &offset, const std::string &textureName) {
-     _name = name;
-     this->programm = programm;
-     type = GL_TRIANGLES;
-     this->offset = offset;
-	 this->textureName = textureName;
+GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm::vec3> &offset, const std::string &textureName, bool isDynamic) {
+	_name = name;
+	radius = 0;
+	this->programm = programm;
+	type = GL_TRIANGLES;
+	this->offset = offset;
+	this->textureName = textureName;
+	this->isDynamic = isDynamic;
+
+
 }
 
 void GameObject::setUnit(int unit) {
-     this->unit = unit;
+	this->unit = unit;
 }
 
 
@@ -20,12 +24,12 @@ void  GameObject::moveObject(glm::vec3 position) {
 	GLuint positionBuffer;
 	GLuint loc =glGetUniformLocation(programm, "moveOffset");
 	glUniform3f(loc,position[0],position[1],position[2]);
-
+	this->position = position;
 	glUseProgram(0);
 }
 
 GLuint GameObject::getProgramm() {
-     return programm;
+	return programm;
 }
 
 void GameObject::makeObject() {
@@ -33,6 +37,7 @@ void GameObject::makeObject() {
 		textureID = glGetUniformLocation(programm, "colormap");
 		texture = loadTGATexture(textureName);
 	}
+
 
 	GLuint positionBuffer;
 	GLuint indexBuffer;
@@ -130,32 +135,61 @@ void GameObject::draw() {
 }
 
 bool GameObject::isColliding(GameObject* go){
-	glm::vec3 center = getCenter();
-	glm::vec3 hitbox(radius+center.x, radius+center.y, radius+center.z);
+	std::vector<glm::vec3> centers = this->initCenter();
+	std::vector<glm::vec3> other_centers =go->initCenter();
 
 	int other_radius = go->getRadius();
-	glm::vec3 other_center = go->getCenter();
-	glm::vec3 other_hitbox(other_radius-other_center.x, other_radius+other_center.y, other_radius-other_center.z);
 
-	if (hitbox.x  >= other_hitbox.x){
-		return true;
-	}
-	if (hitbox.z >= other_hitbox.z){
-		return true;
+	for(auto center : centers) {
+		for(auto other_center :other_centers) {
+
+			if(glm::abs(center.x - other_center.x) < radius + other_radius)
+			{
+				if(glm::abs(center.y - other_center.y) < radius + other_radius)
+				{
+					if(glm::abs(center.z - other_center.z) < radius + other_radius)
+					{
+						return true;
+					}
+				}
+			}
+		}
 	}
 	return false;
 }
 
-glm::vec3 GameObject::getCenter(){
+
+bool GameObject::is_Dynamic() {
+	return this->isDynamic;
+}
+
+std::vector<glm::vec3> GameObject::initCenter(){
+	
+		std::vector<glm::vec3> centers;
 	glm::vec3 min;
 	glm::vec3 max;
 	std::vector<glm::vec3> positions = mesh.getPositions();
 	min = getMinPosition(positions);
 	max = getMaxPosition(positions);
-	return glm::vec3( (min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2); 
+	if(radius ==0){
+		radius = glm::abs((max.x+max.y+max.z+min.x+min.y+min.z))/2;
+	}
+	if( isDynamic){
+		glm::vec3 c =glm::vec3( (min.x+max.x)/2+position.x+offset[0].x,
+								(min.y+max.y)/2+position.y+offset[0].y, 
+								(min.z+max.z)/2+position.z+offset[0].z); 
+		centers.push_back(c);
+		return centers;
+	}
+	else{
+		for(auto off : offset) {
+			centers.push_back(glm::vec3( (min.x+max.x)/2+off.x, (min.y+max.y)/2+off.y, (min.z+max.z)/2 + off.z)); 
+		}
+		return centers;
+	}
 }
 
-int GameObject::getRadius(){
+double GameObject::getRadius(){
 	return radius;
 }
 
