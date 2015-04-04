@@ -1,15 +1,17 @@
 cmake_minimum_required(VERSION 2.6)
-
+cmake_policy(SET CMP0015 NEW)
 project(TP0)
 
 ###  Settings  ###{{{
-set(CMAKE_CXX_FLAGS "-std=c++0x -DGL_GLEXT_PROTOTYPES -I/opt/X11/include") # Don't forget to define GL_GLEXT_PROTOTYPES to ensure that the glCreateShader and other prototypes are declared. Note we could do it in the main file via "#define GL_GLEXT_PROTOTYPES" before "#include <GL/glext.h>"
+set(CMAKE_CXX_FLAGS "-std=c++0x -DGL_GLEXT_PROTOTYPES -I/opt/X11/include ") # Don't forget to define GL_GLEXT_PROTOTYPES to ensure that the glCreateShader and other prototypes are declared. Note we could do it in the main file via "#define GL_GLEXT_PROTOTYPES" before "#include <GL/glext.h>"
 ## setting build type to debug
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_BUILD_TYPE DEBUG)
 LINK_DIRECTORIES("~/local_install/lib")
 LINK_DIRECTORIES("/usr/local/lib")
+FIND_LIBRARY(IRRKLANG_LIB NAMES libIrrKlang.so ikpMP3.so ikpFlac.so PATHS "./lib")
 INCLUDE_DIRECTORIES("/usr/local/include")
+INCLUDE_DIRECTORIES("irrklang")
 INCLUDE_DIRECTORIES("~/local_install/include")
 INCLUDE_DIRECTORIES("./3rd-parties/")
 ###  Settings  ###}}}
@@ -46,7 +48,7 @@ link_directories(${ASSIMP_LIBRARY_DIRS})
 ###  The executable  ###{{{
 add_executable(glfwMinimal glfwMinimal.cpp utils.cpp camera.cpp vertex.cpp mesh.cpp game.cpp scene.cpp gameObject.cpp gameSphere.cpp timer.cpp player.cpp gameText.cpp hud.cpp level.cpp gameCube.cpp skybox.cpp box.cpp)
 target_link_libraries(glfwMinimal ${GL_LIBRARIES}  ${GLFW3_STATIC_LIBRARIES} ${APPLE_FRAMEWORKS}) # this is to save an image (for screenshots)
-target_link_libraries(glfwMinimal ${GL_LIBRARIES}  ${GLFW3_STATIC_LIBRARIES}) # this is to save an image (for screenshots)
+target_link_libraries(glfwMinimal ${GL_LIBRARIES}  ${GLFW3_STATIC_LIBRARIES} ${IRRKLANG_LIB}) # this is to save an image (for screenshots)
 ###  The executable  ###}}}
 
 
@@ -69,7 +71,8 @@ copy_files("resources/*.tga" ${CMAKE_BINARY_DIR})
 copy_files("resources/*.obj" ${CMAKE_BINARY_DIR})
 copy_files("resources/*.glsl" ${CMAKE_BINARY_DIR})
 copy_files("resources/*.DDS" ${CMAKE_BINARY_DIR})
+copy_files("resources/*.mp3" ${CMAKE_BINARY_DIR})
+copy_files("resources/*.ogg" ${CMAKE_BINARY_DIR})
 copy_files("resources/level/*.txt" ${CMAKE_BINARY_DIR})
-
 ###  Copying resources (shaders, images,...)  ###}}}
 

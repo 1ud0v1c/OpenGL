@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "gameSphere.h"
 
+using namespace irrklang;
 using namespace std;
 
 Game::Game() {
@@ -46,6 +47,7 @@ void Game::initGLEW() {
 }
 
 void Game::make_resources() {
+	soundEngine = createIrrKlangDevice();	
 }
 
 void Game::renderFrame() {
@@ -58,10 +60,11 @@ void Game::renderFrame() {
 }
 
 void Game::run() {
-	scene = Scene();
-	scene.init(programms);
-	scene.makeObject();
 
+    soundEngine->play2D("breakout.ogg",GL_TRUE);
+	scene = Scene();
+	scene.init(programms, soundEngine);
+	scene.makeObject();
 	float dt = 1/60.0f;
 	float time = 0;
 	float time2 = 0;

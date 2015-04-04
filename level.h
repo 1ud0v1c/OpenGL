@@ -10,6 +10,8 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <irrKlang.h>
+using namespace irrklang;
 
 class Level {
 	public:
@@ -36,6 +38,7 @@ class Level {
 		float gravity;
 		int currentLevel;
 		int currentPart;
+		int numberOfChange;
 		int line,column;
 		std::vector<int> tabLevel;
 };

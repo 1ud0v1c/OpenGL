@@ -8,6 +8,8 @@
 #include "gameObject.h"
 #include "hud.h"
 #include "skybox.h"
+#include <irrKlang.h>
+using namespace irrklang;
 
 class Scene {
 	public:
@@ -17,7 +19,7 @@ class Scene {
 		void draw();
 		void makeObject();
 		void setType(GLuint type);
-		void init(std::map<std::string,GLuint> programms);
+		void init(std::map<std::string,GLuint> programms, ISoundEngine *soundEngine);
 		void update(float time,GLFWwindow *window, float dt);
 	private:
 		Camera camera;
@@ -30,7 +32,8 @@ class Scene {
 		std::map<std::string,GLuint> programms;
 		Level level;
 		Skybox skybox;
-		//		GamePlayer* getPlayer();
+		ISoundEngine *soundEngine;
+
 };
 
 #endif

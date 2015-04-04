@@ -4,7 +4,8 @@ Scene::Scene() {
 
 }
 
-void Scene::init(std::map<std::string,GLuint> programms) {
+void Scene::init(std::map<std::string,GLuint> programms,ISoundEngine *soundEngine) {
+	this->soundEngine = soundEngine;
      this->programms = programms;
      for( auto programm : programms) {
 	  glUseProgram(programm.second);

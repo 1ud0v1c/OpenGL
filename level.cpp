@@ -4,6 +4,7 @@
 Level::Level(std::map<std::string,GLuint> programms) {
 	this->programms = programms;
 	currentPart = 0;
+	numberOfChange = 0;
 }
 
 Level::Level() {
@@ -27,12 +28,17 @@ void Level::loadLevel(const std::string path) {
 
 void Level::nextPart() {
 	currentPart++;
+	numberOfChange++;
+
+	if(currentPart==3) currentPart = 0;
+
+	partLevel[currentPart].clear();
 
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
-	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,currentPart*178.0f));
-	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,currentPart*178.0f));
-	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,currentPart*178.0f));
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,numberOfChange*178.0f));
+	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*178.0f));
+	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*178.0f));
 
 	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
 	road->loadOBJ("road.obj");
@@ -43,7 +49,7 @@ void Level::nextPart() {
 	int i=0;
 	for(auto pos : tabLevel) {
 		if(pos==1) {
-			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-178.0f/2 + j*178/15+178*currentPart));
+			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-178.0f/2 + j*178/15+178*numberOfChange));
 		}
 		j++;
 
