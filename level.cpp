@@ -77,9 +77,6 @@ void Level::init() {
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,0.0f));
 
 	std::vector<glm::vec3> offset;
-	offset.push_back(glm::vec3(0.0f,-1.0f,0.0f));
-	offset.push_back(glm::vec3(4.4f,-1.0f,0.0f));
-	//	offset.push_back(glm::vec3(0.0f,-1.0f,8.8f));
 
 	loadLevel("./level/level0.txt");
 
@@ -120,7 +117,7 @@ std::vector<GameObject*> Level::getObjects() {
 void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, partLevel[currentPart]);
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
-	if(player->getPos().z > numberOfChange*sizeRoad) {
+	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {
 		loadNextPart();
 	}
 }

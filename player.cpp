@@ -119,7 +119,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	for(auto object : objects) {
 		if(object->getName()!="road") {
 			if(playerObject->isColliding(object)) {
-			//	std::cout << object->getName() << " touch" <<std::endl;
+				std::cout << object->getName() << " touch" <<std::endl;
 				if(object->getName() == "wall" && isInvicible==false){
 					lives -= 1;
 					isInvicible = true;
