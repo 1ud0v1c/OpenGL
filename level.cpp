@@ -107,8 +107,6 @@ void Level::init() {
 	road->loadOBJ("road.obj");
 	addObject(road,currentPart);
 	loadNextPart();
-
-
 }
 
 void Level::addObject(GameObject *object,int part)  {
@@ -122,12 +120,12 @@ std::vector<GameObject*> Level::getObjects() {
 void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, partLevel[currentPart]);
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
-		if(player->getPos().z > numberOfChange*sizeRoad) {
-			loadNextPart();
-			std::cout << "change" <<std::endl;
-		}
+	if(player->getPos().z > numberOfChange*sizeRoad) {
+		loadNextPart();
+		std::cout << "change" <<std::endl;
+	}
 	//	std::cout << player->getPos().z << numberOfChange*sizeRoad << std::endl;
-//	std::cout << currentPart << std::endl;
+	//	std::cout << currentPart << std::endl;
 }
 
 void Level::setType(GLuint type) {

@@ -6,24 +6,24 @@ Scene::Scene() {
 
 void Scene::init(std::map<std::string,GLuint> programms,ISoundEngine *soundEngine) {
 	this->soundEngine = soundEngine;
-     this->programms = programms;
-     for( auto programm : programms) {
-	  glUseProgram(programm.second);
-	  transID[programm.first] = (glGetUniformLocation(programm.second, "trans"));
-	  viewID[programm.first] = (glGetUniformLocation(programm.second, "view"));
-	  projID[programm.first] = (glGetUniformLocation(programm.second, "proj"));
-	  timeID[programm.first] = (glGetUniformLocation(programm.second, "time"));
-     }
-     level = Level(programms);
-     level.init();
-     hud = HUD(programms);
-	 hud.init(level);
-	 skybox = Skybox(programms["skybox"], "star-top.tga", "star-bot.tga", "star-left.tga", "star-right.tga", "star-front.tga", "star-back.tga");
-	 skybox.init();
-	 ///	light = Light(programms["minimal"]);
+	this->programms = programms;
+	for( auto programm : programms) {
+		glUseProgram(programm.second);
+		transID[programm.first] = (glGetUniformLocation(programm.second, "trans"));
+		viewID[programm.first] = (glGetUniformLocation(programm.second, "view"));
+		projID[programm.first] = (glGetUniformLocation(programm.second, "proj"));
+		timeID[programm.first] = (glGetUniformLocation(programm.second, "time"));
+	}
+	level = Level(programms);
+	level.init();
+	hud = HUD(programms);
+	hud.init(level);
+	skybox = Skybox(programms["skybox"], "star-top.tga", "star-bot.tga", "star-left.tga", "star-right.tga", "star-front.tga", "star-back.tga");
+	skybox.init();
+//	Particles transmitter2(programms["particle"],new Particle(programms["particle"],100,glm::vec3(3,0,0),glm::vec3(1,0,1),10));
+//	addParticle(&transmitter2);
+	//	light = Light(programms["minimal"]);
 }
-
-
 
 void Scene::update(float time,GLFWwindow *window, float dt) {
 	level.update(time,window,dt);
@@ -41,13 +41,14 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 	glUniform1f(timeID["minimal"],time);
 	hud.update(level, dt);
 	skybox.update(level.getPlayer()->getPos());
-
+	for (Particles* particles : particlesTransmitter){
+		particles->update(dt);
+	}
 }
 
 bool Scene::isOver() {
 	if(level.getPlayer()->getLives()<=0) {
-		std::cout << "Game Over " << std::endl;
-			return true;
+		return true;
 	}
 	else return false;
 }
@@ -60,12 +61,22 @@ void Scene::draw() {
 	level.draw();
 	hud.draw();
 	skybox.draw();
+	for (Particles* particles : particlesTransmitter){
+		particles->draw();
+	}
 }
 
 void Scene::makeObject() {
 	level.makeObject();
+	for(Particles* particles : particlesTransmitter){
+		particles->make();
+	}
 }
 
+
+void Scene::addParticle(Particles* particles){
+	particlesTransmitter.push_back(particles);
+}
 
 Scene::~Scene() {
 

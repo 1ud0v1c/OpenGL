@@ -1,4 +1,5 @@
 #include "particle.h"
+
 Particle::Particle(GLuint programm,unsigned int maxParticles, glm::vec3 pos, glm::vec3 color, int cycle) {
 	this->maxParticles = maxParticles;
 	this->pos = pos;
@@ -8,6 +9,7 @@ Particle::Particle(GLuint programm,unsigned int maxParticles, glm::vec3 pos, glm
 	glUseProgram(programm);
 	timeID = (glGetUniformLocation(programm, "time"));
 }
+
 Particle::Particle(Particle *p) {
 	maxParticles = p->maxParticles;
 	pos = p->pos;
@@ -15,9 +17,11 @@ Particle::Particle(Particle *p) {
 	programm = p->programm;
 	cycle = p->cycle;
 }
+
 int Particle::getCycle() {
 	return cycle;
 }
+
 glm::vec3 Particle::sphereDirection(double theta, double phi) {
 	float x,y,z;
 	x = glm::cos(theta)*glm::cos(phi);
@@ -25,6 +29,7 @@ glm::vec3 Particle::sphereDirection(double theta, double phi) {
 	z = glm::sin(phi);
 	return glm::vec3(x,y,z);
 }
+
 void Particle::makeObject() {
 	const GLfloat g_vertex_buffer_data[] = {
 		-0.5f, -0.5f, 0.0f,
@@ -117,12 +122,14 @@ void Particle::makeObject() {
 	glVertexAttribDivisor(4, 1);
 	glBindVertexArray(0);
 }
+
 void Particle::draw() {
 	glUseProgram(programm);
 	glBindVertexArray(vao);
 	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0,maxParticles);
 	glBindVertexArray(0);
 }
+
 void Particle::update(float dt) {
 	time+=dt;
 	glUseProgram(programm);
