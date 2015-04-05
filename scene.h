@@ -26,6 +26,7 @@ class Scene {
 		void init(std::map<std::string,GLuint> programms, ISoundEngine *soundEngine);
 		void update(float time,GLFWwindow *window, float dt);
 		void addParticle(Particles* particle);
+		void modifyScore(float dt);
 		bool isOver();
 	
 	private:

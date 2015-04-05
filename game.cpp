@@ -67,7 +67,6 @@ void Game::run() {
 	scene = Scene();
 	scene.init(programms, soundEngine);
 	scene.makeObject();
-
 	float dt = 1/60.0f;
 	float time = 0;
 	float time2 = 0;
@@ -87,7 +86,10 @@ void Game::run() {
 		time=0;
 		time2+=0.01;
 		scene.update(time2,window,dt);
-		if(scene.isOver()) break;
+		if(scene.isOver()) {
+			scene.modifyScore(time2);
+			break;
+		}
 		glfwPollEvents();
 		renderFrame();
 	}
