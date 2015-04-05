@@ -55,9 +55,6 @@ bool Scene::isOver() {
 	else return false;
 }
 
-void Scene::modifyScore(float dt){
-	level.getPlayer()->modifyScore(dt);
-}
 
 void Scene::setType(GLuint type) {
 	level.setType(type);

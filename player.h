@@ -18,7 +18,6 @@ class Player {
 		Player(float gravity,std::map<std::string , GLuint> programms);
 		~Player();
 		void modifyLives(int value);
-		void modifyScore(double value);
 		void changePos(double x, double y, double z);
 		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects );
 		void init();

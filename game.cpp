@@ -87,7 +87,6 @@ void Game::run() {
 		time2+=0.01;
 		scene.update(time2,window,dt);
 		if(scene.isOver()) {
-			scene.modifyScore(time2);
 			break;
 		}
 		glfwPollEvents();

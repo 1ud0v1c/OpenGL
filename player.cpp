@@ -40,6 +40,7 @@ void Player::draw() {
 void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
 
 	updatePos(window,dt);
+	score += dt;
 
 	if(invicibleTime < 1 && isInvicible==true) {
 		invicibleTime += dt;
@@ -166,9 +167,6 @@ void Player::modifyLives(int value){
 	lives += value;
 }
 
-void Player::modifyScore(double value){
-	score += value;
-}
 
 void Player::changePos(double x, double y, double z){
 	position.x += x;
