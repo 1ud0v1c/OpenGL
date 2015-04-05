@@ -20,9 +20,9 @@ void Scene::init(std::map<std::string,GLuint> programms,ISoundEngine *soundEngin
 	hud.init(level);
 	skybox = Skybox(programms["skybox"], "star-top.tga", "star-bot.tga", "star-left.tga", "star-right.tga", "star-front.tga", "star-back.tga");
 	skybox.init();
-//	Particles transmitter2(programms["particle"],new Particle(programms["particle"],100,glm::vec3(3,0,0),glm::vec3(1,0,1),10));
-//	addParticle(&transmitter2);
-		light = Light(programms["minimal"]);
+//	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(3,0,0),glm::vec3(1,0,1),10));
+//	addParticle(transmitter);
+	light = Light(programms["minimal"]);
 }
 
 void Scene::update(float time,GLFWwindow *window, float dt) {
@@ -53,6 +53,10 @@ bool Scene::isOver() {
 		return true;
 	}
 	else return false;
+}
+
+void Scene::modifyScore(float dt){
+	level.getPlayer()->modifyScore(dt);
 }
 
 void Scene::setType(GLuint type) {
