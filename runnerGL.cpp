@@ -4,7 +4,6 @@
 #include <glm/glm.hpp> 
 #include <glm/gtc/constants.hpp> 
 #include <glm/gtc/type_ptr.hpp>
-#include "glfwMinimal.h"
 #include "game.h"
 
 int main(void) {
