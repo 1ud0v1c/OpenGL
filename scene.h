@@ -11,6 +11,7 @@
 #include "skybox.h"
 #include "player.h"
 #include "particles.h"
+#include "light.h"
 
 using namespace irrklang;
 
@@ -40,6 +41,7 @@ class Scene {
 		Level level;
 		Skybox skybox;
 		ISoundEngine *soundEngine;
+		Light light;
 
 };
 

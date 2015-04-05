@@ -22,7 +22,7 @@ void Scene::init(std::map<std::string,GLuint> programms,ISoundEngine *soundEngin
 	skybox.init();
 //	Particles transmitter2(programms["particle"],new Particle(programms["particle"],100,glm::vec3(3,0,0),glm::vec3(1,0,1),10));
 //	addParticle(&transmitter2);
-	//	light = Light(programms["minimal"]);
+		light = Light(programms["minimal"]);
 }
 
 void Scene::update(float time,GLFWwindow *window, float dt) {
@@ -44,6 +44,8 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 	for (Particles* particles : particlesTransmitter){
 		particles->update(dt);
 	}
+	light.update(level.getPlayer()->getPos());
+
 }
 
 bool Scene::isOver() {
@@ -58,6 +60,7 @@ void Scene::setType(GLuint type) {
 }
 
 void Scene::draw() {
+	light.draw();
 	level.draw();
 	hud.draw();
 	skybox.draw();

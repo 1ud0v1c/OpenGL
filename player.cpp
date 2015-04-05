@@ -1,7 +1,7 @@
 #include "player.h"
 
 Player::Player(float gravity, std::map<std::string , GLuint> programms) {
-	lives = 3000000;
+	lives = 100;
 	score = 0;
 	speed = 10.0f;
 	invicibleTime = 0;
@@ -39,6 +39,44 @@ void Player::draw() {
 
 void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
 
+	updatePos(window,dt);
+
+	if(invicibleTime < 1 && isInvicible==true) {
+		invicibleTime += dt;
+	}else {
+		isInvicible = false;
+		invicibleTime = 0;
+	}
+	
+
+	for(auto object : objects) {
+		if(object->getName()!="road") {
+			if(playerObject->isColliding(object)) {
+			//	std::cout << object->getName() << " touch" <<std::endl;
+				if(object->getName() == "wall" && isInvicible==false){
+					lives -= 1;
+					isInvicible = true;
+				}else if(object->getName() == "bonusLife"){
+					lives += 1;
+				}else if(object->getName() == "bonusScore"){
+					score += 250.0;
+				}else if(object->getName() == "bonusSpeed"){
+					speed += 1.0f;
+				}
+			} else {
+
+			//	std::cout << object->getName() << " do not touch" <<std::endl;
+			}
+		}
+	}
+	movePlayer();
+}
+
+int Player::getLives(){
+	return lives;
+}
+
+void Player::updatePos(GLFWwindow *window,float dt) {
 
 	float initialFoV = 45.0f;
 	double xpos, ypos;
@@ -76,10 +114,21 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 		position += right * dt * speed*2.0f;
 	}
 
+	if(glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE) {
+		pressR = false;
+	}
+	if(glfwGetKey(window,GLFW_KEY_R) == GLFW_PRESS && pressR ==  false) {
+		isMovingAuto = isMovingAuto ^ true;
+		pressR = true;
+	}
+
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
 		dy = 20;
 	}
+
+	if(isMovingAuto)
+		position -= direction * dt * speed;
 
 
 	direction=	 glm::vec3(
@@ -107,40 +156,6 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 	if(position.x<0) position.x=0;
 	if(position.x>8.8) position.x = 8.8f;
-
-	if(invicibleTime < 1 && isInvicible==true) {
-		invicibleTime += dt;
-	}else {
-		isInvicible = false;
-		invicibleTime = 0;
-	}
-	
-
-	for(auto object : objects) {
-		if(object->getName()!="road") {
-			if(playerObject->isColliding(object)) {
-				std::cout << object->getName() << " touch" <<std::endl;
-				if(object->getName() == "wall" && isInvicible==false){
-					lives -= 1;
-					isInvicible = true;
-				}else if(object->getName() == "bonusLife"){
-					lives += 1;
-				}else if(object->getName() == "bonusScore"){
-					score += 250.0;
-				}else if(object->getName() == "bonusSpeed"){
-					speed += 1.0f;
-				}
-			} else {
-
-			//	std::cout << object->getName() << " do not touch" <<std::endl;
-			}
-		}
-	}
-	movePlayer();
-}
-
-int Player::getLives(){
-	return lives;
 }
 
 double Player::getScore(){

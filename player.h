@@ -30,6 +30,7 @@ class Player {
 		double getScore();
 		glm::vec3 getUp();
 		glm::vec3 getDir();
+		void updatePos(GLFWwindow *window,float dt);
 
 
 	private:
@@ -49,6 +50,8 @@ class Player {
 		float initialFoV = 45.0f;
 		float dy = 0;
 		bool isJumping = false;
+		bool isMovingAuto = false;
+		bool pressR = false;
 		glm::vec3 offset;
 };
 #endif

@@ -14,10 +14,16 @@ class Light {
 		Light();
 		Light(GLuint programm);
 		void draw();
-		void init();
+		void update(glm::vec3 pos);
 
 	private:
 		GLuint programm;
+		glm::vec3 ambientColor ; //Color (0.2, 0.2, 0.2)
+		glm::vec3 lightColor0 ;
+		glm::vec3 lightPos0 ; //Positioned at (4, 0, 8)
+		glm::vec3 lightColor1; //Color (0.5, 0.2, 0.2)
+		glm::vec3 lightPos1;
+		glm::vec3 lightdir;
 
 };
 

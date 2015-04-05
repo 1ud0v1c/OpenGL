@@ -46,7 +46,7 @@ link_directories(${ASSIMP_LIBRARY_DIRS})
 ###  ASSIMP  ###}}}
 
 ###  The executable  ###{{{
-add_executable(runnerGL runnerGL.cpp utils.cpp camera.cpp vertex.cpp mesh.cpp game.cpp scene.cpp gameObject.cpp gameSphere.cpp timer.cpp player.cpp gameText.cpp hud.cpp level.cpp gameCube.cpp skybox.cpp box.cpp particle.cpp particles.cpp)
+add_executable(runnerGL runnerGL.cpp utils.cpp camera.cpp vertex.cpp mesh.cpp game.cpp scene.cpp gameObject.cpp gameSphere.cpp timer.cpp player.cpp gameText.cpp hud.cpp level.cpp gameCube.cpp skybox.cpp box.cpp particle.cpp particles.cpp light.cpp)
 target_link_libraries(runnerGL ${GL_LIBRARIES}  ${GLFW3_STATIC_LIBRARIES} ${APPLE_FRAMEWORKS}) # this is to save an image (for screenshots)
 target_link_libraries(runnerGL ${GL_LIBRARIES}  ${GLFW3_STATIC_LIBRARIES} ${IRRKLANG_LIB}) # this is to save an image (for screenshots)
 ###  The executable  ###}}}
