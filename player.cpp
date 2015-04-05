@@ -1,7 +1,7 @@
 #include "player.h"
 
 Player::Player(float gravity, std::map<std::string , GLuint> programms) {
-	lives = 3;
+	lives = 3000000;
 	score = 0;
 	speed = 3.0f;
 	invicibleTime = 0;
@@ -83,7 +83,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
-		dy = 5;
+		dy = 10;
 	}
 
 	dy -= gravity*dt;
@@ -105,7 +105,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	for(auto object : objects) {
 		if(object->getName()!="road") {
 			if(playerObject->isColliding(object)) {
-				std::cout << object->getName() << " touch" <<std::endl;
+			//	std::cout << object->getName() << " touch" <<std::endl;
 				if(object->getName() == "wall" && isInvicible==false){
 					lives -= 1;
 					isInvicible = true;
@@ -117,6 +117,8 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 					speed += 1.0f;
 				}
 			} else {
+
+			//	std::cout << object->getName() << " do not touch" <<std::endl;
 			}
 		}
 	}

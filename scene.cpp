@@ -45,7 +45,6 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 }
 
 bool Scene::isOver() {
-	std::cout << level.getPlayer()->getLives() << std::endl;
 	if(level.getPlayer()->getLives()<=0) {
 		std::cout << "Game Over " << std::endl;
 			return true;

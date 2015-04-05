@@ -10,8 +10,6 @@ GameObject::GameObject(const std::string &name,GLuint &programm,std::vector<glm:
 	this->textureName = textureName;
 	this->isDynamic = isDynamic;
 	this->angle = angle;
-
-
 }
 
 void GameObject::setUnit(int unit) {
@@ -50,6 +48,8 @@ void GameObject::makeObject() {
 	if(this->angle!=0)
 		rotate(this->angle,glm::vec3(0,1,0));
 
+	size = getMaxPosition(mesh.getPositions());
+	std::cout << size.x << " " << size.y <<" "<< size.z <<std::endl;
 	GLuint positionBuffer;
 	GLuint indexBuffer;
 	GLuint colorBuffer;

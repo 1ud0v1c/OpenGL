@@ -5,6 +5,7 @@ Level::Level(std::map<std::string,GLuint> programms) {
 	this->programms = programms;
 	currentPart = 0;
 	numberOfChange = 0;
+	nextPart = 0;
 }
 
 Level::Level() {
@@ -26,30 +27,33 @@ void Level::loadLevel(const std::string path) {
 
 }
 
-void Level::nextPart() {
-	currentPart++;
+void Level::loadNextPart() {
+	currentPart = nextPart;
+	nextPart++;
 	numberOfChange++;
+	std::cout << "change" <<std::endl;
 
-	if(currentPart==3) currentPart = 0;
+	if(nextPart==3) nextPart = 0;
 
-	partLevel[currentPart].clear();
+	if(currentPart>0)
+	partLevel[currentPart-1].clear();
 
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
-	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,numberOfChange*178.0f));
-	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*178.0f));
-	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*178.0f));
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,numberOfChange*sizeRoad));
+	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*sizeRoad));
+	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
 
 	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
 	road->loadOBJ("road.obj");
-	addObject(road);
+	addObject(road,nextPart);
 
 
 	int j = 0;
 	int i=0;
 	for(auto pos : tabLevel) {
 		if(pos==1) {
-			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-178.0f/2 + j*178/15+178*numberOfChange));
+			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f, -sizeRoad/2+j*sizeRoad/column+sizeRoad*numberOfChange));
 		}
 		j++;
 
@@ -61,7 +65,7 @@ void Level::nextPart() {
 
 	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
 	wall->loadOBJ("wall.obj");
-	addObject(wall);
+	addObject(wall,nextPart);
 }
 
 void Level::init() {
@@ -83,7 +87,7 @@ void Level::init() {
 	int i=0;
 	for(auto pos : tabLevel) {
 		if(pos==1) {
-			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-178.0f/2 + j*178/15));
+			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-sizeRoad/2 + j*sizeRoad/column));
 		}
 		j++;
 
@@ -97,17 +101,18 @@ void Level::init() {
 	player->init();
 	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
 	wall->loadOBJ("wall.obj");
-	addObject(wall);
+	addObject(wall,currentPart);
 
 	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
 	road->loadOBJ("road.obj");
-	addObject(road);
+	addObject(road,currentPart);
+	loadNextPart();
 
 
 }
 
-void Level::addObject(GameObject *object)  {
-	partLevel[currentPart].push_back(object);
+void Level::addObject(GameObject *object,int part)  {
+	partLevel[part].push_back(object);
 }
 
 std::vector<GameObject*> Level::getObjects() {
@@ -117,7 +122,12 @@ std::vector<GameObject*> Level::getObjects() {
 void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, partLevel[currentPart]);
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
-
+		if(player->getPos().z > numberOfChange*sizeRoad) {
+			loadNextPart();
+			std::cout << "change" <<std::endl;
+		}
+	//	std::cout << player->getPos().z << numberOfChange*sizeRoad << std::endl;
+//	std::cout << currentPart << std::endl;
 }
 
 void Level::setType(GLuint type) {
@@ -131,6 +141,11 @@ void Level::makeObject() {
 	for(auto o : partLevel[currentPart]) {
 		o->makeObject();
 	}
+
+
+	for(auto o : partLevel[nextPart]) {
+		o->makeObject();
+	}
 }
 
 void Level::draw() {
@@ -138,6 +153,13 @@ void Level::draw() {
 	//	light.draw();
 	glUseProgram(0);
 	for(auto o : partLevel[currentPart]) {
+		glUseProgram(o->getProgramm());
+		o->draw();
+		glUseProgram(0);
+	}
+
+
+	for(auto o : partLevel[nextPart]) {
 		glUseProgram(o->getProgramm());
 		o->draw();
 		glUseProgram(0);

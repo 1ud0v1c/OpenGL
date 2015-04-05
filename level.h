@@ -21,13 +21,13 @@ class Level {
 		void draw();
 		void init();
 		void update(float time,GLFWwindow *window, float dt);
-		void addObject(GameObject *o);
+		void addObject(GameObject *o, int part);
 		void setType(GLuint type);
 		std::vector<GameObject*> getObjects();
 		Camera getCamera();
 		Player* getPlayer();
 		void loadLevel(const std::string path);
-		void nextPart();
+		void loadNextPart();
 
 	private:
 		std::map<std::string,GLuint> programms;
@@ -38,8 +38,10 @@ class Level {
 		float gravity;
 		int currentLevel;
 		int currentPart;
+		int nextPart;
 		int numberOfChange;
 		int line,column;
+		float sizeRoad = 117.2f*2;
 		std::vector<int> tabLevel;
 };
 

@@ -52,5 +52,6 @@ class GameObject {
 		glm::vec3 position;
 		bool isDynamic;
 		float angle;
+		glm::vec3 size;
 };
 #endif
