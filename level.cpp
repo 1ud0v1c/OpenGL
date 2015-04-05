@@ -31,12 +31,11 @@ void Level::loadNextPart() {
 	currentPart = nextPart;
 	nextPart++;
 	numberOfChange++;
-	std::cout << "change" <<std::endl;
 
 	if(nextPart==3) nextPart = 0;
 
 	if(currentPart>0)
-	partLevel[currentPart-1].clear();
+		partLevel[currentPart-1].clear();
 
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
@@ -66,6 +65,7 @@ void Level::loadNextPart() {
 	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
 	wall->loadOBJ("wall.obj");
 	addObject(wall,nextPart);
+	makeObject(nextPart);
 }
 
 void Level::init() {
@@ -97,7 +97,7 @@ void Level::init() {
 		}
 	}
 
-	player = new Player(gravity,programms);
+	player = new Player(gravity*10,programms);
 	player->init();
 	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
 	wall->loadOBJ("wall.obj");
@@ -122,15 +122,19 @@ void Level::update(float time,GLFWwindow *window, float dt) {
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
 	if(player->getPos().z > numberOfChange*sizeRoad) {
 		loadNextPart();
-		std::cout << "change" <<std::endl;
 	}
-	//	std::cout << player->getPos().z << numberOfChange*sizeRoad << std::endl;
-	//	std::cout << currentPart << std::endl;
 }
 
 void Level::setType(GLuint type) {
 	for(auto o : partLevel[currentPart]) {
 		o->setType(type);
+	}
+}
+
+void Level::makeObject(int part) {
+
+	for(auto o : partLevel[part]) {
+		o->makeObject();
 	}
 }
 
@@ -140,10 +144,6 @@ void Level::makeObject() {
 		o->makeObject();
 	}
 
-
-	for(auto o : partLevel[nextPart]) {
-		o->makeObject();
-	}
 }
 
 void Level::draw() {

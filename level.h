@@ -28,6 +28,7 @@ class Level {
 		Player* getPlayer();
 		void loadLevel(const std::string path);
 		void loadNextPart();
+		void makeObject(int part);
 
 	private:
 		std::map<std::string,GLuint> programms;

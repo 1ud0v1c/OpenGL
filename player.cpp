@@ -3,7 +3,7 @@
 Player::Player(float gravity, std::map<std::string , GLuint> programms) {
 	lives = 3000000;
 	score = 0;
-	speed = 3.0f;
+	speed = 10.0f;
 	invicibleTime = 0;
 	this->programms = programms;
 
@@ -52,19 +52,14 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	verticalAngle += mouseSpeed * dt * float( 768/2 - ypos );
 
 
-	direction=	 glm::vec3(
-			  3*cos(verticalAngle) * sin(horizontalAngle),
-			  3*sin(verticalAngle),
-			  3*cos(verticalAngle) * cos(horizontalAngle)
-			  );
+
+	direction = glm::vec3(0,0,-3);
 
 	glm::vec3 right = glm::vec3(
 			  sin(horizontalAngle - 3.14f/2.0f),
 			  0,
 			  cos(horizontalAngle - 3.14f/2.0f)
 			  );
-
-	up = glm::cross( right, direction );
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
 		position -= direction * dt * speed;
 	}
@@ -83,8 +78,24 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
-		dy = 10;
+		dy = 20;
 	}
+
+
+	direction=	 glm::vec3(
+			  3*cos(verticalAngle) * sin(horizontalAngle),
+			  3*sin(verticalAngle),
+			  3*cos(verticalAngle) * cos(horizontalAngle)
+			  );
+
+	 right = glm::vec3(
+			  sin(horizontalAngle - 3.14f/2.0f),
+			  0,
+			  cos(horizontalAngle - 3.14f/2.0f)
+			  );
+
+	up = glm::cross( right, direction );
+
 
 	dy -= gravity*dt;
 	position.y +=dy*dt;
@@ -93,6 +104,9 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 		position.y = 0;
 		isJumping = false;
 	}
+
+	if(position.x<0) position.x=0;
+	if(position.x>8.8) position.x = 8.8f;
 
 	if(invicibleTime < 1 && isInvicible==true) {
 		invicibleTime += dt;
