@@ -11,6 +11,7 @@
 #include <glm/gtc/constants.hpp>
 #include "scene.h"
 #include "gameText.h"
+#include "soundGameEngine.h"
 #include <irrKlang.h>
 using namespace irrklang;
 class Game {
@@ -34,7 +35,6 @@ class Game {
 		GLuint type;
 		GLuint diffuseID;
 		std::map<std::string,GLuint> programms;
-		ISoundEngine *soundEngine;
 };
 
 #endif 

@@ -10,8 +10,6 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include <irrKlang.h>
-using namespace irrklang;
 
 class Level {
 	public:
@@ -44,6 +42,7 @@ class Level {
 		int line,column;
 		float sizeRoad = 117.2f*2;
 		std::vector<int> tabLevel;
+
 };
 
 #endif

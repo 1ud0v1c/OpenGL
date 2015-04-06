@@ -12,6 +12,7 @@
 #include "gameObject.h"
 #include "gameSphere.h"
 #include <map>
+#include "soundGameEngine.h"
 
 class Player {
 	public:

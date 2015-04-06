@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <map>
-#include <irrKlang.h>
 #include "camera.h"
 #include "level.h"
 #include "gameObject.h"
@@ -13,7 +12,6 @@
 #include "particles.h"
 #include "light.h"
 
-using namespace irrklang;
 
 class Scene {
 	public:
@@ -23,7 +21,7 @@ class Scene {
 		void draw();
 		void makeObject();
 		void setType(GLuint type);
-		void init(std::map<std::string,GLuint> programms, ISoundEngine *soundEngine);
+		void init(std::map<std::string,GLuint> programms) ;
 		void update(float time,GLFWwindow *window, float dt);
 		void addParticle(Particles* particle);
 		bool isOver();
@@ -40,7 +38,6 @@ class Scene {
 		std::map<std::string,GLuint> programms;
 		Level level;
 		Skybox skybox;
-		ISoundEngine *soundEngine;
 		Light light;
 
 };

@@ -49,17 +49,20 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 		invicibleTime = 0;
 	}
 	
-
+int index = 0;
 	for(auto object : objects) {
 		if(object->getName()!="road") {
 			if(playerObject->isColliding(object)) {
 			//	std::cout << object->getName() << " touch" <<std::endl;
 				if(object->getName() == "wall" && isInvicible==false){
+					SoundGameEngine::play("hit_wall.ogg",false);
 					lives -= 1;
 					isInvicible = true;
 				}else if(object->getName() == "bonusLife"){
 					lives += 1;
 				}else if(object->getName() == "bonusScore"){
+
+					SoundGameEngine::play("bonus2.ogg",false);
 					std::cout << "touch bonus" <<std::endl;
 					score += 250.0;
 				}else if(object->getName() == "bonusSpeed"){
@@ -69,6 +72,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 			}
 		}
+		index++;
 	}
 	movePlayer();
 }

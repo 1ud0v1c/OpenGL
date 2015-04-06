@@ -50,6 +50,9 @@ void GameObject::makeObject() {
 
 	size = getMaxPosition(mesh.getPositions());
 	std::cout << size.x << " " << size.y <<" "<< size.z <<std::endl;
+
+	size = getMinPosition(mesh.getPositions());
+	std::cout << size.x << " " << size.y <<" "<< size.z <<std::endl;
 	GLuint positionBuffer;
 	GLuint indexBuffer;
 	GLuint colorBuffer;
