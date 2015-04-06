@@ -30,7 +30,7 @@ class GameObject {
 		std::string getName();
 
 		std::vector<glm::vec3>  initCenter();
-		void rotate(float angle, glm::vec3 axis);
+		void rotate(float angle);
 		double getRadius();
 		bool isColliding(GameObject* go);
 		bool loadOBJ(const std::string  &path);
