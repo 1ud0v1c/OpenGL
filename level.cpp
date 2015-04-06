@@ -65,7 +65,7 @@ void Level::loadNextPart() {
 
 	for(auto pos : tabLevel) {
 		if(pos==0) {
-			offsetBonus.push_back(glm::vec3(i*5-17,-1.0f,-sizeRoad/2 + j*sizeRoad/column+sizeRoad*numberOfChange));
+			offsetBonus.push_back(glm::vec3(i*5-16,-1.0f,-sizeRoad/2 + j*sizeRoad/column+sizeRoad*numberOfChange));
 		}
 		j++;
 

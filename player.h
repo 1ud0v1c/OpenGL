@@ -41,6 +41,9 @@ class Player {
 		glm::vec3 direction;
 		glm::vec3 up;
 		float gravity;
+		float positions[3];
+		bool pressed[2];
+		int currentPositionIndex;
 		GameObject *playerObject;
 		std::map<std::string , GLuint> programms;
 		float invicibleTime;
