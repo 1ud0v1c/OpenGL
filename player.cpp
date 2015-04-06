@@ -43,7 +43,7 @@ void Player::draw() {
      glUseProgram(0);
 }
 
-void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
+void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects){
 
      updatePos(window,dt);
      score += dt;

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include "partLevel.h"
 
 class Level {
 	public:
@@ -31,7 +32,7 @@ class Level {
 	private:
 		std::map<std::string,GLuint> programms;
 		std::vector<GameObject*> objects;
-		std::array < std::vector<GameObject*>,3 > partLevel;
+		std::array < PartLevel,3 > parts;
 		Player* player;
 		Camera camera;
 		float gravity;

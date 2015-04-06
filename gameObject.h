@@ -14,6 +14,7 @@
 #include <sstream>
 #include "utils.h"
 #include "mesh.h"
+#include <algorithm>
 
 class GameObject {
 
@@ -35,6 +36,7 @@ class GameObject {
 		bool isColliding(GameObject* go);
 		bool loadOBJ(const std::string  &path);
 		bool is_Dynamic();
+		void setOffset(std::vector<glm::vec3>  newOffset);
 
 	protected:
 		int unit=0;

@@ -27,6 +27,11 @@ void  GameObject::moveObject(glm::vec3 position) {
 	glUseProgram(0);
 }
 
+void GameObject::setOffset(std::vector<glm::vec3> newOffset) {
+	offset.resize(newOffset.size());
+	std::copy(newOffset.begin(), newOffset.end(), offset.begin());
+}
+
 GLuint GameObject::getProgramm() {
 	return programm;
 }

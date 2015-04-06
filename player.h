@@ -20,7 +20,7 @@ class Player {
 		~Player();
 		void modifyLives(int value);
 		void changePos(double x, double y, double z);
-		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects );
+		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects );
 		void init();
 		void movePlayer();
 		void draw();
