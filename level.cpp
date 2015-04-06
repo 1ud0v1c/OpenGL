@@ -42,6 +42,7 @@ void Level::loadNextPart() {
 	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
+	std::vector<glm::vec3> offsetBonus;
 
 	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
 	road->loadOBJ("road.obj");
@@ -62,9 +63,26 @@ void Level::loadNextPart() {
 		}
 	}
 
+	for(auto pos : tabLevel) {
+		if(pos==0) {
+			offsetBonus.push_back(glm::vec3(i*5-17,-1.0f,-sizeRoad/2 + j*sizeRoad/column+sizeRoad*numberOfChange));
+		}
+		j++;
+
+		if(j==column) {
+			i++;
+			j=0;
+		}
+	}
+
 	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
 	wall->loadOBJ("wall.obj");
 	addObject(wall,nextPart);
+
+	GameObject *bonus = new GameObject("bonusScore",programms["minimal"], offsetBonus, "brick2.tga",false);
+	bonus->loadOBJ("bonus_score.obj");
+	addObject(bonus,nextPart);
+
 	makeObject(nextPart);
 }
 

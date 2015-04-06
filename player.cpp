@@ -8,7 +8,7 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
 	this->programms = programms;
 
 	std::vector<glm::vec3> offsetVect;
-	offsetVect.push_back(glm::vec3(0.0f,0.0f,0.0f));
+	offsetVect.push_back(glm::vec3(0.0f,-1.0f,0.0f));
 	playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offsetVect,"checkerboard.tga",true);
 	this->gravity = gravity;
 	direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
@@ -60,13 +60,13 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 				}else if(object->getName() == "bonusLife"){
 					lives += 1;
 				}else if(object->getName() == "bonusScore"){
+					std::cout << "touch bonus" <<std::endl;
 					score += 250.0;
 				}else if(object->getName() == "bonusSpeed"){
 					speed += 1.0f;
 				}
 			} else {
 
-			//	std::cout << object->getName() << " do not touch" <<std::endl;
 			}
 		}
 	}
