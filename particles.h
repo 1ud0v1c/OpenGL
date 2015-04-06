@@ -9,6 +9,7 @@ class Particles {
 		void make();
 		void update(float dt);
 		void draw();
+		void setPosition(glm::vec3 pos);
 		void addParticle(Particle *particle);
 		void redraw();
 	private:

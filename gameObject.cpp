@@ -43,6 +43,13 @@ void GameObject::rotate(float angle) {
 	}
 }
 
+void GameObject::resetVBO(){
+	glUseProgram(programm);
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * offset.size(), &offset[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void GameObject::makeObject() {
 	if(textureName.size() >2) {
 		textureID = glGetUniformLocation(programm, "colormap");
@@ -58,7 +65,6 @@ void GameObject::makeObject() {
 	GLuint colorBuffer;
 	GLuint normalBuffer;
 	GLuint textureBuffer;
-	GLuint instanceVBO;
 
 
 	glGenBuffers(1, &instanceVBO);
@@ -156,7 +162,7 @@ bool GameObject::isColliding(GameObject* go){
 
 	for(auto center : centers) {
 		for(auto other_center :other_centers) {
-		     if(glm::abs(center.x - other_center.x) < radius + other_radius){
+			if(glm::abs(center.x - other_center.x) < radius + other_radius){
 				if(glm::abs(center.y - other_center.y) < radius + other_radius){
 					if(glm::abs(center.z - other_center.z) < radius + other_radius){
 						return true;
@@ -173,6 +179,33 @@ bool GameObject::is_Dynamic() {
 	return this->isDynamic;
 }
 
+std::vector<glm::vec3> GameObject::getOffset(int x){
+	std::vector<glm::vec3> resultSet;
+	int xt;
+	if (x == 8){
+		xt= 9;
+	}else xt = x;
+	for (glm::vec3 off : offset){
+		if (off.x == xt){
+			resultSet.push_back(off);
+		}
+	}
+	return resultSet;
+}
+
+void GameObject::removeOffset(glm::vec3 off){
+	int index=0;
+	std::vector<glm::vec3> temp(offset);
+	offset.clear();
+	for (glm::vec3 o : temp){
+		if (o.x == off.x && o.y == off.y && o.z == off.z){
+		
+		}else{
+			offset.push_back(o);
+		}
+	}
+}
+
 std::vector<glm::vec3> GameObject::initCenter(){
 
 	std::vector<glm::vec3> centers;
@@ -183,107 +216,107 @@ std::vector<glm::vec3> GameObject::initCenter(){
 	max = getMaxPosition(positions);
 
 	if(radius ==0){
-	     radius = glm::abs((max.x+max.y+max.z+min.x+min.y+min.z))/2;
+		radius = glm::abs((max.x+max.y+max.z+min.x+min.y+min.z))/2;
 	}
 	if( isDynamic){
-	     glm::vec3 c =glm::vec3( (min.x+max.x)/2+position.x+offset[0].x,
-		       (min.y+max.y)/2+position.y+offset[0].y, 
-		       (min.z+max.z)/2+position.z+offset[0].z); 
-	     centers.push_back(c);
-	     return centers;
+		glm::vec3 c =glm::vec3( (min.x+max.x)/2+position.x+offset[0].x,
+				(min.y+max.y)/2+position.y+offset[0].y, 
+				(min.z+max.z)/2+position.z+offset[0].z); 
+		centers.push_back(c);
+		return centers;
 	}
 	else{
-	     for(auto off : offset) {
-		  centers.push_back(glm::vec3( (min.x+max.x)/2+off.x, (min.y+max.y)/2+off.y, (min.z+max.z)/2 + off.z)); 
-	     }
-	     return centers;
+		for(auto off : offset) {
+			centers.push_back(glm::vec3( (min.x+max.x)/2+off.x, (min.y+max.y)/2+off.y, (min.z+max.z)/2 + off.z)); 
+		}
+		return centers;
 	}
 }
 
 double GameObject::getRadius(){
-     return radius;
+	return radius;
 }
 
 GameObject::~GameObject() { }
 
 
 bool GameObject::loadOBJ(const std::string  &path) {
-     printf("Loading OBJ file %s...\n", path.c_str());
+	printf("Loading OBJ file %s...\n", path.c_str());
 
-     std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
-     std::vector<glm::vec3> temp_vertices; 
-     std::vector<glm::vec2> temp_uvs;
-     std::vector<glm::vec3> temp_normals;
+	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
+	std::vector<glm::vec3> temp_vertices; 
+	std::vector<glm::vec2> temp_uvs;
+	std::vector<glm::vec3> temp_normals;
 
-     FILE * file = fopen(path.c_str(), "r");
-     if( file == NULL ){
-	  printf("Impossible to open the file ! Are you in the right path ? See Tutorial 1 for details\n");
-	  return false;
-     }
+	FILE * file = fopen(path.c_str(), "r");
+	if( file == NULL ){
+		printf("Impossible to open the file ! Are you in the right path ? See Tutorial 1 for details\n");
+		return false;
+	}
 
-     while(1) {
-	  char lineHeader[128];
-	  int res = fscanf(file, "%s", lineHeader);
-	  if (res == EOF) {
-	       break; 
-	  }
+	while(1) {
+		char lineHeader[128];
+		int res = fscanf(file, "%s", lineHeader);
+		if (res == EOF) {
+			break; 
+		}
 
-	  if ( strcmp( lineHeader, "v" ) == 0 ){
-	       glm::vec3 vertex;
-	       fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
-	       temp_vertices.push_back(vertex);
-	  }else if ( strcmp( lineHeader, "vt" ) == 0 ){
-	       glm::vec2 uv;
-	       fscanf(file, "%f %f\n", &uv.x, &uv.y );
-	       uv.y = -uv.y; 
-	       temp_uvs.push_back(uv);
-	  }else if ( strcmp( lineHeader, "vn" ) == 0 ){
-	       glm::vec3 normal;
-	       fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
-	       temp_normals.push_back(normal);
-	  }else if ( strcmp( lineHeader, "f" ) == 0 ){
-	       std::string vertex1, vertex2, vertex3;
-	       unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-	       int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
-	       if (matches != 9){
-		    printf("File can't be read by our simple parser :-( Try exporting with other options\n");
-		    return false;
-	       }
-	       vertexIndices.push_back(vertexIndex[0]);
-	       vertexIndices.push_back(vertexIndex[1]);
-	       vertexIndices.push_back(vertexIndex[2]);
-	       uvIndices    .push_back(uvIndex[0]);
-	       uvIndices    .push_back(uvIndex[1]);
-	       uvIndices    .push_back(uvIndex[2]);
-	       normalIndices.push_back(normalIndex[0]);
-	       normalIndices.push_back(normalIndex[1]);
-	       normalIndices.push_back(normalIndex[2]);
-	  }else{
-	       char stupidBuffer[1000];
-	       fgets(stupidBuffer, 1000, file);
-	  }
-     }
+		if ( strcmp( lineHeader, "v" ) == 0 ){
+			glm::vec3 vertex;
+			fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
+			temp_vertices.push_back(vertex);
+		}else if ( strcmp( lineHeader, "vt" ) == 0 ){
+			glm::vec2 uv;
+			fscanf(file, "%f %f\n", &uv.x, &uv.y );
+			uv.y = -uv.y; 
+			temp_uvs.push_back(uv);
+		}else if ( strcmp( lineHeader, "vn" ) == 0 ){
+			glm::vec3 normal;
+			fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
+			temp_normals.push_back(normal);
+		}else if ( strcmp( lineHeader, "f" ) == 0 ){
+			std::string vertex1, vertex2, vertex3;
+			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+			int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+			if (matches != 9){
+				printf("File can't be read by our simple parser :-( Try exporting with other options\n");
+				return false;
+			}
+			vertexIndices.push_back(vertexIndex[0]);
+			vertexIndices.push_back(vertexIndex[1]);
+			vertexIndices.push_back(vertexIndex[2]);
+			uvIndices    .push_back(uvIndex[0]);
+			uvIndices    .push_back(uvIndex[1]);
+			uvIndices    .push_back(uvIndex[2]);
+			normalIndices.push_back(normalIndex[0]);
+			normalIndices.push_back(normalIndex[1]);
+			normalIndices.push_back(normalIndex[2]);
+		}else{
+			char stupidBuffer[1000];
+			fgets(stupidBuffer, 1000, file);
+		}
+	}
 
-     for(unsigned int i=0; i<vertexIndices.size(); i++){
-	  unsigned int vertexIndex = vertexIndices[i];
-	  unsigned int uvIndex = uvIndices[i];
-	  unsigned int normalIndex = normalIndices[i];
+	for(unsigned int i=0; i<vertexIndices.size(); i++){
+		unsigned int vertexIndex = vertexIndices[i];
+		unsigned int uvIndex = uvIndices[i];
+		unsigned int normalIndex = normalIndices[i];
 
-	  glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
-	  glm::vec2 uv = temp_uvs[ uvIndex-1 ];
-	  glm::vec3 normal = temp_normals[ normalIndex-1 ];
+		glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
+		glm::vec2 uv = temp_uvs[ uvIndex-1 ];
+		glm::vec3 normal = temp_normals[ normalIndex-1 ];
 
-	  Vertex v;
-	  v.addPosition(vertex);
-	  v.addUv(uv);
-	  v.addNormal(normal);
-	  v.addColor(1,1,1,0.5);
-	  mesh.addVertex(v);
-     }
+		Vertex v;
+		v.addPosition(vertex);
+		v.addUv(uv);
+		v.addNormal(normal);
+		v.addColor(1,1,1,0.5);
+		mesh.addVertex(v);
+	}
 
-     for (int i = 0; i < mesh.getPositions().size(); i++) {
-	  mesh.addIbo(i);
-     }
-     return true;
+	for (int i = 0; i < mesh.getPositions().size(); i++) {
+		mesh.addIbo(i);
+	}
+	return true;
 }
 

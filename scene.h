@@ -9,7 +9,6 @@
 #include "hud.h"
 #include "skybox.h"
 #include "player.h"
-#include "particles.h"
 #include "light.h"
 
 
@@ -23,14 +22,12 @@ class Scene {
 		void setType(GLuint type);
 		void init(std::map<std::string,GLuint> programms) ;
 		void update(float time,GLFWwindow *window, float dt);
-		void addParticle(Particles* particle);
 		bool isOver();
 	
 	private:
 		Camera camera;
 		HUD hud;
 		std::vector<GameObject*> objects;
-		std::vector<Particles*> particlesTransmitter;
 		std::map<std::string,GLuint> transID;
 		std::map<std::string,GLuint> viewID;
 		std::map<std::string,GLuint> projID;
