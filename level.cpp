@@ -44,7 +44,7 @@ void Level::loadNextPart() {
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
 	std::vector<glm::vec3> offsetBonus;
 
-	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
+	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,glm::pi<float>()*90/180);
 	road->loadOBJ("road.obj");
 	addObject(road,nextPart);
 
@@ -118,7 +118,7 @@ void Level::init() {
 	wall->loadOBJ("wall.obj");
 	addObject(wall,currentPart);
 
-	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,90);
+	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,glm::pi<float>()*90/180);
 	road->loadOBJ("road.obj");
 	addObject(road,currentPart);
 	loadNextPart();

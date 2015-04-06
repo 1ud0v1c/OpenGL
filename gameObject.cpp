@@ -32,9 +32,9 @@ GLuint GameObject::getProgramm() {
 }
 
 
-void GameObject::rotate(float angle, glm::vec3 axis) {
+void GameObject::rotate(float angle) {
 	for(auto &point : points) {
-		point = glm::rotate(point,angle, axis);
+		point = glm::rotateY(point,angle);
 	}
 }
 
@@ -46,13 +46,8 @@ void GameObject::makeObject() {
 
 	points = mesh.getPositions();
 	if(this->angle!=0)
-		rotate(this->angle,glm::vec3(0,1,0));
+		rotate(this->angle);
 
-	size = getMaxPosition(mesh.getPositions());
-	std::cout << size.x << " " << size.y <<" "<< size.z <<std::endl;
-
-	size = getMinPosition(mesh.getPositions());
-	std::cout << size.x << " " << size.y <<" "<< size.z <<std::endl;
 	GLuint positionBuffer;
 	GLuint indexBuffer;
 	GLuint colorBuffer;

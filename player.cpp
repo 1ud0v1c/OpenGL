@@ -96,7 +96,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 
 
 
-	direction = glm::vec3(0,0,-3);
+	direction = glm::vec3(0,0,3);
 
 	glm::vec3 right = glm::vec3(
 			  sin(horizontalAngle - 3.14f/2.0f),
@@ -104,11 +104,11 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 			  cos(horizontalAngle - 3.14f/2.0f)
 			  );
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
-		position -= direction * dt * speed;
+		position += direction * dt * speed;
 	}
 	// Move backward
 	if (glfwGetKey( window,GLFW_KEY_DOWN ) == GLFW_PRESS){
-		position += direction * dt * speed;
+		position -= direction * dt * speed;
 	}
 	// Strafe right
 	if (glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_PRESS){
@@ -129,11 +129,11 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
-		dy = 20;
+		dy = 25;
 	}
 
 	if(isMovingAuto)
-		position -= direction * dt * speed;
+		position += direction * dt * speed;
 
 
 	direction=	 glm::vec3(
@@ -148,7 +148,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 			  cos(horizontalAngle - 3.14f/2.0f)
 			  );
 
-	up = glm::cross( right, direction );
+	up = -glm::cross( right, direction );
 
 
 	dy -= gravity*dt;
