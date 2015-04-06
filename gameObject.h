@@ -12,6 +12,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <sstream>
+#include <algorithm>
 #include "utils.h"
 #include "mesh.h"
 
@@ -35,6 +36,8 @@ class GameObject {
 		bool isColliding(GameObject* go);
 		bool loadOBJ(const std::string  &path);
 		bool is_Dynamic();
+		void setOffset(std::vector<glm::vec3> &newOffset);
+	
 
 	protected:
 		int unit=0;

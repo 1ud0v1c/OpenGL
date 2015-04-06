@@ -6,6 +6,9 @@ Level::Level(std::map<std::string,GLuint> programms) {
 	currentPart = 0;
 	numberOfChange = 0;
 	nextPart = 0;
+	for(int i=0;i<parts.size();i++) {
+		parts[i] = PartLevel(programms);
+	}
 }
 
 Level::Level() {
@@ -34,8 +37,6 @@ void Level::loadNextPart() {
 
 	if(nextPart==3) nextPart = 0;
 
-	if(currentPart>0)
-		partLevel[currentPart-1].clear();
 
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
@@ -44,9 +45,7 @@ void Level::loadNextPart() {
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
 	std::vector<glm::vec3> offsetBonus;
 
-	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,glm::pi<float>()*90/180);
-	road->loadOBJ("road.obj");
-	addObject(road,nextPart);
+
 
 
 	int j = 0;
@@ -75,15 +74,14 @@ void Level::loadNextPart() {
 		}
 	}
 
-	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
-	wall->loadOBJ("wall.obj");
-	addObject(wall,nextPart);
+	std::vector< std::vector<glm::vec3> > offsets;
+	offsets.push_back(offset);
+	offsets.push_back(offsetRoad);
+	offsets.push_back(offsetBonus);
 
-	GameObject *bonus = new GameObject("bonusScore",programms["minimal"], offsetBonus, "brick2.tga",false);
-	bonus->loadOBJ("bonus_score.obj");
-	addObject(bonus,nextPart);
 
-	makeObject(nextPart);
+
+	parts[currentPart].makePart();
 }
 
 void Level::init() {
@@ -112,16 +110,36 @@ void Level::init() {
 		}
 	}
 
+	std::vector<glm::vec3> offsetBonus;
+
+	for(auto pos : tabLevel) {
+		if(pos==0) {
+			offsetBonus.push_back(glm::vec3(i*5-16,-1.0f,-sizeRoad/2 + j*sizeRoad/column+sizeRoad*numberOfChange));
+		}
+		j++;
+
+		if(j==column) {
+			i++;
+			j=0;
+		}
+	}
+
+	
 	player = new Player(gravity*10,programms);
 	player->init();
-	GameObject *wall = new GameObject("wall",programms["minimal"], offset, "brick2.tga",false);
-	wall->loadOBJ("wall.obj");
-	addObject(wall,currentPart);
+	std::vector< std::vector<glm::vec3> > offsets;
+	offsets.push_back(offset);
+	offsets.push_back(offsetRoad);
+	offsets.push_back(offsetBonus);
+	for(int i=0;i<parts.size();i++) {
 
-	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,glm::pi<float>()*90/180);
-	road->loadOBJ("road.obj");
-	addObject(road,currentPart);
-	loadNextPart();
+		parts[i].initOffset(offsets);
+		parts[i].init();
+
+	}
+
+	parts[currentPart].makePart();
+//	loadNextPart();
 }
 
 void Level::addObject(GameObject *object,int part)  {
@@ -141,21 +159,19 @@ void Level::update(float time,GLFWwindow *window, float dt) {
 }
 
 void Level::setType(GLuint type) {
-	for(auto o : partLevel[currentPart]) {
+	for(auto o : parts) {
 		o->setType(type);
 	}
 }
 
 void Level::makeObject(int part) {
 
-	for(auto o : partLevel[part]) {
-		o->makeObject();
-	}
+		parts[part]->makeObject();
 }
 
 
 void Level::makeObject() {
-	for(auto o : partLevel[currentPart]) {
+	for(auto o : parts[currentPart]) {
 		o->makeObject();
 	}
 
@@ -165,18 +181,11 @@ void Level::draw() {
 	glUseProgram(programms["minimal"]);
 	//	light.draw();
 	glUseProgram(0);
-	for(auto o : partLevel[currentPart]) {
-		glUseProgram(o->getProgramm());
-		o->draw();
-		glUseProgram(0);
-	}
+	parts[currentPart]->draw();
+	glUseProgram(0);
+	parts[nextPart]->draw();
 
 
-	for(auto o : partLevel[nextPart]) {
-		glUseProgram(o->getProgramm());
-		o->draw();
-		glUseProgram(0);
-	}
 	player->draw();
 }
 

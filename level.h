@@ -7,6 +7,7 @@
 #include "player.h"
 #include "camera.h"
 #include "gameCube.h"
+#include "partLevel.h"
 #include <iostream>
 #include <vector>
 #include <array>
@@ -31,7 +32,7 @@ class Level {
 	private:
 		std::map<std::string,GLuint> programms;
 		std::vector<GameObject*> objects;
-		std::array < std::vector<GameObject*>,3 > partLevel;
+		std::array < PartLevel,3 > parts;
 		Player* player;
 		Camera camera;
 		float gravity;
@@ -42,6 +43,9 @@ class Level {
 		int line,column;
 		float sizeRoad = 117.2f*2;
 		std::vector<int> tabLevel;
+		GameObject *road;
+		GameObject *bonus;
+		GameObject *wall;
 
 };
 
