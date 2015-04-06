@@ -40,9 +40,7 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 	glUniform1f(timeID["minimal"],time);
 	hud.update(level, dt);
 	skybox.update(level.getPlayer()->getPos());
-	for (Particles* particles : particlesTransmitter){
-		particles->update(dt);
-	}
+
 	light.update(level.getPlayer()->getPos());
 
 }
@@ -64,21 +62,12 @@ void Scene::draw() {
 	level.draw();
 	hud.draw();
 	skybox.draw();
-	for (Particles* particles : particlesTransmitter){
-		particles->draw();
-	}
+
 }
 
 void Scene::makeObject() {
 	level.makeObject();
-	for(Particles* particles : particlesTransmitter){
-		particles->make();
-	}
-}
 
-
-void Scene::addParticle(Particles* particles){
-	particlesTransmitter.push_back(particles);
 }
 
 Scene::~Scene() {

@@ -41,3 +41,9 @@ void Particles::draw() {
 		p->draw();
 	}
 }
+
+void Particles::setPosition(glm::vec3 pos){
+	for (auto p : particles){
+		p->setPosition(pos);
+	}
+}

@@ -26,6 +26,7 @@ class Player {
 		void draw();
 		glm::vec3 getOffset();
 		glm::vec3 getPos();
+		glm::vec3 getLastTouched();
 		int getLives();
 		double getScore();
 		glm::vec3 getUp();
@@ -40,6 +41,7 @@ class Player {
 		glm::vec3 position;
 		glm::vec3 direction;
 		glm::vec3 up;
+		glm::vec3 lastTouched;
 		float gravity;
 		float positions[3];
 		bool pressed[2];

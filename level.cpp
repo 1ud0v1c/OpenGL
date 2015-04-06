@@ -6,6 +6,7 @@ Level::Level(std::map<std::string,GLuint> programms) {
 	currentPart = 0;
 	numberOfChange = 0;
 	nextPart = 0;
+	lastTouched = glm::vec3(0,0,0);
 }
 
 Level::Level() {
@@ -83,6 +84,9 @@ void Level::loadNextPart() {
 	bonus->loadOBJ("bonus_score.obj");
 	addObject(bonus,nextPart);
 
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,offset[0],glm::vec3(1,0,1),10));
+	addParticle(transmitter);
+
 	makeObject(nextPart);
 }
 
@@ -121,6 +125,10 @@ void Level::init() {
 	GameObject *road = new GameObject("road",programms["minimal"], offsetRoad,"roat_texture_256.tga",false,glm::pi<float>()*90/180);
 	road->loadOBJ("road.obj");
 	addObject(road,currentPart);
+
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,offset[0],glm::vec3(1,0,1),10));
+	addParticle(transmitter);
+
 	loadNextPart();
 }
 
@@ -134,9 +142,19 @@ std::vector<GameObject*> Level::getObjects() {
 
 void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, partLevel[currentPart]);
+	glm::vec3 touched = player->getLastTouched();
+	if (touched.x != lastTouched.x && touched.y != lastTouched.y && touched.z != lastTouched.z){
+		std::cout << "COUCOU" << std::endl;
+		lastTouched = touched;
+		particlesTransmitter[0]->setPosition(lastTouched);
+
+	}
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
 	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {
 		loadNextPart();
+	}
+	for(Particles* particles : particlesTransmitter){
+		particles->update(dt);
 	}
 }
 
@@ -151,6 +169,9 @@ void Level::makeObject(int part) {
 	for(auto o : partLevel[part]) {
 		o->makeObject();
 	}
+	for(Particles* particles : particlesTransmitter){
+		particles->make();
+	}
 }
 
 
@@ -158,7 +179,9 @@ void Level::makeObject() {
 	for(auto o : partLevel[currentPart]) {
 		o->makeObject();
 	}
-
+	for(Particles* particles : particlesTransmitter){
+		particles->make();
+	}
 }
 
 void Level::draw() {
@@ -178,7 +201,16 @@ void Level::draw() {
 		glUseProgram(0);
 	}
 	player->draw();
+	for(Particles* particles : particlesTransmitter){
+		particles->draw();
+	}
+
 }
+
+void Level::addParticle(Particles* particles){
+	particlesTransmitter.push_back(particles);
+}
+
 
 Camera Level::getCamera() {
 	return camera;
