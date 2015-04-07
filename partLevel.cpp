@@ -55,6 +55,14 @@ std::vector<GameObject*> PartLevel::getVector() {
 	}
 	return o;
 }
+
+void PartLevel::resetVBO(){
+	for (auto object : objects){
+		object.second->resetVBO();
+	}
+
+}
+
 void PartLevel::makePart() {
 	for(auto o : objects) {
 		glUseProgram(o.second->getProgramm());

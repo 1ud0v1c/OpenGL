@@ -79,12 +79,10 @@ void Level::loadNextPart() {
 
 	parts[nextPart].setOffset(offsets);
 
-	parts[nextPart].makePart();
+	parts[nextPart].resetVBO();
 	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,offset[0],glm::vec3(1,0,1),10));
 	addParticle(transmitter);
 
-
-	parts[currentPart].makePart();
 }
 
 void Level::init() {
@@ -138,10 +136,11 @@ void Level::init() {
 	for(int i=0;i<parts.size();i++) {
 
 		parts[i].init();
+		parts[i].makePart();
 
 	}
 	parts[currentPart].setOffset(offsets);
-	parts[currentPart].makePart();
+	parts[currentPart].resetVBO();
 	loadNextPart();
 
 }

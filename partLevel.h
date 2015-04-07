@@ -17,6 +17,7 @@ class PartLevel {
 		void initOffset(std::map<std::string, std::vector<glm::vec3> > &offsets);
 		std::vector<GameObject*> getVector();
 
+		void resetVBO();
 
 	private:
 		std::map<std::string,GLuint> programms;
