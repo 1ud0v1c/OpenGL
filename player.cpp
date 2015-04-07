@@ -9,10 +9,16 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
      lastTouched = glm::vec3(0,0,0);
 
      std::vector<glm::vec3> offsetVect;
-     offsetVect.push_back(glm::vec3(0.0f,-1.0f,0.0f));
+     offsetVect.push_back(glm::vec3(1.0f,-2.0f,0.0f));
 //   playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offsetVect,"checkerboard.tga",true);
-	 playerObject = new GameObject("player",programms["player"], offsetVect,"roat_texture_256.tga",true);
-	 playerObject->loadOBJ("character/character.obj");
+	 int i = 0;
+	 for(auto &object: playerObject){ 
+		object = new GameObject("player",programms["player"], offsetVect,"roat_texture_256.tga",true);
+		object->loadOBJ("character/character" + std::to_string(i) + ".obj");
+		i++;
+	 }
+	 currentPlayerIndex = 0;
+	 timerChangePlayer = 0;
 	 this->gravity = gravity;
 	 direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
 	 this->offset = offsetVect[0];
@@ -30,23 +36,34 @@ glm::vec3 Player::getOffset() {
 
 void Player::init() {
 	glUseProgram(programms["player"]);
-	playerObject->makeObject();
+	for(auto &object: playerObject){ 
+		object->makeObject();
+	}
 	glUseProgram(0);
 }
 
 void Player::movePlayer() {
-	playerObject->moveObject(position);	
+	playerObject[currentPlayerIndex]->moveObject(position);	
 }
 
 void Player::draw() {
 
 	glUseProgram(programms["player"]);
-	playerObject->draw();
+	playerObject[currentPlayerIndex]->draw();
 
 	glUseProgram(0);
 }
 
 void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects){
+
+	 timerChangePlayer+=dt;
+
+	 if(timerChangePlayer > 0.033){
+		//std::cout << currentPlayerIndex << std::endl;
+		currentPlayerIndex++;
+		currentPlayerIndex = currentPlayerIndex%(playerObject.size());
+		timerChangePlayer = 0;
+	 }
 
      updatePos(window,dt);
      score += dt;
@@ -61,7 +78,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
      int index = 0;
      for(auto object : objects) {
 	     if(object->getName()!="road") {
-		     if(playerObject->isColliding(object)) {
+		     if(playerObject[currentPlayerIndex]->isColliding(object)) {
 			     int x = position.x;
 			     float maxY = 10000.0f;
 			     float maxZ = 10000.0f;

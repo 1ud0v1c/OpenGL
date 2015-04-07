@@ -46,7 +46,9 @@ class Player {
 		float positions[3];
 		bool pressed[2];
 		int currentPositionIndex;
-		GameObject *playerObject;
+		std::array<GameObject *,19> playerObject;
+		int currentPlayerIndex;
+		float timerChangePlayer;
 		std::map<std::string , GLuint> programms;
 		float invicibleTime;
 		bool isInvicible = false;
@@ -58,5 +60,6 @@ class Player {
 		bool isMovingAuto = false;
 		bool pressR = false;
 		glm::vec3 offset;
+
 };
 #endif
