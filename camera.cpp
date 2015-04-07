@@ -9,7 +9,7 @@ Camera::Camera() {
 
 void Camera::update(float dt, GLFWwindow *window, glm::vec3 position, glm::vec3 direction, glm::vec3 up,glm::vec3 offset) {
 
-	projection = glm::perspective(initialFoV, 4.0f / 3.0f, 0.1f, 2000.0f);
+	projection = glm::perspective(42.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
 	view = glm::lookAt(
 			  position+direction+offset, // Camera is here
 			  position+offset, // and looks here : at the same position, plus "direction"

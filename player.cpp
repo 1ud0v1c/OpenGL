@@ -6,6 +6,7 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
      speed = 10.0f;
      invicibleTime = 0;
      this->programms = programms;
+     lastTouched = glm::vec3(0,0,0);
 
      std::vector<glm::vec3> offsetVect;
      offsetVect.push_back(glm::vec3(0.0f,-1.0f,0.0f));
@@ -45,48 +46,64 @@ void Player::draw() {
 	glUseProgram(0);
 }
 
-void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
+void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects){
 
-	updatePos(window,dt);
-	score += dt;
+     updatePos(window,dt);
+     score += dt;
 
-	if(invicibleTime < 1 && isInvicible==true) {
-		invicibleTime += dt;
-	}else {
-		isInvicible = false;
-		invicibleTime = 0;
-	}
+     if(invicibleTime < 1 && isInvicible==true) {
+	  invicibleTime += dt;
+     }else {
+	  isInvicible = false;
+	  invicibleTime = 0;
+     }
 
-	int index = 0;
-	for(auto object : objects) {
-		if(object->getName()!="road") {
-			if(playerObject->isColliding(object)) {
-				//	std::cout << object->getName() << " touch" <<std::endl;
-				if(object->getName() == "wall" && isInvicible==false){
-					SoundGameEngine::play("hit_wall.ogg",false);
-					lives -= 1;
-					isInvicible = true;
-				}else if(object->getName() == "bonusLife"){
-					lives += 1;
-				}else if(object->getName() == "bonusScore"){
-
-					SoundGameEngine::play("bonus2.ogg",false);
-					std::cout << "touch bonus" <<std::endl;
-					score += 250.0;
-				}else if(object->getName() == "bonusSpeed"){
-					speed += 1.0f;
-				}
-			} else {
-
-			}
-		}
-		index++;
-	}
-	movePlayer();
+     int index = 0;
+     for(auto object : objects) {
+	     if(object->getName()!="road") {
+		     if(playerObject->isColliding(object)) {
+			     int x = position.x;
+			     float maxY = 10000.0f;
+			     float maxZ = 10000.0f;
+			     //	std::cout << object->getName() << " touch" <<std::endl;
+			     if(object->getName() == "wall" && isInvicible==false){
+				     SoundGameEngine::play("hit_wall.ogg",false);
+				     lives -= 1;
+				     isInvicible = true;
+			     }else if(object->getName() == "bonusLife"){
+				     lives += 1;
+			     }else if(object->getName() == "bonusScore"){
+				     std::vector<glm::vec3> offsets = object->getOffset(x);
+				     int index=0;
+				     for (int i=0; i<offsets.size(); i++){
+					     if (glm::abs(offsets[i].y-position.y) < maxY && glm::abs(offsets[i].z-position.z) < maxZ){
+						     maxY = offsets[i].y;
+						     maxZ = offsets[i].z;
+						     index = i;
+					     }
+				     }
+				     lastTouched = offsets[index];
+				     object->removeOffset(lastTouched);
+				     object->resetVBO();
+				     SoundGameEngine::play("bonus2.ogg",false);
+				     std::cout << "touch bonus" <<std::endl;
+				     score += 250.0;
+			     }else if(object->getName() == "bonusSpeed"){
+				     speed += 1.0f;
+			     }
+		     } 	 
+	     }
+	     index++;
+     }
+     movePlayer();
 }
 
 int Player::getLives(){
 	return lives;
+}
+
+glm::vec3 Player::getLastTouched(){
+	return lastTouched;
 }
 
 void Player::updatePos(GLFWwindow *window,float dt) {

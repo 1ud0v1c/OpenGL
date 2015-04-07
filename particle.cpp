@@ -21,6 +21,14 @@ Particle::Particle(Particle *p) {
 int Particle::getCycle() {
 	return cycle;
 }
+void Particle::setPosition(glm::vec3 pos){
+	glUseProgram(programm);
+	GLuint positionBuffer;
+	GLuint loc =glGetUniformLocation(programm, "moveOffset");
+	glUniform3f(loc,pos[0],pos[1],pos[2]);
+	this->pos = pos;
+	glUseProgram(0);
+}
 
 glm::vec3 Particle::sphereDirection(double theta, double phi) {
 	float x,y,z;

@@ -18,6 +18,7 @@ class Particle {
 		void draw();
 		glm::vec3 sphereDirection(double theta, double phi);
 		Particle(Particle *p);
+		void setPosition(glm::vec3 pos);
 		void update(float dt);
 		float time;
 	private:
