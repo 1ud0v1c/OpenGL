@@ -4,13 +4,13 @@
 #include <sstream> 
 #include <iomanip>
 
-GameText::GameText(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const char* police, const char* text, int x, int y) : GameObject(name,programm,offset) {
+GameText::GameText(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const char* police, const char* text, int x, int y, int size) : GameObject(name,programm,offset) {
 	this->police = std::string(police);
 	this->text = std::string(text);
-	textureID = loadDDS(police);
 	this->x = x;
 	this->y = y;
-	size = 40;
+	this->size = size;
+	textureID = loadDDS(police);
 }
 
 GLuint GameText::getProgramm() {
@@ -31,6 +31,12 @@ void GameText::update(float dt) {
 void GameText::update(int lifes) {
 	std::ostringstream out;  
 	out << lifes << "x"; 
+	text = out.str(); 
+}
+
+void GameText::update(double score) {
+	std::ostringstream out;  
+	out << std::setprecision(0) << std::fixed << score; 
 	text = out.str(); 
 }
 
@@ -68,29 +74,6 @@ void GameText::draw() {
 		UVs.push_back(uv_down_right);
 		UVs.push_back(uv_up_right);
 		UVs.push_back(uv_down_left);
-
-		// Vertex tmp;
-
-		// tmp.addPosition(glm::vec3(x+i*size, y+size, 0));
-		// tmp.addPosition(glm::vec3(x+i*size, y, 0));
-		// tmp.addPosition(glm::vec3(x+i*size+size, y+size, 0));
-		// tmp.addPosition(glm::vec3(x+i*size+size, y, 0));
-		// tmp.addPosition(glm::vec3(x+i*size+size, y+size, 0));
-		// tmp.addPosition(glm::vec3(x+i*size, y, 0));
-
-		// char character = text[i];
-		// float uv_x = (character%16)/16.0f;
-		// float uv_y = (character/16)/16.0f;
-
-		// glm::vec2 uv_up_left    = glm::vec2( uv_x           , uv_y );
-		// glm::vec2 uv_up_right   = glm::vec2( uv_x+1.0f/16.0f, uv_y );
-		// glm::vec2 uv_down_right = glm::vec2( uv_x+1.0f/16.0f, (uv_y + 1.0f/16.0f) );
-		// glm::vec2 uv_down_left  = glm::vec2( uv_x           , (uv_y + 1.0f/16.0f) );
-
-		// tmp.addUv(uv_down_right, uv_up_right, uv_down_left);
-		// tmp.addUv(uv_up_left, uv_down_left, uv_up_right);
-
-		// mesh.addVertex(tmp);
 	}
 
 	text2DUniformID = glGetUniformLocation(programm, "textTexture");
@@ -127,6 +110,10 @@ void GameText::draw() {
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 	glDisable(GL_BLEND);
 	glBindVertexArray(0);
+}
+
+void GameText::setText(std::string text) {
+	this->text = text;
 }
 
 GameText::~GameText() {

@@ -62,7 +62,6 @@ void Game::renderFrame() {
 }
 
 void Game::run() {
-
 	SoundGameEngine::play("breakout.ogg",true);
 	scene = Scene();
 	scene.init(programms);
@@ -86,9 +85,6 @@ void Game::run() {
 		time=0;
 		time2+=0.01;
 		scene.update(time2,window,dt);
-		if(scene.isOver()) {
-			break;
-		}
 		glfwPollEvents();
 		renderFrame();
 	}

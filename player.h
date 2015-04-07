@@ -30,6 +30,7 @@ class Player {
 		int getLives();
 		double getScore();
 		glm::vec3 getUp();
+		bool getPressR();
 		glm::vec3 getDir();
 		void updatePos(GLFWwindow *window,float dt);
 

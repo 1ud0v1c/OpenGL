@@ -5,13 +5,15 @@
 
 class GameText : public GameObject {
 	public:
-		GameText(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const char* police, const char* text, int x, int y); 
+		GameText(const std::string &name, GLuint &programm, std::vector<glm::vec3> &offset, const char* police, const char* text, int x, int y, int size); 
 		~GameText();
 		GLuint getProgramm();
 		void makeObject();
 		void draw();
 		void update(float dt);
 		void update(int lifes);
+		void update(double score);
+		void setText(std::string text);
 
 	protected:
 		std::string police;

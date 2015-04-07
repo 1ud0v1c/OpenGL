@@ -27,8 +27,6 @@ void Level::loadLevel(const std::string path) {
 	while (data_input >> d) { 
 		tabLevel.push_back(d); 
 	} 
-
-
 }
 
 void Level::loadNextPart() {
@@ -36,7 +34,9 @@ void Level::loadNextPart() {
 	nextPart++;
 	numberOfChange++;
 
-	if(nextPart==3) nextPart = 0;
+	if(nextPart==3) {
+		nextPart = 0;
+	}
 
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
@@ -46,7 +46,7 @@ void Level::loadNextPart() {
 	std::vector<glm::vec3> offsetBonus;
 
 	int j = 0;
-	int i=0;
+	int i = 0;
 	for(auto pos : tabLevel) {
 		if(pos==1) {
 			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f, -sizeRoad/2+j*sizeRoad/column+sizeRoad*numberOfChange));
