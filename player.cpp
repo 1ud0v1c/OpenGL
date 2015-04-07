@@ -104,10 +104,10 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 					}
 					std::cout << glm::abs(offsets[index].z -position.z) << ", offset  z : " << offsets[index].z << ", position z " << position.z  << std::endl;
 
-					if(offsets[index].z -position.z > 10) {
+					if(offsets[index].z -position.z > 5) {
 						continue;
 					}
-					else if(offsets[index].z -position.z < -10) {
+					else if(offsets[index].z -position.z < -5) {
 						object->removeOffset(offsets[index]);
 						continue;
 					}

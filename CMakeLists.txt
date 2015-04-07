@@ -27,6 +27,7 @@ set(GL_LIBRARIES ${OPENGL_LIBRARIES} GLEW)
 if(APPLE)
  set(CMAKE_CXX_FLAGS "-stdlib=libc++ ${CMAKE_CXX_FLAGS}")
  SET(APPLE_FRAMEWORKS "-framework Cocoa -framework IOkit -framework CoreVideo")
+ FIND_LIBRARY(IRRKLANG_LIB NAMES libirrklang.dylib ikpMP3.dylib ikpFLAC.dylib PATHS "./lib")
 endif(APPLE)
 ###  OpenGL  ###}}}
 
