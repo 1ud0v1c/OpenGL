@@ -52,7 +52,7 @@ void Player::draw() {
 	glUseProgram(0);
 }
 
-void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects){
+void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects, int currentLevel){
 	timerChangePlayer+=dt;
 	if(timerChangePlayer > 0.033){
 		currentPlayerIndex++;
@@ -60,7 +60,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 		timerChangePlayer = 0;
 	}
 
-	score += dt;
+	score += dt*(currentLevel*currentLevel)*speed/3;
 
 	updatePos(window,dt);
 	if(invicibleTime < 1 && isInvicible==true) {
@@ -152,12 +152,19 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 			cos(horizontalAngle - 3.14f/2.0f)
 			);
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
-		position -= direction * dt * speed;
+		speed += 1; 
+		if(speed > 20) {
+			speed = 20;
+		}
 	}
 	// Move backward
 	if (glfwGetKey( window,GLFW_KEY_DOWN ) == GLFW_PRESS){
-		position += direction * dt * speed;
+		speed -= 1;
+		if(speed < 3) {
+			speed = 3;
+		}
 	}
+
 	// Strafe right
 	if (glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_RELEASE){
 		currentPositionIndex--;
@@ -190,21 +197,19 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 
 	position -= direction * dt * speed;
 
-
 	direction=	 glm::vec3(
 			5*cos(verticalAngle) * sin(horizontalAngle),
 			5*sin(verticalAngle),
 			5*cos(verticalAngle) * cos(horizontalAngle)
-			);
+	);
 
 	right = glm::vec3(
 			sin(horizontalAngle - 3.14f/2.0f),
 			0,
 			cos(horizontalAngle - 3.14f/2.0f)
-			);
+	);
 
 	up = -glm::cross( right, direction );
-
 
 	dy -= gravity*dt;
 	position.y +=dy*dt;

@@ -13,6 +13,7 @@ class GameText : public GameObject {
 		void update(float dt);
 		void update(int lifes);
 		void update(double score);
+		void updateLevels(int levels);
 		void setText(std::string text);
 
 	protected:

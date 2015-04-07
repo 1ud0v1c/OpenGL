@@ -173,13 +173,13 @@ std::vector<GameObject*> Level::getObjects() {
 }
 
 void Level::update(float time,GLFWwindow *window, float dt) {
-	player->update(time,window,dt, parts[currentPart].getVector());
+	player->update(time,window,dt, parts[currentPart].getVector(), currentLevel);
 	glm::vec3 touched = player->getLastTouched();
 	if (touched.x != lastTouched.x && touched.y != lastTouched.y && touched.z != lastTouched.z){
 		lastTouched = touched;
 		particlesTransmitter[0]->setPosition(lastTouched);
 	}
-	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
+	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset()+glm::vec3(0,5,0));
 	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {
 		loadNextPart();
 	}
@@ -196,7 +196,7 @@ void Level::setType(GLuint type) {
 }
 
 int Level::getCurrentLevel(){
-	return currentLevel;
+	return currentLevel+1;
 }
 
 void Level::makeObject(int part) {

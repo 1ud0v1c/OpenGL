@@ -34,6 +34,12 @@ void GameText::update(int lifes) {
 	text = out.str(); 
 }
 
+void GameText::updateLevels(int levels) {
+	std::ostringstream out;  
+	out << "Level : " << levels; 
+	text = out.str(); 
+}
+
 void GameText::update(double score) {
 	std::ostringstream out;  
 	out << std::setprecision(0) << std::fixed << score; 

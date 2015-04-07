@@ -16,7 +16,6 @@ void Camera::update(float dt, GLFWwindow *window, glm::vec3 position, glm::vec3 
 			position+offset, // and looks here : at the same position, plus "direction"
 			up // Head is up (set to 0,-1,0 to look upside-down)
 			);
-
 }
 
 
