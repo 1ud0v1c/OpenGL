@@ -29,6 +29,7 @@ class Level {
 		Player* getPlayer();
 		void loadLevel(const std::string path);
 		void loadNextPart();
+		int getCurrentLevel();
 		void makeObject(int part);
 		void addParticle(Particles* particle);
 
@@ -42,6 +43,7 @@ class Level {
 		Camera camera;
 		float gravity;
 		int currentLevel;
+		int currentLevelFile;
 		int currentPart;
 		int nextPart;
 		int numberOfChange;

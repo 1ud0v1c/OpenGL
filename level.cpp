@@ -1,4 +1,5 @@
 #include <iostream>
+#include <time.h>
 #include "level.h"
 
 Level::Level(std::map<std::string,GLuint> programms) {
@@ -20,7 +21,7 @@ void Level::loadLevel(const std::string path) {
 	std::ifstream data_input; 
 	data_input.open(path);
 	double d;
-
+	tabLevel.clear();
 	std::vector<double> v;
 	data_input >> line;
 	data_input >> column;
@@ -36,7 +37,16 @@ void Level::loadNextPart() {
 	nextPart++;
 	numberOfChange++;
 
-	if(nextPart==3) nextPart = 0;
+	if(nextPart==3) {
+		nextPart = 0;
+		if(currentLevelFile == 2){
+			currentLevelFile = 0;
+		}else {
+			currentLevelFile++;
+		}
+		currentLevel++;
+		loadLevel( "./level/level"+std::to_string(currentLevelFile)+".txt");
+	}
 
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
@@ -44,7 +54,8 @@ void Level::loadNextPart() {
 	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
 	std::vector<glm::vec3> offsetBonus;
-
+	srand(time(NULL));
+	int randomValue;
 	int j = 0;
 	int i=0;
 	for(auto pos : tabLevel) {
@@ -61,7 +72,10 @@ void Level::loadNextPart() {
 
 	for(auto pos : tabLevel) {
 		if(pos==0) {
-			offsetBonus.push_back(glm::vec3(i*4-11,-1.0f, -sizeRoad/2 + (j*sizeRoad/column) + sizeRoad*numberOfChange));
+			randomValue = rand() % 100;
+			if(randomValue > 50 ){
+				offsetBonus.push_back(glm::vec3(i*4-11,-1.0f, -sizeRoad/2 + (j*sizeRoad/column) + sizeRoad*numberOfChange));
+			}
 		}
 		j++;
 
@@ -87,6 +101,7 @@ void Level::loadNextPart() {
 
 void Level::init() {
 	currentLevel = 0;
+	currentLevelFile = 0;
 	gravity = 9.81f;
 	std::vector<glm::vec3> offsetRoad;
 	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,0.0f));
@@ -94,6 +109,8 @@ void Level::init() {
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,0.0f));
 
 	std::vector<glm::vec3> offset;
+	int randomValue;
+	srand(time(NULL));
 
 	loadLevel("./level/level0.txt");
 
@@ -114,8 +131,12 @@ void Level::init() {
 	std::vector<glm::vec3> offsetBonus;
 
 	for(auto pos : tabLevel) {
+
 		if(pos==0) {
-			offsetBonus.push_back(glm::vec3(i*4-11,-1.0f,j*sizeRoad/column));
+			randomValue = rand() % 100;
+			if(randomValue > 50 ){
+				offsetBonus.push_back(glm::vec3(i*4-11,-1.0f,j*sizeRoad/column));
+			}
 		}
 		j++;
 
@@ -174,6 +195,10 @@ void Level::setType(GLuint type) {
 		>>>>>>> cb5e8b15a610b08e1b18aa9558942c44473ceabc
 		o->setType(type);
 		}*/
+}
+
+int Level::getCurrentLevel(){
+	return currentLevel;
 }
 
 void Level::makeObject(int part) {
