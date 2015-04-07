@@ -12,10 +12,10 @@ void Camera::update(float dt, GLFWwindow *window, glm::vec3 position, glm::vec3 
 
 	projection = glm::perspective(42.0f, 4.0f / 3.0f, 0.1f, 2000.0f);
 	view = glm::lookAt(
-			  position+direction+offset, // Camera is here
-			  position+offset, // and looks here : at the same position, plus "direction"
-			  up // Head is up (set to 0,-1,0 to look upside-down)
-			  );
+			position+direction+offset, // Camera is here
+			position+offset, // and looks here : at the same position, plus "direction"
+			up // Head is up (set to 0,-1,0 to look upside-down)
+			);
 
 }
 
