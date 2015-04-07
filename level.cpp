@@ -93,13 +93,13 @@ void Level::loadNextPart() {
 	parts[nextPart].setOffset(offsets);
 
 	parts[nextPart].resetVBO();
-	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
-	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
-	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(offsetRoad[0].x+150,offsetRoad[0].y,offsetRoad[0].z),glm::vec3(1,0,1),10));
+	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(offsetRoad[0].x+150,offsetRoad[0].y,offsetRoad[0].z-50),glm::vec3(0,1,0),10));
+	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(offsetRoad[0].x+150,offsetRoad[0].y,offsetRoad[0].z-100),glm::vec3(0,0,1),10));
 
-	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(-150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
-	Particles* transmitter4 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(-150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
-	Particles* transmitter5 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(-150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
+	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(offsetRoad[0].x-150,offsetRoad[0].y,offsetRoad[0].z),glm::vec3(1,0,1),10));
+	Particles* transmitter4 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(offsetRoad[0].x-150,offsetRoad[0].y,offsetRoad[0].z-50),glm::vec3(0,1,0),10));
+	Particles* transmitter5 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(offsetRoad[0].x-150,offsetRoad[0].y,offsetRoad[0].z-100),glm::vec3(0,0,1),10));
 
 	addParticle(transmitter);
 	addParticle(transmitter1);
@@ -175,21 +175,6 @@ void Level::init() {
 	parts[currentPart].setOffset(offsets);
 	parts[currentPart].resetVBO();
 	loadNextPart();
-	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
-	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
-	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
-
-	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(-150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
-	Particles* transmitter4 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(-150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
-	Particles* transmitter5 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(-150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
-
-	addParticle(transmitter);
-	addParticle(transmitter1);
-	addParticle(transmitter2);
-
-	addParticle(transmitter3);
-	addParticle(transmitter4);
-	addParticle(transmitter5);
 }
 
 void Level::addObject(GameObject *object,int part)  {
