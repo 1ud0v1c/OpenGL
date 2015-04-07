@@ -59,6 +59,7 @@ class Player {
 		bool isJumping = false;
 		bool isMovingAuto = false;
 		bool pressR = false;
+		float timeTouchingBonus=0.0f;
 		glm::vec3 offset;
 
 };

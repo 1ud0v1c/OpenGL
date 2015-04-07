@@ -38,16 +38,12 @@ void Level::loadNextPart() {
 
 	if(nextPart==3) nextPart = 0;
 
-
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
 	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
 	std::vector<glm::vec3> offsetBonus;
-
-
-
 
 	int j = 0;
 	int i=0;
@@ -65,7 +61,7 @@ void Level::loadNextPart() {
 
 	for(auto pos : tabLevel) {
 		if(pos==0) {
-			offsetBonus.push_back(glm::vec3(i*5-16,-1.0f,-sizeRoad/2 + j*sizeRoad/column+sizeRoad*numberOfChange));
+			offsetBonus.push_back(glm::vec3(i*4-11,-1.0f, -sizeRoad/2 + (j*sizeRoad/column) + sizeRoad*numberOfChange));
 		}
 		j++;
 
@@ -76,7 +72,7 @@ void Level::loadNextPart() {
 	}
 
 
-		std::map<std::string, std::vector<glm::vec3> > offsets;
+	std::map<std::string, std::vector<glm::vec3> > offsets;
 	offsets["wall"] = offset;
 	offsets["road"] = offsetRoad;
 	offsets["bonus"] = offsetBonus;
@@ -121,7 +117,7 @@ void Level::init() {
 
 	for(auto pos : tabLevel) {
 		if(pos==0) {
-			offsetBonus.push_back(glm::vec3(i*5-16,-1.0f,-sizeRoad/2 + j*sizeRoad/column+sizeRoad*numberOfChange));
+			offsetBonus.push_back(glm::vec3(i*4-11,-1.0f,j*sizeRoad/column));
 		}
 		j++;
 
@@ -131,13 +127,10 @@ void Level::init() {
 		}
 	}
 
-	
 	player = new Player(gravity*10,programms);
 	player->init();
 
-
-
-		std::map<std::string, std::vector<glm::vec3> > offsets;
+	std::map<std::string, std::vector<glm::vec3> > offsets;
 	offsets["wall"] = offset;
 	offsets["road"] = offsetRoad;
 	offsets["bonus"] = offsetBonus;
@@ -154,7 +147,7 @@ void Level::init() {
 }
 
 void Level::addObject(GameObject *object,int part)  {
-//	partLevel[part].push_back(object);
+	//	partLevel[part].push_back(object);
 }
 
 std::vector<GameObject*> Level::getObjects() {
@@ -165,10 +158,8 @@ void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, parts[currentPart].getVector());
 	glm::vec3 touched = player->getLastTouched();
 	if (touched.x != lastTouched.x && touched.y != lastTouched.y && touched.z != lastTouched.z){
-		std::cout << "COUCOU" << std::endl;
 		lastTouched = touched;
 		particlesTransmitter[0]->setPosition(lastTouched);
-
 	}
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
 	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {
@@ -180,15 +171,15 @@ void Level::update(float time,GLFWwindow *window, float dt) {
 }
 
 void Level::setType(GLuint type) {
-/*	for(auto o : parts) {
->>>>>>> cb5e8b15a610b08e1b18aa9558942c44473ceabc
+	/*	for(auto o : parts) {
+		>>>>>>> cb5e8b15a610b08e1b18aa9558942c44473ceabc
 		o->setType(type);
-	}*/
+		}*/
 }
 
 void Level::makeObject(int part) {
 
-		parts[part].makePart();
+	parts[part].makePart();
 	for(Particles* particles : particlesTransmitter){
 		particles->make();
 	}
@@ -197,7 +188,7 @@ void Level::makeObject(int part) {
 
 void Level::makeObject() {
 
-		parts[currentPart].makePart();
+	parts[currentPart].makePart();
 
 	for(Particles* particles : particlesTransmitter){
 		particles->make();

@@ -17,9 +17,7 @@ void GameObject::setUnit(int unit) {
 }
 
 
-
 void  GameObject::moveObject(glm::vec3 position) {
-
 	glUseProgram(programm);
 	GLuint positionBuffer;
 	GLuint loc =glGetUniformLocation(programm, "moveOffset");
@@ -155,6 +153,7 @@ void GameObject::draw() {
 	glBindVertexArray(0);
 }
 
+
 bool GameObject::isColliding(GameObject* go){
 	std::vector<glm::vec3> centers = this->initCenter();
 	std::vector<glm::vec3> other_centers =go->initCenter();
@@ -185,7 +184,11 @@ std::vector<glm::vec3> GameObject::getOffset(int x){
 	int xt;
 	if (x == 8){
 		xt= 9;
-	}else xt = x;
+	} else if(x == 4) {
+		xt = 5;
+	} else {
+		xt = x;
+	}
 	for (glm::vec3 off : offset){
 		if (off.x == xt){
 			resultSet.push_back(off);
