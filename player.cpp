@@ -1,33 +1,33 @@
 #include "player.h"
 
 Player::Player(float gravity, std::map<std::string , GLuint> programms) {
-     lives = 100;
-     score = 0;
-     speed = 10.0f;
-     invicibleTime = 0;
-     this->programms = programms;
-     lastTouched = glm::vec3(0,0,0);
+	lives = 100;
+	score = 0;
+	speed = 10.0f;
+	invicibleTime = 0;
+	this->programms = programms;
+	lastTouched = glm::vec3(0,0,0);
 
-     std::vector<glm::vec3> offsetVect;
-     offsetVect.push_back(glm::vec3(1.0f,-2.0f,0.0f));
-//   playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offsetVect,"checkerboard.tga",true);
-	 int i = 0;
-	 for(auto &object: playerObject){ 
+	std::vector<glm::vec3> offsetVect;
+	offsetVect.push_back(glm::vec3(1.0f,-2.0f,0.0f));
+	//   playerObject = new GameSphere("sphere",programms["player"],0.25,glm::vec3(1,1,1),offsetVect,"checkerboard.tga",true);
+	int i = 0;
+	for(auto &object: playerObject){ 
 		object = new GameObject("player",programms["player"], offsetVect,"roat_texture_256.tga",true);
 		object->loadOBJ("character/character" + std::to_string(i) + ".obj");
 		i++;
-	 }
-	 currentPlayerIndex = 0;
-	 timerChangePlayer = 0;
-	 this->gravity = gravity;
-	 direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
-	 this->offset = offsetVect[0];
-	 currentPositionIndex = 0;
-	 positions[0] = 0.0f;
-	 positions[1] = 4.4f;
-	 positions[2] = 8.8f;
-	 pressed[0] = false;
-	 pressed[1] = false;
+	}
+	currentPlayerIndex = 0;
+	timerChangePlayer = 0;
+	this->gravity = gravity;
+	direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
+	this->offset = offsetVect[0];
+	currentPositionIndex = 0;
+	positions[0] = 0.0f;
+	positions[1] = 4.4f;
+	positions[2] = 8.8f;
+	pressed[0] = false;
+	pressed[1] = false;
 }
 
 glm::vec3 Player::getOffset() {
@@ -56,63 +56,76 @@ void Player::draw() {
 
 void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects){
 
-	 timerChangePlayer+=dt;
+	timerChangePlayer+=dt;
 
-	 if(timerChangePlayer > 0.033){
+	if(timerChangePlayer > 0.033){
 		//std::cout << currentPlayerIndex << std::endl;
 		currentPlayerIndex++;
 		currentPlayerIndex = currentPlayerIndex%(playerObject.size());
 		timerChangePlayer = 0;
-	 }
+	}
 
-     updatePos(window,dt);
-     score += dt;
+	score += dt;
 
-     if(invicibleTime < 1 && isInvicible==true) {
-	  invicibleTime += dt;
-     }else {
-	  isInvicible = false;
-	  invicibleTime = 0;
-     }
+	updatePos(window,dt);
+	if(invicibleTime < 1 && isInvicible==true) {
+		invicibleTime += dt;
+	}else {
+		isInvicible = false;
+		invicibleTime = 0;
+	}
 
-     int index = 0;
-     for(auto object : objects) {
-	     if(object->getName()!="road") {
-		     if(playerObject[currentPlayerIndex]->isColliding(object)) {
-			     int x = position.x;
-			     float maxY = 10000.0f;
-			     float maxZ = 10000.0f;
-			     //	std::cout << object->getName() << " touch" <<std::endl;
-			     if(object->getName() == "wall" && isInvicible==false){
-				     SoundGameEngine::play("hit_wall.ogg",false);
-				     lives -= 1;
-				     isInvicible = true;
-			     }else if(object->getName() == "bonusLife"){
-				     lives += 1;
-			     }else if(object->getName() == "bonusScore"){
-				     std::vector<glm::vec3> offsets = object->getOffset(x);
-				     int index=0;
-				     for (int i=0; i<offsets.size(); i++){
-					     if (glm::abs(offsets[i].y-position.y) < maxY && glm::abs(offsets[i].z-position.z) < maxZ){
-						     maxY = offsets[i].y;
-						     maxZ = offsets[i].z;
-						     index = i;
-					     }
-				     }
-				     lastTouched = offsets[index];
-				     object->removeOffset(lastTouched);
-				     object->resetVBO();
-				     SoundGameEngine::play("bonus2.ogg",false);
-				     std::cout << "touch bonus" <<std::endl;
-				     score += 250.0;
-			     }else if(object->getName() == "bonusSpeed"){
-				     speed += 1.0f;
-			     }
-		     } 	 
-	     }
-	     index++;
-     }
-     movePlayer();
+	int index = 0;
+	for(auto object : objects) {
+		if(object->getName()!="road") {
+			if(playerObject[currentPlayerIndex]->isColliding(object)) {
+				int x = position.x;
+				float maxY = 10000.0f;
+				float maxZ = 10000.0f;
+
+				if(object->getName() == "wall" && isInvicible==false) {
+					SoundGameEngine::play("hit_wall.ogg",false);
+					lives -= 1;
+					isInvicible = true;
+				} else if(object->getName() == "bonusLife") {
+					lives += 1;
+				} else if(object->getName() == "bonusScore") {
+
+					std::vector<glm::vec3> offsets = object->getOffset(x);
+					std::cout << offsets.size() << std::endl;
+
+					int index=0;
+					for (int i=0; i<offsets.size(); i++){
+						if (glm::abs(offsets[i].y-position.y) < maxY && glm::abs(offsets[i].z-position.z) < maxZ){
+							maxY = offsets[i].y;
+							maxZ = offsets[i].z;
+							index = i;
+						}
+					}
+					std::cout << glm::abs(offsets[index].z -position.z) << ", offset  z : " << offsets[index].z << ", position z " << position.z  << std::endl;
+
+					if(offsets[index].z -position.z > 10) {
+						continue;
+					}
+					else if(offsets[index].z -position.z < -10) {
+						object->removeOffset(offsets[index]);
+						continue;
+					}
+
+					lastTouched = offsets[index];
+					object->removeOffset(lastTouched);
+					object->resetVBO();
+					SoundGameEngine::play("bonus2.ogg",false);
+					std::cout << "touch bonus" <<std::endl;
+					score += 250.0;
+				}else if(object->getName() == "bonusSpeed"){
+					speed += 1.0f;
+				}
+			} 	 
+		}
+		index++;
+	}
+	movePlayer();
 }
 
 int Player::getLives(){
@@ -160,6 +173,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 		}
 		std::cout << "position" << currentPositionIndex << " " << positions[currentPositionIndex] << std::endl;
 		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
+		std::cout << "x : " << position.x << ", y : " << position.y <<", z : " << position.z << std::endl;
 	}
 	// Strafe left
 	if (glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_RELEASE ){
@@ -169,6 +183,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 		}
 		std::cout << "position" << currentPositionIndex << " " << positions[currentPositionIndex] << std::endl;
 		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
+		std::cout << "x : " << position.x << ", y : " << position.y <<", z : " << position.z << std::endl;
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE) {

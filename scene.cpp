@@ -49,7 +49,7 @@ bool Scene::isOver() {
 	if(level.getPlayer()->getLives()<=0) {
 		return true;
 	}
-	else return false;
+	return false;
 }
 
 

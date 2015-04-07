@@ -25,8 +25,8 @@ void PartLevel::init() {
 	road->loadOBJ("road.obj");
 
 
-	GameObject* bonus = new GameObject("bonusScore",programms["minimal"], offBonus, "brick2.tga",false);
-	bonus->loadOBJ("bonus_score.obj");
+	GameObject* bonus = new GameObject("bonusScore",programms["minimal"], offBonus, "rainbowTexture.tga",false);
+	bonus->loadOBJ("sphere.obj");
 
 	objects["wall"] = wall;
 	objects["road"] = road;
