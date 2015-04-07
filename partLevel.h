@@ -11,19 +11,17 @@ class PartLevel {
 		PartLevel(std::map<std::string,GLuint> programms);
 		PartLevel();
 		void makePart();
-		void setOffset(std::vector< std::vector<glm::vec3> > &offsets);
+		void setOffset( std::map<std::string, std::vector<glm::vec3> > &offsets);
 		void draw();
 		void init();
-		void initOffset(std::vector< std::vector<glm::vec3> > &offsets);
+		void initOffset(std::map<std::string, std::vector<glm::vec3> > &offsets);
+		std::vector<GameObject*> getVector();
+
 
 	private:
 		std::map<std::string,GLuint> programms;
-		std::vector<glm::vec3> offRoad;
-		std::vector<glm::vec3> offBonus;
-		std::vector<glm::vec3> offWall;
-
-		std::vector< std::vector<glm::vec3> > offsets;
-		std::vector< GameObject* > objects;
+		std::map<std::string, GameObject*> objects;
+		std::map<std::string, std::vector<glm::vec3> > offsets;
 
 
 };

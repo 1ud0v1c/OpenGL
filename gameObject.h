@@ -15,6 +15,7 @@
 #include <algorithm>
 #include "utils.h"
 #include "mesh.h"
+#include <algorithm>
 
 class GameObject {
 
@@ -28,10 +29,13 @@ class GameObject {
 		void setType(GLuint type);
 		void setUnit(int unit);
 		GLuint getProgramm();
+		std::vector<glm::vec3> getOffset(int x);
+		void removeOffset(glm::vec3 off);
 		std::string getName();
 
 		std::vector<glm::vec3>  initCenter();
 		void rotate(float angle);
+		void resetVBO();
 		double getRadius();
 		bool isColliding(GameObject* go);
 		bool loadOBJ(const std::string  &path);
@@ -51,6 +55,7 @@ class GameObject {
 		GLuint type;
 		GLuint texture;
 		GLuint textureID;
+		GLuint instanceVBO;
 		double radius;
 		glm::vec3 position;
 		bool isDynamic;

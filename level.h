@@ -6,11 +6,13 @@
 #include "gameSphere.h"
 #include "player.h"
 #include "camera.h"
+#include "particles.h"
 #include "gameCube.h"
 #include "partLevel.h"
 #include <iostream>
 #include <vector>
 #include <array>
+#include "partLevel.h"
 
 class Level {
 	public:
@@ -28,11 +30,14 @@ class Level {
 		void loadLevel(const std::string path);
 		void loadNextPart();
 		void makeObject(int part);
+		void addParticle(Particles* particle);
 
 	private:
 		std::map<std::string,GLuint> programms;
+		std::vector<Particles*> particlesTransmitter;
 		std::vector<GameObject*> objects;
 		std::array < PartLevel,3 > parts;
+		glm::vec3 lastTouched;
 		Player* player;
 		Camera camera;
 		float gravity;

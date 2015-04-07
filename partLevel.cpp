@@ -8,11 +8,15 @@ PartLevel::PartLevel(std::map<std::string,GLuint> programms) {
 
 }
 
-void PartLevel::initOffset(std::vector< std::vector<glm::vec3> > &offsets) {
-	std::copy(offsets.begin(),offsets.end(),this->offsets.begin());
+void PartLevel::initOffset(std::map<std::string, std::vector<glm::vec3> >  &offsets) {
+	this->offsets = offsets;
 }
 
 void PartLevel::init() {
+
+	std::vector<glm::vec3> offWall(0);
+	std::vector<glm::vec3> offRoad(0);
+	std::vector<glm::vec3> offBonus(0);
 
 	GameObject* wall = new GameObject("wall",programms["minimal"], offWall, "brick2.tga",false);
 	wall->loadOBJ("wall.obj");
@@ -24,35 +28,44 @@ void PartLevel::init() {
 	GameObject* bonus = new GameObject("bonusScore",programms["minimal"], offBonus, "brick2.tga",false);
 	bonus->loadOBJ("bonus_score.obj");
 
-	objects.push_back(wall);
-	objects.push_back(road);
-	objects.push_back(bonus);
+	objects["wall"] = wall;
+	objects["road"] = road;
+	objects["bonus"] = bonus;
+
 
 
 }
 
 
 
-void PartLevel::setOffset(std::vector< std::vector<glm::vec3> > &offsets) {
+void PartLevel::setOffset(	std::map<std::string, std::vector<glm::vec3> > &offsets) {
 
-	std::copy(offsets.begin(),offsets.end(),this->offsets.begin());
-	int i=0;
-	for(auto off : this->offsets) {
-		objects[i]->setOffset(off);
-		i++;
+	this->offsets = offsets;
+
+	for(auto &object : objects) {
+		object.second->setOffset(this->offsets[object.first]); 
 	}
 }
 
 
+std::vector<GameObject*> PartLevel::getVector() {
+	std::vector<GameObject*> o;
+	for(auto object : objects) {
+		o.push_back(object.second);
+	}
+	return o;
+}
 void PartLevel::makePart() {
 	for(auto o : objects) {
-		o->makeObject();
+		glUseProgram(o.second->getProgramm());
+		o.second->makeObject();
 	}
 }
 
 void PartLevel::draw() {
 
 	for(auto o : objects) {
-		o->draw();
+		glUseProgram(o.second->getProgramm());
+		o.second->draw();
 	}
 }

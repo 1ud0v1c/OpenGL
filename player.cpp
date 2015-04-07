@@ -6,6 +6,7 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
      speed = 10.0f;
      invicibleTime = 0;
      this->programms = programms;
+     lastTouched = glm::vec3(0,0,0);
 
      std::vector<glm::vec3> offsetVect;
      offsetVect.push_back(glm::vec3(0.0f,-1.0f,0.0f));
@@ -43,7 +44,7 @@ void Player::draw() {
      glUseProgram(0);
 }
 
-void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects){
+void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects){
 
      updatePos(window,dt);
      score += dt;
@@ -57,152 +58,168 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
      int index = 0;
      for(auto object : objects) {
-	  if(object->getName()!="road") {
-	       if(playerObject->isColliding(object)) {
-		    //	std::cout << object->getName() << " touch" <<std::endl;
-		    if(object->getName() == "wall" && isInvicible==false){
-			 SoundGameEngine::play("hit_wall.ogg",false);
-			 lives -= 1;
-			 isInvicible = true;
-		    }else if(object->getName() == "bonusLife"){
-			 lives += 1;
-		    }else if(object->getName() == "bonusScore"){
-
-			 SoundGameEngine::play("bonus2.ogg",false);
-			 std::cout << "touch bonus" <<std::endl;
-			 score += 250.0;
-		    }else if(object->getName() == "bonusSpeed"){
-			 speed += 1.0f;
-		    }
-	       } else {
-
-	       }
-	  }
-	  index++;
+	     if(object->getName()!="road") {
+		     if(playerObject->isColliding(object)) {
+			     int x = position.x;
+			     float maxY = 10000.0f;
+			     float maxZ = 10000.0f;
+			     //	std::cout << object->getName() << " touch" <<std::endl;
+			     if(object->getName() == "wall" && isInvicible==false){
+				     SoundGameEngine::play("hit_wall.ogg",false);
+				     lives -= 1;
+				     isInvicible = true;
+			     }else if(object->getName() == "bonusLife"){
+				     lives += 1;
+			     }else if(object->getName() == "bonusScore"){
+				     std::vector<glm::vec3> offsets = object->getOffset(x);
+				     int index=0;
+				     for (int i=0; i<offsets.size(); i++){
+					     if (glm::abs(offsets[i].y-position.y) < maxY && glm::abs(offsets[i].z-position.z) < maxZ){
+						     maxY = offsets[i].y;
+						     maxZ = offsets[i].z;
+						     index = i;
+					     }
+				     }
+				     lastTouched = offsets[index];
+				     object->removeOffset(lastTouched);
+				     object->resetVBO();
+				     SoundGameEngine::play("bonus2.ogg",false);
+				     std::cout << "touch bonus" <<std::endl;
+				     score += 250.0;
+			     }else if(object->getName() == "bonusSpeed"){
+				     speed += 1.0f;
+			     }
+		     } 	 
+	     }
+	     index++;
      }
      movePlayer();
 }
 
 int Player::getLives(){
-     return lives;
+	return lives;
+}
+
+glm::vec3 Player::getLastTouched(){
+	return lastTouched;
 }
 
 void Player::updatePos(GLFWwindow *window,float dt) {
 
-     float initialFoV = 45.0f;
-     double xpos, ypos;
+	float initialFoV = 45.0f;
+	double xpos, ypos;
 
-     float mouseSpeed = 0.009f;
-     static double lastTime = glfwGetTime();
-     glfwGetCursorPos(window, &xpos, &ypos);
-     double currentTime = glfwGetTime();
-     glfwSetCursorPos(window, 1024/2, 768/2);
-     horizontalAngle += mouseSpeed * dt * float(1024/2 - xpos );
-     verticalAngle += mouseSpeed * dt * float( 768/2 - ypos );
-
-
-
-     direction = glm::vec3(0,0,-3);
-
-     glm::vec3 right = glm::vec3(
-	       sin(horizontalAngle - 3.14f/2.0f),
-	       0,
-	       cos(horizontalAngle - 3.14f/2.0f)
-	       );
-     if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
-	  position -= direction * dt * speed;
-     }
-     // Move backward
-     if (glfwGetKey( window,GLFW_KEY_DOWN ) == GLFW_PRESS){
-	  position += direction * dt * speed;
-     }
-     // Strafe right
-     if (glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_RELEASE){
-	  currentPositionIndex--;
-	  if(currentPositionIndex < 0){
-	       currentPositionIndex = 0;
-	  }
-	  std::cout << "position" << currentPositionIndex << " " << positions[currentPositionIndex] << std::endl;
-	  position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
-     }
-     // Strafe left
-     if (glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_RELEASE ){
-	  currentPositionIndex++;
-	  if(currentPositionIndex > 2){
-	       currentPositionIndex = 2;
-	  }
-	  std::cout << "position" << currentPositionIndex << " " << positions[currentPositionIndex] << std::endl;
-	  position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
-     }
-
-     if(glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE) {
-	  pressR = false;
-     }
-     if(glfwGetKey(window,GLFW_KEY_R) == GLFW_PRESS && pressR ==  false) {
-	  isMovingAuto = isMovingAuto ^ true;
-	  pressR = true;
-     }
-
-     if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
-	  isJumping = true;
-	  dy = 20;
-     }
-
-     if(isMovingAuto)
-	  position -= direction * dt * speed;
+	float mouseSpeed = 0.009f;
+	static double lastTime = glfwGetTime();
+	glfwGetCursorPos(window, &xpos, &ypos);
+	double currentTime = glfwGetTime();
+	glfwSetCursorPos(window, 1024/2, 768/2);
+	horizontalAngle += mouseSpeed * dt * float(1024/2 - xpos );
+	verticalAngle += mouseSpeed * dt * float( 768/2 - ypos );
 
 
-     direction=	 glm::vec3(
-	       3*cos(verticalAngle) * sin(horizontalAngle),
-	       3*sin(verticalAngle),
-	       3*cos(verticalAngle) * cos(horizontalAngle)
-	       );
 
-     right = glm::vec3(
-	       sin(horizontalAngle - 3.14f/2.0f),
-	       0,
-	       cos(horizontalAngle - 3.14f/2.0f)
-	       );
+	direction = glm::vec3(0,0,-3);
 
-     up = -glm::cross( right, direction );
+	glm::vec3 right = glm::vec3(
+			sin(horizontalAngle - 3.14f/2.0f),
+			0,
+			cos(horizontalAngle - 3.14f/2.0f)
+			);
+	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
+		position -= direction * dt * speed;
+	}
+	// Move backward
+	if (glfwGetKey( window,GLFW_KEY_DOWN ) == GLFW_PRESS){
+		position += direction * dt * speed;
+	}
+	// Strafe right
+	if (glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_RELEASE){
+		currentPositionIndex--;
+		if(currentPositionIndex < 0){
+			currentPositionIndex = 0;
+		}
+		std::cout << "position" << currentPositionIndex << " " << positions[currentPositionIndex] << std::endl;
+		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
+	}
+	// Strafe left
+	if (glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_RELEASE ){
+		currentPositionIndex++;
+		if(currentPositionIndex > 2){
+			currentPositionIndex = 2;
+		}
+		std::cout << "position" << currentPositionIndex << " " << positions[currentPositionIndex] << std::endl;
+		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
+	}
+
+	if(glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE) {
+		pressR = false;
+	}
+	if(glfwGetKey(window,GLFW_KEY_R) == GLFW_PRESS && pressR ==  false) {
+		isMovingAuto = isMovingAuto ^ true;
+		pressR = true;
+	}
+
+	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
+		isJumping = true;
+		dy = 20;
+	}
+
+	if(isMovingAuto)
+		position -= direction * dt * speed;
 
 
-     dy -= gravity*dt;
-     position.y +=dy*dt;
+	direction=	 glm::vec3(
+			3*cos(verticalAngle) * sin(horizontalAngle),
+			3*sin(verticalAngle),
+			3*cos(verticalAngle) * cos(horizontalAngle)
+			);
 
-     if(position.y <0) {
-	  position.y = 0;
-	  isJumping = false;
-     }
+	right = glm::vec3(
+			sin(horizontalAngle - 3.14f/2.0f),
+			0,
+			cos(horizontalAngle - 3.14f/2.0f)
+			);
 
-     if(position.x<0) position.x=0;
-     if(position.x>8.8) position.x = 8.8f;
+	up = -glm::cross( right, direction );
+
+
+	dy -= gravity*dt;
+	position.y +=dy*dt;
+
+	if(position.y <0) {
+		position.y = 0;
+		isJumping = false;
+	}
+
+	if(position.x<0) position.x=0;
+	if(position.x>8.8) position.x = 8.8f;
 }
 
 double Player::getScore(){
-     return score;
+	return score;
 }
 
 void Player::modifyLives(int value){
-     lives += value;
+	lives += value;
 }
 
 
 void Player::changePos(double x, double y, double z){
-     position.x += x;
-     position.y += y;
-     position.z += z;
+	position.x += x;
+	position.y += y;
+	position.z += z;
 }
 
 glm::vec3 Player::getPos(){
-     return position;
+	return position;
 }
 
 glm::vec3 Player::getDir() {
-     return direction;
+	return direction;
 }
 
 glm::vec3 Player::getUp() {
-     return up;
+	return up;
 }
 

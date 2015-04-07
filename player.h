@@ -20,12 +20,13 @@ class Player {
 		~Player();
 		void modifyLives(int value);
 		void changePos(double x, double y, double z);
-		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> &objects );
+		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects );
 		void init();
 		void movePlayer();
 		void draw();
 		glm::vec3 getOffset();
 		glm::vec3 getPos();
+		glm::vec3 getLastTouched();
 		int getLives();
 		double getScore();
 		glm::vec3 getUp();
@@ -40,6 +41,7 @@ class Player {
 		glm::vec3 position;
 		glm::vec3 direction;
 		glm::vec3 up;
+		glm::vec3 lastTouched;
 		float gravity;
 		float positions[3];
 		bool pressed[2];

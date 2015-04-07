@@ -16,9 +16,6 @@ void GameObject::setUnit(int unit) {
 	this->unit = unit;
 }
 
-void GameObject::setOffset(std::vector<glm::vec3> &newOffset) {
-	std::copy(newOffset.begin(), newOffset.end(), offset.begin()); 
-}
 
 
 void  GameObject::moveObject(glm::vec3 position) {
@@ -31,6 +28,11 @@ void  GameObject::moveObject(glm::vec3 position) {
 	glUseProgram(0);
 }
 
+void GameObject::setOffset(std::vector<glm::vec3> &newOffset) {
+	offset.resize(newOffset.size());
+	std::copy(newOffset.begin(), newOffset.end(), offset.begin());
+}
+
 GLuint GameObject::getProgramm() {
 	return programm;
 }
@@ -40,6 +42,13 @@ void GameObject::rotate(float angle) {
 	for(auto &point : points) {
 		point = glm::rotateY(point,angle);
 	}
+}
+
+void GameObject::resetVBO(){
+	glUseProgram(programm);
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * offset.size(), &offset[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void GameObject::makeObject() {
@@ -57,7 +66,6 @@ void GameObject::makeObject() {
 	GLuint colorBuffer;
 	GLuint normalBuffer;
 	GLuint textureBuffer;
-	GLuint instanceVBO;
 
 
 	glGenBuffers(1, &instanceVBO);
@@ -155,13 +163,9 @@ bool GameObject::isColliding(GameObject* go){
 
 	for(auto center : centers) {
 		for(auto other_center :other_centers) {
-
-			if(glm::abs(center.x - other_center.x) < radius + other_radius)
-			{
-				if(glm::abs(center.y - other_center.y) < radius + other_radius)
-				{
-					if(glm::abs(center.z - other_center.z) < radius + other_radius)
-					{
+			if(glm::abs(center.x - other_center.x) < radius + other_radius){
+				if(glm::abs(center.y - other_center.y) < radius + other_radius){
+					if(glm::abs(center.z - other_center.z) < radius + other_radius){
 						return true;
 					}
 				}
@@ -174,6 +178,33 @@ bool GameObject::isColliding(GameObject* go){
 
 bool GameObject::is_Dynamic() {
 	return this->isDynamic;
+}
+
+std::vector<glm::vec3> GameObject::getOffset(int x){
+	std::vector<glm::vec3> resultSet;
+	int xt;
+	if (x == 8){
+		xt= 9;
+	}else xt = x;
+	for (glm::vec3 off : offset){
+		if (off.x == xt){
+			resultSet.push_back(off);
+		}
+	}
+	return resultSet;
+}
+
+void GameObject::removeOffset(glm::vec3 off){
+	int index=0;
+	std::vector<glm::vec3> temp(offset);
+	offset.clear();
+	for (glm::vec3 o : temp){
+		if (o.x == off.x && o.y == off.y && o.z == off.z){
+		
+		}else{
+			offset.push_back(o);
+		}
+	}
 }
 
 std::vector<glm::vec3> GameObject::initCenter(){
@@ -189,8 +220,8 @@ std::vector<glm::vec3> GameObject::initCenter(){
 	}
 	if( isDynamic){
 		glm::vec3 c =glm::vec3( (min.x+max.x)/2+position.x+offset[0].x,
-				  (min.y+max.y)/2+position.y+offset[0].y, 
-				  (min.z+max.z)/2+position.z+offset[0].z); 
+				(min.y+max.y)/2+position.y+offset[0].y, 
+				(min.z+max.z)/2+position.z+offset[0].z); 
 		centers.push_back(c);
 		return centers;
 	}

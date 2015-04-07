@@ -9,6 +9,7 @@ Level::Level(std::map<std::string,GLuint> programms) {
 	for(int i=0;i<parts.size();i++) {
 		parts[i] = PartLevel(programms);
 	}
+	lastTouched = glm::vec3(0,0,0);
 }
 
 Level::Level() {
@@ -74,11 +75,17 @@ void Level::loadNextPart() {
 		}
 	}
 
-	std::vector< std::vector<glm::vec3> > offsets;
-	offsets.push_back(offset);
-	offsets.push_back(offsetRoad);
-	offsets.push_back(offsetBonus);
 
+		std::map<std::string, std::vector<glm::vec3> > offsets;
+	offsets["wall"] = offset;
+	offsets["road"] = offsetRoad;
+	offsets["bonus"] = offsetBonus;
+
+	parts[nextPart].setOffset(offsets);
+
+	parts[nextPart].makePart();
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,offset[0],glm::vec3(1,0,1),10));
+	addParticle(transmitter);
 
 
 	parts[currentPart].makePart();
@@ -127,23 +134,27 @@ void Level::init() {
 	
 	player = new Player(gravity*10,programms);
 	player->init();
-	std::vector< std::vector<glm::vec3> > offsets;
-	offsets.push_back(offset);
-	offsets.push_back(offsetRoad);
-	offsets.push_back(offsetBonus);
+
+
+
+		std::map<std::string, std::vector<glm::vec3> > offsets;
+	offsets["wall"] = offset;
+	offsets["road"] = offsetRoad;
+	offsets["bonus"] = offsetBonus;
+
 	for(int i=0;i<parts.size();i++) {
 
-		parts[i].initOffset(offsets);
 		parts[i].init();
 
 	}
-
+	parts[currentPart].setOffset(offsets);
 	parts[currentPart].makePart();
-//	loadNextPart();
+	loadNextPart();
+
 }
 
 void Level::addObject(GameObject *object,int part)  {
-	partLevel[part].push_back(object);
+//	partLevel[part].push_back(object);
 }
 
 std::vector<GameObject*> Level::getObjects() {
@@ -151,43 +162,69 @@ std::vector<GameObject*> Level::getObjects() {
 }
 
 void Level::update(float time,GLFWwindow *window, float dt) {
-	player->update(time,window,dt, partLevel[currentPart]);
+	player->update(time,window,dt, parts[currentPart].getVector());
+	glm::vec3 touched = player->getLastTouched();
+	if (touched.x != lastTouched.x && touched.y != lastTouched.y && touched.z != lastTouched.z){
+		std::cout << "COUCOU" << std::endl;
+		lastTouched = touched;
+		particlesTransmitter[0]->setPosition(lastTouched);
+
+	}
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
 	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {
 		loadNextPart();
 	}
+	for(Particles* particles : particlesTransmitter){
+		particles->update(dt);
+	}
 }
 
 void Level::setType(GLuint type) {
-	for(auto o : parts) {
+/*	for(auto o : parts) {
+>>>>>>> cb5e8b15a610b08e1b18aa9558942c44473ceabc
 		o->setType(type);
-	}
+	}*/
 }
 
 void Level::makeObject(int part) {
 
-		parts[part]->makeObject();
+		parts[part].makePart();
+	for(Particles* particles : particlesTransmitter){
+		particles->make();
+	}
 }
 
 
 void Level::makeObject() {
-	for(auto o : parts[currentPart]) {
-		o->makeObject();
-	}
 
+		parts[currentPart].makePart();
+
+	for(Particles* particles : particlesTransmitter){
+		particles->make();
+	}
 }
 
 void Level::draw() {
 	glUseProgram(programms["minimal"]);
 	//	light.draw();
 	glUseProgram(0);
-	parts[currentPart]->draw();
+	parts[currentPart].draw();
 	glUseProgram(0);
-	parts[nextPart]->draw();
+	parts[nextPart].draw();
+	glUseProgram(0);
 
 
 	player->draw();
+	for(Particles* particles : particlesTransmitter){
+		particles->draw();
+	}
+
 }
+
+void Level::addParticle(Particles* particles){
+	particlesTransmitter.push_back(particles);
+}
+
 
 Camera Level::getCamera() {
 	return camera;
