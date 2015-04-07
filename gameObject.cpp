@@ -186,8 +186,12 @@ std::vector<glm::vec3> GameObject::getOffset(int x){
 		xt= 9;
 	} else if(x == 4) {
 		xt = 5;
+
+	} else if(x == 0) {
+		xt = 1;
 	} else {
 		xt = x;
+		
 	}
 	for (glm::vec3 off : offset){
 		if (off.x == xt){

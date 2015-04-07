@@ -102,7 +102,8 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 							index = i;
 						}
 					}
-					std::cout << glm::abs(offsets[index].z -position.z) << ", offset  z : " << offsets[index].z << ", position z " << position.z  << std::endl;
+
+					if(offsets.size() == 0) continue;
 
 					if(offsets[index].z -position.z > 5) {
 						continue;
@@ -199,7 +200,6 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 		dy = 25;
 	}
 
-	if(isMovingAuto)
 		position -= direction * dt * speed;
 
 
