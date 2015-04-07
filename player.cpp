@@ -189,9 +189,9 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 
 
 	direction=	 glm::vec3(
-			3*cos(verticalAngle) * sin(horizontalAngle),
-			3*sin(verticalAngle),
-			3*cos(verticalAngle) * cos(horizontalAngle)
+			5*cos(verticalAngle) * sin(horizontalAngle),
+			5*sin(verticalAngle),
+			5*cos(verticalAngle) * cos(horizontalAngle)
 			);
 
 	right = glm::vec3(

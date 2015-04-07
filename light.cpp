@@ -10,7 +10,7 @@ Light::Light(GLuint programm) {
 void Light::update(glm::vec3 pos) {
 
 	ambientColor = glm::vec3(0.2f, 0.2f, 0.2f); //Color (0.2, 0.2, 0.2)
-	lightColor0 = glm::vec3(0.2f, 0.2f, 0.2f);
+	lightColor0 = glm::vec3(0.5f, 0.5f, 0.5f);
 
 	lightPos0 =  glm::vec3(0.0f, 0.0f, 0.0f); //Positioned at (4, 0, 8)
 
