@@ -46,7 +46,7 @@ class Player {
 		float positions[3];
 		bool pressed[2];
 		int currentPositionIndex;
-		std::array<GameObject *,19> playerObject;
+		std::array<GameObject *,2> playerObject;
 		int currentPlayerIndex;
 		float timerChangePlayer;
 		std::map<std::string , GLuint> programms;

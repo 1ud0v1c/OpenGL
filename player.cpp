@@ -181,7 +181,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
-		dy = 20;
+		dy = 25;
 	}
 
 	if(isMovingAuto)
