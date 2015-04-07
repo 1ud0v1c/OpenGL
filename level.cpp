@@ -31,6 +31,7 @@ void Level::loadLevel(const std::string path) {
 }
 
 void Level::loadNextPart() {
+	particlesTransmitter.clear();
 	currentPart = nextPart;
 	nextPart++;
 	numberOfChange++;
@@ -92,12 +93,25 @@ void Level::loadNextPart() {
 	parts[nextPart].setOffset(offsets);
 
 	parts[nextPart].resetVBO();
-	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,offset[0],glm::vec3(1,0,1),10));
-	addParticle(transmitter);
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
+	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
+	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
 
+	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(-150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
+	Particles* transmitter4 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(-150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
+	Particles* transmitter5 = new Particles(programms["particle"],new Particle(programms["particle"],500,glm::vec3(-150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
+
+	addParticle(transmitter);
+	addParticle(transmitter1);
+	addParticle(transmitter2);
+
+	addParticle(transmitter3);
+	addParticle(transmitter4);
+	addParticle(transmitter5);
 }
 
 void Level::init() {
+	particlesTransmitter.clear();
 	currentLevel = 0;
 	currentLevelFile = 0;
 	gravity = 9.81f;
@@ -161,7 +175,21 @@ void Level::init() {
 	parts[currentPart].setOffset(offsets);
 	parts[currentPart].resetVBO();
 	loadNextPart();
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
+	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
+	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
 
+	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(-150,offset[0].y,offset[0].z),glm::vec3(1,0,1),10));
+	Particles* transmitter4 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(-150,offset[0].y,offset[0].z-50),glm::vec3(0,1,0),10));
+	Particles* transmitter5 = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(-150,offset[0].y,offset[0].z-100),glm::vec3(0,0,1),10));
+
+	addParticle(transmitter);
+	addParticle(transmitter1);
+	addParticle(transmitter2);
+
+	addParticle(transmitter3);
+	addParticle(transmitter4);
+	addParticle(transmitter5);
 }
 
 void Level::addObject(GameObject *object,int part)  {
@@ -175,9 +203,9 @@ std::vector<GameObject*> Level::getObjects() {
 void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, parts[currentPart].getVector());
 	glm::vec3 touched = player->getLastTouched();
-	if (touched.x != lastTouched.x && touched.y != lastTouched.y && touched.z != lastTouched.z){
+	if (touched.x != lastTouched.x || touched.y != lastTouched.y || touched.z != lastTouched.z){
 		lastTouched = touched;
-		particlesTransmitter[0]->setPosition(lastTouched);
+
 	}
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset());
 	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {
