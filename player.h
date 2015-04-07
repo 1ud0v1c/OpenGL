@@ -30,7 +30,6 @@ class Player {
 		int getLives();
 		double getScore();
 		glm::vec3 getUp();
-		bool getPressR();
 		glm::vec3 getDir();
 		void updatePos(GLFWwindow *window,float dt);
 
@@ -55,12 +54,9 @@ class Player {
 		bool isInvicible = false;
 		float horizontalAngle = 3.14f;
 		float verticalAngle = 0.0f;
-		float initialFoV = 45.0f;
+		float distance = 5;
 		float dy = 0;
 		bool isJumping = false;
-		bool isMovingAuto = false;
-		bool pressR = false;
-		float timeTouchingBonus=0.0f;
 		glm::vec3 offset;
 
 };

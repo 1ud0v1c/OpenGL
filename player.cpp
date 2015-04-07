@@ -87,7 +87,6 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 				} else if(object->getName() == "bonusScore") {
 
 					std::vector<glm::vec3> offsets = object->getOffset(x);
-					std::cout << offsets.size() << std::endl;
 
 					int index=0;
 					for (int i=0; i<offsets.size(); i++){
@@ -151,12 +150,27 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 			0,
 			cos(horizontalAngle - 3.14f/2.0f)
 			);
+
+	bool stillPressed = false;
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
+		stillPressed = true;
+		distance += 0.2; 
+		if(distance > 10) {
+			distance = 10;
+		}
 		speed += 1; 
 		if(speed > 20) {
 			speed = 20;
 		}
 	}
+
+	if(!stillPressed) {
+		distance -= 0.2;
+		if(distance < 5) {
+			distance = 5;
+		}
+	}
+
 	// Move backward
 	if (glfwGetKey( window,GLFW_KEY_DOWN ) == GLFW_PRESS){
 		speed -= 1;
@@ -182,14 +196,6 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
 	}
 
-	if(glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE) {
-		pressR = false;
-	}
-	if(glfwGetKey(window,GLFW_KEY_R) == GLFW_PRESS && pressR ==  false) {
-		isMovingAuto = isMovingAuto ^ true;
-		pressR = true;
-	}
-
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
 		isJumping = true;
 		dy = 25;
@@ -197,17 +203,18 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 
 	position -= direction * dt * speed;
 
+
 	direction=	 glm::vec3(
-			5*cos(verticalAngle) * sin(horizontalAngle),
-			5*sin(verticalAngle),
-			5*cos(verticalAngle) * cos(horizontalAngle)
-	);
+			distance*cos(verticalAngle) * sin(horizontalAngle),
+			distance*sin(verticalAngle),
+			distance*cos(verticalAngle) * cos(horizontalAngle)
+			);
 
 	right = glm::vec3(
 			sin(horizontalAngle - 3.14f/2.0f),
 			0,
 			cos(horizontalAngle - 3.14f/2.0f)
-	);
+			);
 
 	up = -glm::cross( right, direction );
 
@@ -250,6 +257,3 @@ glm::vec3 Player::getUp() {
 	return up;
 }
 
-bool Player::getPressR() {
-	return pressR;
-}

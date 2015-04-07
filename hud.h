@@ -20,7 +20,7 @@ class HUD {
 
 	protected:
 		Level level;
-		GameText *menu, *menu2, *menu3;
+		GameText *menu, *menu2, *menu3, *menu4;
 		GameText *chrono, *lifes, *score, *levels;
 		std::map<std::string,GLuint> programms;
 };
