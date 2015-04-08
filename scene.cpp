@@ -64,7 +64,7 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 			if(level.getPlayer()->getLives()<=0) {
 				isFinished = true;	
 				SoundGameEngine::stop();
-				SoundGameEngine::play("game_over_evil.ogg",false);
+				SoundGameEngine::play("haha.ogg",false);
 			}
 		} else {
 			hud.initEnd(level.getPlayer());
