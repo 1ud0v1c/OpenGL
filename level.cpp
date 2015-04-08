@@ -224,8 +224,9 @@ void Level::makeObject(int part) {
 
 
 void Level::makeObject() {
-
-	parts[currentPart].makePart();
+	for(auto part : parts) {
+		part.makePart();
+	}
 
 	for(Particles* particles : particlesTransmitter){
 		particles->make();
