@@ -30,3 +30,7 @@ Le jeu était au choix du groupe.
 - Lucie Lagarrigue : développeuse 
 - Ludovic Vimont : développeur 
 
+## Screenshot
+
+![texte](https://github.com/1ud0v1c/OpenGL/resources/game.png "Game")
+
