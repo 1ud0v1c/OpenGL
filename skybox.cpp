@@ -5,17 +5,17 @@ Skybox::Skybox() {}
 
 Skybox::Skybox(GLuint program, std::string top, std::string bottom, std::string left, std::string right, std::string front, std::string back) {
 	this->program = program;
-	_faces.push_back(top);
-	_faces.push_back(bottom);
-	_faces.push_back(left);
 	_faces.push_back(right);
-	_faces.push_back(front);
+	_faces.push_back(left);
+	_faces.push_back(bottom);
+	_faces.push_back(top);
 	_faces.push_back(back);
+	_faces.push_back(front);
 }
 
 void Skybox::loadCubemap() {
-	int width = 256, height = 256;
 	char* image; 
+	int width = 512, height = 512;
 
 	glGenTextures(1, &textureID);
 	glActiveTexture(GL_TEXTURE0);
@@ -35,14 +35,11 @@ void Skybox::loadCubemap() {
 
 
 void Skybox::update(glm::vec3 position) {
-
 	glUseProgram(program);
 	GLuint positionBuffer;
-	GLuint loc =glGetUniformLocation(program, "offset");
+	GLuint loc = glGetUniformLocation(program, "offset");
 	glUniform3f(loc,position[0],position[1],position[2]);
-
 	glUseProgram(0);
-
 }
 
 void Skybox::init() {

@@ -17,7 +17,7 @@ void Scene::init(std::map<std::string,GLuint> programms) {
 	level.init();
 	hud = HUD(programms);
 	hud.init(level);
-	skybox = Skybox(programms["skybox"], "star-top.tga", "star-bot.tga", "star-left.tga", "star-right.tga", "star-front.tga", "star-back.tga");
+	skybox = Skybox(programms["skybox"], "sun_up.tga", "sun_dn.tga", "sun_lf.tga", "sun_rt.tga", "sun_ft.tga", "sun_bk.tga");
 	skybox.init();
 	//	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,glm::vec3(3,0,0),glm::vec3(1,0,1),10));
 	//	addParticle(transmitter);
@@ -27,7 +27,7 @@ void Scene::init(std::map<std::string,GLuint> programms) {
 void Scene::restart() {
 	hud = HUD(programms);
 	hud.init(level);
-	skybox = Skybox(programms["skybox"], "star-top.tga", "star-bot.tga", "star-left.tga", "star-right.tga", "star-front.tga", "star-back.tga");
+	skybox = Skybox(programms["skybox"], "sun_up.tga", "sun_dn.tga", "sun_lf.tga", "sun_rt.tga", "sun_ft.tga", "sun_bk.tga");
 	skybox.init();
 	light = Light(programms["minimal"]);
 	level.resetLevel();
