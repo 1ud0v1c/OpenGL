@@ -28,9 +28,13 @@ void PartLevel::init() {
 	GameObject* bonus = new GameObject("bonusScore",programms["minimal"], offBonus, "rainbowTexture.tga",false);
 	bonus->loadOBJ("sphere.obj");
 
+	GameObject* bonusLife = new GameObject("bonusLife",programms["minimal"], offBonus, "checkerboard.tga",false);
+	bonusLife->loadOBJ("sphere.obj");
+
 	objects["wall"] = wall;
 	objects["road"] = road;
-	objects["bonus"] = bonus;
+	objects["bonusScore"] = bonus;
+	objects["bonusLife"] = bonusLife;
 
 }
 

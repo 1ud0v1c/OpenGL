@@ -4,7 +4,6 @@ using namespace irrklang;
 
 ISoundEngine *SoundGameEngine::soundEngine = createIrrKlangDevice();
 
-ISoundEngine *SoundGameEngine::soundEngineNoise = createIrrKlangDevice();
 SoundGameEngine::SoundGameEngine() {
 
 }
