@@ -32,8 +32,6 @@ void PartLevel::init() {
 	objects["road"] = road;
 	objects["bonus"] = bonus;
 
-
-
 }
 
 
