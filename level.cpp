@@ -111,6 +111,7 @@ void Level::loadNextPart() {
 }
 
 void Level::init() {
+	particlesTransmitter.clear();
 	currentLevel = 0;
 	currentLevelFile = 0;
 	gravity = 9.81f;
@@ -176,7 +177,6 @@ void Level::init() {
 	parts[currentPart].setOffset(offsets);
 	parts[currentPart].resetVBO();
 	loadNextPart();
-
 }
 
 void Level::addObject(GameObject *object,int part)  {
@@ -190,9 +190,9 @@ std::vector<GameObject*> Level::getObjects() {
 void Level::update(float time,GLFWwindow *window, float dt) {
 	player->update(time,window,dt, parts[currentPart].getVector(), currentLevel);
 	glm::vec3 touched = player->getLastTouched();
-	if (touched.x != lastTouched.x && touched.y != lastTouched.y && touched.z != lastTouched.z){
+	if (touched.x != lastTouched.x || touched.y != lastTouched.y || touched.z != lastTouched.z){
 		lastTouched = touched;
-		particlesTransmitter[0]->setPosition(lastTouched);
+
 	}
 	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset()+glm::vec3(0,5,0));
 	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {

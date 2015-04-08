@@ -10,7 +10,6 @@ uniform mat4 view;
 uniform mat4 proj;
 uniform float time;
 uniform float time2;
-uniform vec3 moveOffset;
 
 void main()
 {
@@ -19,7 +18,7 @@ void main()
 			vec4(0,particleSize,0,0),
 			vec4(0,0,particleSize,0),
 			vec4(0,0,0,1));
-	vec4 v=scale*vec4(position.xyz +moveOffset +xyzs.xyz+dir*speed*time,1.0);
+	vec4 v=scale*vec4(position.xyz  +xyzs.xyz+dir*speed*time,1.0);
 	gl_Position = proj*view*trans* v;
 	vColor = color;
 }

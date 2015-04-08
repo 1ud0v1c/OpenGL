@@ -24,6 +24,7 @@ class Particle {
 	private:
 		glm::vec3 pos;
 		glm::vec3 color;
+		GLuint particles_position_buffer;
 		GLuint programm;
 		float speed;
 		float size;

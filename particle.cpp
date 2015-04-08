@@ -8,6 +8,7 @@ Particle::Particle(GLuint programm,unsigned int maxParticles, glm::vec3 pos, glm
 	this->cycle = cycle;
 	glUseProgram(programm);
 	timeID = (glGetUniformLocation(programm, "time"));
+
 }
 
 Particle::Particle(Particle *p) {
@@ -23,10 +24,21 @@ int Particle::getCycle() {
 }
 void Particle::setPosition(glm::vec3 pos){
 	glUseProgram(programm);
-	GLuint positionBuffer;
+/*	GLuint positionBuffer;
 	GLuint loc =glGetUniformLocation(programm, "moveOffset");
-	glUniform3f(loc,pos[0],pos[1],pos[2]);
+	glUniform3f(loc,pos[0],pos[1],pos[2]);*/
 	this->pos = pos;
+	float offset [4*maxParticles];
+	for(int i=0;i<4*maxParticles;i+=4) {
+		offset [i] = pos[0];
+		offset [i+1] = pos[1];
+		offset [i+2] = pos[2];
+		offset [i+3] = 0.1f;
+	}
+	glGenBuffers(1, &particles_position_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(offset), offset, GL_STATIC_DRAW);
+
 	glUseProgram(0);
 }
 
@@ -80,7 +92,7 @@ void Particle::makeObject() {
 	glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	// The VBO containing the positions and sizes of the particles
-	GLuint particles_position_buffer;
+	particles_position_buffer;
 	glGenBuffers(1, &particles_position_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(offset), offset, GL_STATIC_DRAW);
