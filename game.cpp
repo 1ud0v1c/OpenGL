@@ -55,8 +55,8 @@ void Game::make_resources() {
 void Game::renderFrame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
-	scene.draw();
 	GLFWwindow *window = glfwGetCurrentContext();
+	scene.draw(window);
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }

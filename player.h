@@ -32,7 +32,7 @@ class Player {
 		glm::vec3 getUp();
 		glm::vec3 getDir();
 		void updatePos(GLFWwindow *window,float dt);
-
+		void resetPlayer();
 
 	private:
 		int lives;

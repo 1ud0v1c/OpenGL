@@ -57,7 +57,7 @@ void HUD::initEnd(Player* p) {
 	std::ostringstream out;  
 	out << "Votre score est de : " << std::setprecision(0) << std::fixed << p->getScore(); 
 	menu2->setText(out.str());
-	menu3->setText("Echap pour quitter...");
-	menu4->setText("");
+	menu3->setText("R pour redemarrer");
+	menu4->setText("Echap pour quitter...");
 }
 

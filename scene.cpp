@@ -24,6 +24,15 @@ void Scene::init(std::map<std::string,GLuint> programms) {
 	light = Light(programms["minimal"]);
 }
 
+void Scene::restart() {
+	hud = HUD(programms);
+	hud.init(level);
+	skybox = Skybox(programms["skybox"], "star-top.tga", "star-bot.tga", "star-left.tga", "star-right.tga", "star-front.tga", "star-back.tga");
+	skybox.init();
+	light = Light(programms["minimal"]);
+	level.resetLevel();
+}
+
 void Scene::update(float time,GLFWwindow *window, float dt) {
 	if(!isLaunched) {
 		if(glfwGetKey(window,GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(window,GLFW_KEY_R) == GLFW_RELEASE){
@@ -67,11 +76,15 @@ void Scene::setType(GLuint type) {
 	level.setType(type);
 }
 
-void Scene::draw() {
+void Scene::draw(GLFWwindow *window) {
 	if(!isLaunched) {
 		hud.drawMenu();
 	} else if(isFinished) {
 		hud.drawMenu();
+		if(glfwGetKey(window,GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(window,GLFW_KEY_R) == GLFW_RELEASE){
+			isFinished = false;
+			restart();
+		}
 	}else {
 		light.draw();
 		level.draw();
