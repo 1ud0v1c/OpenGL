@@ -105,17 +105,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 							index = i;
 						}
 					}
-					std::cout << offsets.size() << std::endl;
-					if(offsets.size() == 0) continue;
 
-
-					if(offsets[index].z -position.z > 5) {
-						continue;
-					}
-					else if(offsets[index].z -position.z < -5) {
-						object->removeOffset(offsets[index]);
-						continue;
-					}
 					lastTouched = offsets[index];
 					object->removeOffset(lastTouched);
 					object->resetVBO();
