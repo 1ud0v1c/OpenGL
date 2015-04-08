@@ -74,7 +74,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 	for(auto object : objects) {
 		if(object->getName()!="road") {
 			if(playerObject[currentPlayerIndex]->isColliding(object)) {
-				int x = position.x;
+				float x = position.x;
 				float maxY = 10000.0f;
 				float maxZ = 10000.0f;
 

@@ -29,7 +29,7 @@ class GameObject {
 		void setType(GLuint type);
 		void setUnit(int unit);
 		GLuint getProgramm();
-		std::vector<glm::vec3> getOffset(int x);
+		std::vector<glm::vec3> getOffset(float x);
 		void removeOffset(glm::vec3 off);
 		std::string getName();
 

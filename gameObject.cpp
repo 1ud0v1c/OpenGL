@@ -179,23 +179,11 @@ bool GameObject::is_Dynamic() {
 	return this->isDynamic;
 }
 
-std::vector<glm::vec3> GameObject::getOffset(int x){
+std::vector<glm::vec3> GameObject::getOffset(float x){
 	std::vector<glm::vec3> resultSet;
-	float xt;
-	if (x == 8){
-		xt= 8.8;
-	} else if(x == 4) {
-		xt = 4.4;
-
-	} else if(x == 0) {
-		xt = 0;
-	} else {
-		xt = x;
-		
-	}
 
 	for (glm::vec3 off : offset){
-		if (off.x == xt){
+		if (off.x == x){
 			resultSet.push_back(off);
 		}
 	}
