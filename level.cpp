@@ -31,6 +31,7 @@ void Level::loadLevel(const std::string path) {
 }
 
 void Level::loadNextPart() {
+	particlesTransmitter.clear();
 	currentPart = nextPart;
 	nextPart++;
 	numberOfChange++;
@@ -68,11 +69,13 @@ void Level::loadNextPart() {
 		}
 	}
 
+	i=0;
+	j=0;
 	for(auto pos : tabLevel) {
 		if(pos==0) {
 			randomValue = rand() % 100;
-			if(randomValue > 50 ){
-				offsetBonus.push_back(glm::vec3(i*4-11,-1.0f, -sizeRoad/2 + (j*sizeRoad/column) + sizeRoad*numberOfChange));
+			if(randomValue > 75 ){
+				offsetBonus.push_back(glm::vec3(i*4.4f,-1.0f, -sizeRoad/2 + (j*sizeRoad/column) + sizeRoad*numberOfChange));
 			}
 		}
 		j++;
@@ -92,9 +95,19 @@ void Level::loadNextPart() {
 	parts[nextPart].setOffset(offsets);
 
 	parts[nextPart].resetVBO();
-	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],100,offset[0],glm::vec3(1,0,1),10));
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(150,offset[0].y,150),glm::vec3(1,0,1),10));
+	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(150,offset[0].y,250),glm::vec3(0,0,1),10));
+	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(-150,offset[0].y,150),glm::vec3(0,0,1),10));
+	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(-150,offset[0].y,250),glm::vec3(0,1,0),10));
 	addParticle(transmitter);
+	addParticle(transmitter1);
+	addParticle(transmitter2);
+	addParticle(transmitter3);
 
+	transmitter->make();
+	transmitter1->make();
+	transmitter2->make();
+	transmitter3->make();
 }
 
 void Level::init() {
@@ -128,12 +141,14 @@ void Level::init() {
 
 	std::vector<glm::vec3> offsetBonus;
 
+	i=0;
+	j=0;
 	for(auto pos : tabLevel) {
 
 		if(pos==0) {
 			randomValue = rand() % 100;
 			if(randomValue > 50 ){
-				offsetBonus.push_back(glm::vec3(i*4-11,-1.0f,j*sizeRoad/column));
+				offsetBonus.push_back(glm::vec3(i*4.4f,-1.0f,j*sizeRoad/column));
 			}
 		}
 		j++;

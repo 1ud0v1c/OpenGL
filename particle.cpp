@@ -62,7 +62,7 @@ void Particle::makeObject() {
 		indexColor++;
 	}
 	float speed [maxParticles];
-	for(int i=0;i<maxParticles;i++) speed[i] = (3);
+	for(int i=0;i<maxParticles;i++) speed[i] = (10);
 	std::vector<float> directions;
 	int nbBins = sqrt(maxParticles);
 	for(int indexT = 0; indexT < 10; indexT++) {
