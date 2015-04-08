@@ -91,28 +91,32 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 					SoundGameEngine::play("hit_wall.ogg",false);
 					lives -= 1;
 					isInvicible = true;
-				} else if(object->getName() == "bonusLife") {
-					lives += 1;
-				} else if(object->getName() == "bonusScore") {
+				} else {
+					if(object->getName() == "bonusLife") {
+						lives += 1;
+					} else if(object->getName() == "bonusScore") {
+						score += 250.0;
+					}else if(object->getName() == "bonusSpeed"){
+						speed += 1.0f;
+					}
 
 					std::vector<glm::vec3> offsets = object->getOffset(x);
 
-					int index=0;
-					for (int i=0; i<offsets.size(); i++){
-						if (glm::abs(offsets[i].y-position.y) < maxY && glm::abs(offsets[i].z-position.z) < maxZ){
-							maxY = offsets[i].y;
-							maxZ = offsets[i].z;
-							index = i;
-						}
-					}
+					if (offsets.size() != 0){
+						int index=0;
 
-					lastTouched = offsets[index];
-					object->removeOffset(lastTouched);
-					object->resetVBO();
-					SoundGameEngine::play("bonus2.ogg",false);
-					score += 250.0;
-				}else if(object->getName() == "bonusSpeed"){
-					speed += 1.0f;
+						for (int i=0; i<offsets.size(); i++){
+							if (glm::abs(offsets[i].y-position.y) < maxY && glm::abs(offsets[i].z-position.z) < maxZ){
+								maxY = offsets[i].y;
+								maxZ = offsets[i].z;
+								index = i;
+							}
+						}
+						lastTouched = offsets[index];
+						object->removeOffset(lastTouched);
+						object->resetVBO();
+						SoundGameEngine::play("bonus2.ogg",false);
+					}
 				}
 			} 	 
 		}

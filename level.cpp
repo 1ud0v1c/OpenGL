@@ -53,8 +53,9 @@ void Level::loadNextPart() {
 	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
-	std::vector<glm::vec3> offsetBonus;
 	int randomValue;
+	std::vector<glm::vec3> offsetBonus;
+	std::vector<glm::vec3> offsetBonusL;
 	int j = 0;
 	int i = 0;
 	for(auto pos : tabLevel) {
@@ -63,8 +64,11 @@ void Level::loadNextPart() {
 		}
 		if(pos==0) {
 			randomValue = rand() % 100;
-			if(randomValue > 75 ){
+			if(randomValue > 75  && randomValue < 90){
 				offsetBonus.push_back(glm::vec3(i*4.4f,-1.0f, -sizeRoad/2 + (j*sizeRoad/column) + sizeRoad*numberOfChange));
+			}
+			if (randomValue > 95){
+				offsetBonusL.push_back(glm::vec3(i*4.4f,-1.0f, -sizeRoad/2 + (j*sizeRoad/column) + sizeRoad*numberOfChange));
 			}
 			if(randomValue < 10){
 				offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f, -sizeRoad/2+j*sizeRoad/column+sizeRoad*numberOfChange));
@@ -80,7 +84,8 @@ void Level::loadNextPart() {
 	std::map<std::string, std::vector<glm::vec3> > offsets;
 	offsets["wall"] = offset;
 	offsets["road"] = offsetRoad;
-	offsets["bonus"] = offsetBonus;
+	offsets["bonusScore"] = offsetBonus;
+	offsets["bonusLife"] = offsetBonusL;
 
 	parts[nextPart].setOffset(offsets);
 
@@ -109,9 +114,9 @@ void Level::init() {
 	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,0.0f));
 	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,0.0f));
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,0.0f));
-
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetBonus;
+	std::vector<glm::vec3> offsetBonusL;
 	int randomValue;
 	srand(time(NULL));
 
@@ -125,9 +130,13 @@ void Level::init() {
 		}
 		if(pos==0) {
 			randomValue = rand() % 100;
-			if(randomValue > 75 ){
+			if(randomValue > 75 && randomValue < 95 ){
 				offsetBonus.push_back(glm::vec3(i*4.4f,-1.0f,j*sizeRoad/column));
 			}
+			if (randomValue > 95){
+				offsetBonusL.push_back(glm::vec3(i*4.4f,-1.0f, j*sizeRoad/column));
+			}
+
 			if (randomValue < 10){
 				offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-sizeRoad/2 + j*sizeRoad/column));
 			}
@@ -145,7 +154,8 @@ void Level::init() {
 	std::map<std::string, std::vector<glm::vec3> > offsets;
 	offsets["wall"] = offset;
 	offsets["road"] = offsetRoad;
-	offsets["bonus"] = offsetBonus;
+	offsets["bonusScore"] = offsetBonus;
+	offsets["bonusLife"] = offsetBonusL;
 
 	for(int i=0;i<parts.size();i++) {
 
@@ -274,14 +284,18 @@ void Level::resetLevel() {
 	}
 
 	std::vector<glm::vec3> offsetBonus;
+	std::vector<glm::vec3> offsetBonusL;
 
 	i=0;
 	j=0;
 	for(auto pos : tabLevel) {
 		if(pos==0) {
 			randomValue = rand() % 100;
-			if(randomValue > 50 ){
+			if(randomValue > 75 && randomValue < 90 ){
 				offsetBonus.push_back(glm::vec3(i*4.4f,-1.0f,j*sizeRoad/column));
+			}
+			if (randomValue > 95){
+				offsetBonusL.push_back(glm::vec3(i*4.4f,-1.0f,j*sizeRoad/column));
 			}
 		}
 		j++;
@@ -295,7 +309,8 @@ void Level::resetLevel() {
 	std::map<std::string, std::vector<glm::vec3> > offsets;
 	offsets["wall"] = offset;
 	offsets["road"] = offsetRoad;
-	offsets["bonus"] = offsetBonus;
+	offsets["bonusScore"] = offsetBonus;
+	offsets["bonusLife"] = offsetBonusL;
 
 	parts[currentPart].setOffset(offsets);
 	parts[currentPart].resetVBO();
