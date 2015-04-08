@@ -31,6 +31,7 @@ void Scene::restart() {
 	skybox.init();
 	light = Light(programms["minimal"]);
 	level.resetLevel();
+	SoundGameEngine::play("breakout.ogg",true);
 }
 
 void Scene::update(float time,GLFWwindow *window, float dt) {
