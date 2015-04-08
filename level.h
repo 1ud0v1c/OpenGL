@@ -32,12 +32,13 @@ class Level {
 		int getCurrentLevel();
 		void makeObject(int part);
 		void addParticle(Particles* particle);
+		void resetLevel();
 
 	private:
 		std::map<std::string,GLuint> programms;
 		std::vector<Particles*> particlesTransmitter;
 		std::vector<GameObject*> objects;
-		std::array < PartLevel,3 > parts;
+		std::array <PartLevel,3 > parts;
 		glm::vec3 lastTouched;
 		Player* player;
 		Camera camera;

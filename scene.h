@@ -17,9 +17,10 @@ class Scene {
 		Scene();
 		Scene(GLuint programm);
 		~Scene();
-		void draw();
+		void draw(GLFWwindow *window);
 		void makeObject();
 		void setType(GLuint type);
+		void restart();
 		void init(std::map<std::string,GLuint> programms) ;
 		void update(float time,GLFWwindow *window, float dt);
 	

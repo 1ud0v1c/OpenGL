@@ -3,6 +3,7 @@
 #include "level.h"
 
 Level::Level(std::map<std::string,GLuint> programms) {
+	srand(time(NULL));
 	this->programms = programms;
 	currentPart = 0;
 	numberOfChange = 0;
@@ -38,7 +39,7 @@ void Level::loadNextPart() {
 
 	if(nextPart==3) {
 		nextPart = 0;
-		if(currentLevelFile == 2){
+		if(currentLevelFile == 3){
 			currentLevelFile = 0;
 		}else {
 			currentLevelFile++;
@@ -53,7 +54,6 @@ void Level::loadNextPart() {
 	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*sizeRoad));
 	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
 	std::vector<glm::vec3> offsetBonus;
-	srand(time(NULL));
 	int randomValue;
 	int j = 0;
 	int i = 0;
@@ -261,5 +261,65 @@ Camera Level::getCamera() {
 
 Player* Level::getPlayer() {
 	return player; 
+}
+
+void Level::resetLevel() {
+	player->resetPlayer();
+	currentLevel = 0;
+	currentLevelFile = 0;
+	currentPart = 0;
+	nextPart = 0;
+	numberOfChange = 0;
+
+	int j = 0;
+	int i=0;
+	int randomValue;
+	std::vector<glm::vec3> offsetRoad;
+	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,0.0f));
+	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,0.0f));
+	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,0.0f));
+	std::vector<glm::vec3> offset;
+
+	loadLevel( "./level/level"+std::to_string(currentLevelFile)+".txt");
+
+	for(auto pos : tabLevel) {
+		if(pos==1) {
+			offset.push_back(glm::vec3(4.4f*i+1.0f,-1.0f,-sizeRoad/2 + j*sizeRoad/column));
+		}
+		j++;
+
+		if(j==column) {
+			i++;
+			j=0;
+		}
+	}
+
+	std::vector<glm::vec3> offsetBonus;
+
+	i=0;
+	j=0;
+	for(auto pos : tabLevel) {
+		if(pos==0) {
+			randomValue = rand() % 100;
+			if(randomValue > 50 ){
+				offsetBonus.push_back(glm::vec3(i*4.4f,-1.0f,j*sizeRoad/column));
+			}
+		}
+		j++;
+
+		if(j==column) {
+			i++;
+			j=0;
+		}
+	}
+
+	std::map<std::string, std::vector<glm::vec3> > offsets;
+	offsets["wall"] = offset;
+	offsets["road"] = offsetRoad;
+	offsets["bonus"] = offsetBonus;
+
+	parts[currentPart].setOffset(offsets);
+	parts[currentPart].resetVBO();
+	loadNextPart();
 }
 

@@ -46,6 +46,15 @@ void Player::movePlayer() {
 	playerObject[currentPlayerIndex]->moveObject(position);	
 }
 
+
+void Player::resetPlayer() {
+	offset = glm::vec3(0,0,0);
+	position = glm::vec3(0,0,0);
+	lives = 3;
+	score = 0;
+}
+
+
 void Player::draw() {
 	glUseProgram(programms["player"]);
 	playerObject[currentPlayerIndex]->draw();
