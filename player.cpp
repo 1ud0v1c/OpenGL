@@ -119,7 +119,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 					lastTouched = offsets[index];
 					object->removeOffset(lastTouched);
 					object->resetVBO();
-					SoundGameEngine::play("bonus2.ogg",false);
+					SoundGameEngine::play("bonus2.ogg",false, false, true, 0.5f);
 					score += 250.0;
 				}else if(object->getName() == "bonusSpeed"){
 					speed += 1.0f;
