@@ -32,5 +32,5 @@ Le jeu était au choix du groupe.
 
 ## Screenshot
 
-![texte](https://github.com/1ud0v1c/OpenGL/resources/game.png "Game")
+![texte](https://github.com/1ud0v1c/OpenGL/blob/master/resources/game.png "Game")
 
