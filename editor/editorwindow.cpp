@@ -30,6 +30,7 @@ EditorWindow::EditorWindow(QWidget *parent) : QMainWindow(parent) {
     headerPanel->addWidget(hallLengthLabel);
     headerPanel->addWidget(_hallSpinBoxLength);
 
+    _gridPanel = new QGridLayout;
     grid();
 
     QHBoxLayout* footerPanel = new QHBoxLayout;
@@ -49,9 +50,6 @@ EditorWindow::EditorWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 void EditorWindow::grid() {
-    if(!_gridPanel) {
-        _gridPanel = new QGridLayout;
-    }
     _nbHalls = _hall->value();
     _hallLength = _hallSpinBoxLength->value();
 
