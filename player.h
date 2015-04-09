@@ -35,8 +35,10 @@ class Player {
 		void updatePos(GLFWwindow *window,float dt, int nbLine);
 		void resetPlayer();
 		glm::vec3 getOffsetCamera();
+		int getCptScoreBonus();
 
 	private:
+		int cptScoreBonus = 0;
 		int lives;
 		double score;
 		float speed;

@@ -9,6 +9,8 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QLayoutItem>
+#include <QImage>
+#include <sstream>
 
 EditorWindow::EditorWindow(QWidget *parent) : QMainWindow(parent) {
     QWidget* centralWidget = new QWidget;
@@ -32,6 +34,10 @@ EditorWindow::EditorWindow(QWidget *parent) : QMainWindow(parent) {
 
     _gridPanel = new QGridLayout;
     grid();
+    _previewPanel = new QGridLayout;
+    _previewPanel->setHorizontalSpacing(0);
+    _previewPanel->setVerticalSpacing(0);
+    gridPreviews();
 
     QHBoxLayout* footerPanel = new QHBoxLayout;
     _writeResult = new QPushButton("Ecrire");
@@ -41,6 +47,7 @@ EditorWindow::EditorWindow(QWidget *parent) : QMainWindow(parent) {
 
     _mainLayout->addLayout(headerPanel);
     _mainLayout->addLayout(_gridPanel);
+    _mainLayout->addLayout(_previewPanel);
     _mainLayout->addLayout(footerPanel);
 
     connect(_hall, SIGNAL(valueChanged(int)), this,SLOT(handleHallValue(int)));
@@ -61,26 +68,48 @@ void EditorWindow::grid() {
     }
 }
 
-void EditorWindow::emptyGrid() {
-    while( _gridPanel->count()) {
-        QWidget* widget = _gridPanel->itemAt(0)->widget();
+void EditorWindow::gridPreviews() {
+    _nbHalls = _hall->value();
+    _hallLength = _hallSpinBoxLength->value();
+
+    for (int i = 0; i < _nbHalls; ++i) {
+        for (int j = 0; j < _hallLength; ++j) {
+            std::ostringstream s;
+            s << ":/img/data/" << _spins[i][j]->value() << ".jpg";
+            std::cout << s.str().c_str() << std::endl;
+            QImage image = QImage(QString(s.str().c_str()));
+            ImageWidget* iw = new ImageWidget();
+            iw->setImage(image);
+            _images[i][j] = iw;
+            _previewPanel->addWidget(_images[i][j],i,j);
+        }
+    }
+}
+
+void EditorWindow::emptyGrid(QGridLayout *grid) {
+    while( grid->count()) {
+        QWidget* widget = grid->itemAt(0)->widget();
         if(widget) {
-            _gridPanel->removeWidget(widget);
+            grid->removeWidget(widget);
             delete widget;
         }
     }
 }
 
 void EditorWindow::handleHallValue(int val) {
-    emptyGrid();
+    emptyGrid(_gridPanel);
+    emptyGrid(_previewPanel);
     _nbHalls = val;
     grid();
+    gridPreviews();
 }
 
 void EditorWindow::handleHallLengthValue(int val) {
-    emptyGrid();
+    emptyGrid(_gridPanel);
+    emptyGrid(_previewPanel);
     _hallLength = val;
     grid();
+    gridPreviews();
 }
 
 void EditorWindow::writeFile() {

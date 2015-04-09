@@ -101,6 +101,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 						lives += 1;
 					} else if(object->getName() == "bonusScore") {
 						score += 250.0;
+						cptScoreBonus++;
 					}else if(object->getName() == "bonusSpeed"){
 						speed += 1.0f;
 					}
@@ -268,3 +269,6 @@ glm::vec3 Player::getUp() {
 	return up;
 }
 
+int Player::getCptScoreBonus() {
+	return cptScoreBonus;
+}

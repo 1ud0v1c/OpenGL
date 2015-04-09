@@ -13,6 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        editorwindow.cpp
+        editorwindow.cpp \
+    imagewidget.cpp
 
-HEADERS  += editorwindow.h
+HEADERS  += editorwindow.h \
+    imagewidget.h
+
+RESOURCES += \
+    resources.qrc

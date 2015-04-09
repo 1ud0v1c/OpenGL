@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QString>
+#include "imagewidget.h"
 
 #define MAXHALLLENGTH 50
 
@@ -19,13 +20,16 @@ class EditorWindow : public QMainWindow {
         void saveFile();
         void saveAs();
         void emptyGrid();
+        void emptyGrid(QGridLayout *grid);
+        void gridPreviews();
 
     private:
         int _nbHalls, _hallLength;
         QVBoxLayout *_mainLayout;
-        QGridLayout *_gridPanel;
+        QGridLayout *_gridPanel, *_previewPanel;
         QString _filename;
 
+        ImageWidget* _images[MAXHALLLENGTH][MAXHALLLENGTH];
         QSpinBox* _spins[MAXHALLLENGTH][MAXHALLLENGTH];
         QSpinBox *_hall;
         QSpinBox *_hallSpinBoxLength;

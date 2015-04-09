@@ -19,6 +19,7 @@ class HUD {
 		void initEnd(Player* p);
 
 	protected:
+		int shift = 50;
 		Level level;
 		GameText *menu, *menu2, *menu3, *menu4;
 		GameText *chrono, *lifes, *score, *levels;
