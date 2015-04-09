@@ -30,7 +30,7 @@ void Scene::restart() {
 	skybox.init();
 	light = Light(programms["minimal"]);
 	level.resetLevel();
-	SoundGameEngine::play("breakout.ogg",true);
+	SoundGameEngine::play("../resources/sounds/breakout.ogg",true);
 }
 
 void Scene::update(float time,GLFWwindow *window, float dt) {
@@ -62,7 +62,7 @@ void Scene::update(float time,GLFWwindow *window, float dt) {
 			if(level.getPlayer()->getLives()<=0) {
 				isFinished = true;	
 				SoundGameEngine::stop();
-				SoundGameEngine::play("haha.ogg",false);
+				SoundGameEngine::play("../resources/sounds/haha.ogg",false);
 			}
 		} else {
 			hud.initEnd(level.getPlayer());

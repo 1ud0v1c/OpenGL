@@ -39,7 +39,7 @@ void Level::loadNextPart() {
 
 	if(nextPart==3) {
 		nextPart = 0;
-		if(currentLevelFile == 3){
+		if(currentLevelFile == 4){
 			currentLevelFile = 0;
 		}else {
 			currentLevelFile++;
@@ -50,9 +50,9 @@ void Level::loadNextPart() {
 
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetRoad;
-	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,numberOfChange*sizeRoad));
-	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,numberOfChange*sizeRoad));
-	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,numberOfChange*sizeRoad));
+
+	for(int i=0;i<line;i++)
+		offsetRoad.push_back(glm::vec3(i*4.4f,-2.0f,numberOfChange*sizeRoad));
 	int randomValue;
 	std::vector<glm::vec3> offsetBonus;
 	std::vector<glm::vec3> offsetBonusL;
@@ -88,21 +88,9 @@ void Level::loadNextPart() {
 	offsets["bonusLife"] = offsetBonusL;
 
 	parts[nextPart].setOffset(offsets);
+	parts[nextPart].line = line;
 
 	parts[nextPart].resetVBO();
-	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(150,offset[0].y,150),glm::vec3(1,0,1),10));
-	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(150,offset[0].y,250),glm::vec3(0,0,1),10));
-	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(-150,offset[0].y,150),glm::vec3(0,0,1),10));
-	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(-150,offset[0].y,250),glm::vec3(0,1,0),10));
-	addParticle(transmitter);
-	addParticle(transmitter1);
-	addParticle(transmitter2);
-	addParticle(transmitter3);
-
-	transmitter->make();
-	transmitter1->make();
-	transmitter2->make();
-	transmitter3->make();
 }
 
 void Level::init() {
@@ -111,9 +99,7 @@ void Level::init() {
 	currentLevelFile = 0;
 	gravity = 9.81f;
 	std::vector<glm::vec3> offsetRoad;
-	offsetRoad.push_back(glm::vec3(0.0f,-2.0f,0.0f));
-	offsetRoad.push_back(glm::vec3(4.4f,-2.0f,0.0f));
-	offsetRoad.push_back(glm::vec3(8.8f,-2.0f,0.0f));
+
 	std::vector<glm::vec3> offset;
 	std::vector<glm::vec3> offsetBonus;
 	std::vector<glm::vec3> offsetBonusL;
@@ -122,6 +108,8 @@ void Level::init() {
 
 	loadLevel("./level/level0.txt");
 
+	for(int i=0;i<line;i++)
+		offsetRoad.push_back(glm::vec3(i*4.4f,-2.0f,numberOfChange*sizeRoad));
 	int j = 0;
 	int i=0;
 	for(auto pos : tabLevel) {
@@ -164,8 +152,24 @@ void Level::init() {
 
 	}
 	parts[currentPart].setOffset(offsets);
+
+	parts[currentPart].line = line;
 	parts[currentPart].resetVBO();
 	loadNextPart();
+
+	Particles* transmitter = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(150,offset[0].y,150),glm::vec3(1,0,1),10));
+	Particles* transmitter1 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(150,offset[0].y,250),glm::vec3(0,0,1),10));
+	Particles* transmitter2 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(-150,offset[0].y,150),glm::vec3(0,0,1),10));
+	Particles* transmitter3 = new Particles(programms["particle"],new Particle(programms["particle"],1000,glm::vec3(-150,offset[0].y,250),glm::vec3(0,1,0),10));
+	addParticle(transmitter);
+	addParticle(transmitter1);
+	addParticle(transmitter2);
+	addParticle(transmitter3);
+
+	transmitter->make();
+	transmitter1->make();
+	transmitter2->make();
+	transmitter3->make();
 }
 
 void Level::addObject(GameObject *object,int part)  {
@@ -177,7 +181,7 @@ std::vector<GameObject*> Level::getObjects() {
 }
 
 void Level::update(float time,GLFWwindow *window, float dt) {
-	player->update(time,window,dt, parts[currentPart].getVector(), currentLevel);
+	player->update(time,window,dt, parts[currentPart].getVector(), currentLevel,parts[currentPart].line);
 	glm::vec3 touched = player->getLastTouched();
 	if (touched.x != lastTouched.x || touched.y != lastTouched.y || touched.z != lastTouched.z){
 		lastTouched = touched;

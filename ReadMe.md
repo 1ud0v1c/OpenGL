@@ -16,7 +16,9 @@ Le jeu était au choix du groupe.
 - Deux types d'obstacles : les murs et les bonus
 - Gestion des collisions et des effets associés
 - Génération des niveaux à partir de fichiers .txt
-- Génération des bonus aléatoire
+- Génération des bonus de score aléatoire
+- Génération de bonus de vies
+- Génération de murs
 - Modification de la vitesse grâce au clavier
 - Saut 
 - Joueur modélisé et animé sous Blender

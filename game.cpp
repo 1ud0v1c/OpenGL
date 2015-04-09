@@ -62,7 +62,7 @@ void Game::renderFrame() {
 }
 
 void Game::run() {
-	SoundGameEngine::play("breakout.ogg",true);
+	SoundGameEngine::play("../resources/sounds/breakout.ogg",true);
 	scene = Scene();
 	scene.init(programms);
 	scene.makeObject();

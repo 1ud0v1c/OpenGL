@@ -23,9 +23,9 @@ Player::Player(float gravity, std::map<std::string , GLuint> programms) {
 	direction = glm::vec3( cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle) );
 	this->offset = offsetVect[0];
 	currentPositionIndex = 0;
-	positions[0] = 0.0f;
-	positions[1] = 4.4f;
-	positions[2] = 8.8f;
+
+	for(int i=0;i<NBPOSITIONS;i++)
+		positions[i] = 4.4f*i;
 	pressed[0] = false;
 	pressed[1] = false;
 }
@@ -66,7 +66,7 @@ void Player::draw() {
 	glUseProgram(0);
 }
 
-void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects, int currentLevel){
+void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects, int currentLevel, int nbLine){
 	timerChangePlayer+=dt;
 	if(timerChangePlayer > 0.033){
 		currentPlayerIndex++;
@@ -76,7 +76,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 
 	score += dt*(currentLevel*currentLevel)*speed/3;
 
-	updatePos(window,dt);
+	updatePos(window,dt,nbLine);
 	if(invicibleTime < 1 && isInvicible==true) {
 		invicibleTime += dt;
 	}else {
@@ -93,7 +93,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 				float maxZ = 10000.0f;
 
 				if(object->getName() == "wall" && isInvicible==false) {
-					SoundGameEngine::play("hit_wall.ogg",false);
+					SoundGameEngine::play("../resources/sounds/hit_wall.ogg",false);
 					lives -= 1;
 					isInvicible = true;
 				} else {
@@ -120,7 +120,7 @@ void Player::update(float time,GLFWwindow *window, float dt, std::vector<GameObj
 						lastTouched = offsets[index];
 						object->removeOffset(lastTouched);
 						object->resetVBO();
-					SoundGameEngine::play("bonus2.ogg",false, false, true, 0.5f);
+					SoundGameEngine::play("../resources/sounds/bonus2.ogg",false, false, true, 0.5f);
 					}
 				}
 			} 	 
@@ -138,7 +138,7 @@ glm::vec3 Player::getLastTouched(){
 	return lastTouched;
 }
 
-void Player::updatePos(GLFWwindow *window,float dt) {
+void Player::updatePos(GLFWwindow *window,float dt,int nbLine) {
 
 	float initialFoV = 45.0f;
 	double xpos, ypos;
@@ -162,7 +162,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 	bool stillPressed = false;
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
 		stillPressed = true;
-		distance += 0.4; 
+		distance += 0.8; 
 		if(distance > 20) {
 			distance = 20;
 		}
@@ -186,6 +186,10 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 			speed = 3;
 		}
 	}
+	if(currentPositionIndex+1>nbLine){
+		currentPositionIndex = nbLine-1;
+		lives--;
+	}
 
 	// Strafe right
 	if (glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_RIGHT ) == GLFW_RELEASE){
@@ -193,15 +197,13 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 		if(currentPositionIndex < 0){
 			currentPositionIndex = 0;
 		}
-		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
 	}
 	// Strafe left
 	if (glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_PRESS && glfwGetKey( window,GLFW_KEY_LEFT ) == GLFW_RELEASE ){
 		currentPositionIndex++;
-		if(currentPositionIndex > 2){
-			currentPositionIndex = 2;
+		if(currentPositionIndex > nbLine-1){
+			currentPositionIndex = nbLine-1;
 		}
-		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && isJumping == false) {
@@ -209,6 +211,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 		dy = 25;
 	}
 
+		position = glm::vec3(positions[currentPositionIndex],position.y,position.z);
 	position -= direction * dt * speed;
 
 

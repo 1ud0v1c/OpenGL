@@ -13,6 +13,7 @@
 #include "gameSphere.h"
 #include <map>
 #include "soundGameEngine.h"
+#define NBPOSITIONS 5
 
 class Player {
 	public:
@@ -20,7 +21,7 @@ class Player {
 		~Player();
 		void modifyLives(int value);
 		void changePos(double x, double y, double z);
-		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects, int currentLevel);
+		void update(float time,GLFWwindow *window, float dt, std::vector<GameObject*> objects, int currentLevel, int nbLine);
 		void init();
 		void movePlayer();
 		void draw();
@@ -31,7 +32,7 @@ class Player {
 		double getScore();
 		glm::vec3 getUp();
 		glm::vec3 getDir();
-		void updatePos(GLFWwindow *window,float dt);
+		void updatePos(GLFWwindow *window,float dt, int nbLine);
 		void resetPlayer();
 		glm::vec3 getOffsetCamera();
 
@@ -44,7 +45,7 @@ class Player {
 		glm::vec3 up;
 		glm::vec3 lastTouched;
 		float gravity;
-		float positions[3];
+		float positions[NBPOSITIONS];
 		bool pressed[2];
 		int currentPositionIndex;
 		std::array<GameObject *,2> playerObject;
