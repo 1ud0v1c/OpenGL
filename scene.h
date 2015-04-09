@@ -28,7 +28,6 @@ class Scene {
 		Camera camera;
 		HUD hud;
 		std::vector<GameObject*> objects;
-		std::map<std::string,GLuint> transID;
 		std::map<std::string,GLuint> viewID;
 		std::map<std::string,GLuint> projID;
 		std::map<std::string,GLuint> timeID;

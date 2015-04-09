@@ -183,7 +183,7 @@ void Level::update(float time,GLFWwindow *window, float dt) {
 		lastTouched = touched;
 
 	}
-	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffset()+glm::vec3(0,5,0));
+	camera.update(time,window,player->getPos(),player->getDir(), player->getUp(), player->getOffsetCamera());
 	if(player->getPos().z > numberOfChange*sizeRoad-sizeRoad/2) {
 		loadNextPart();
 	}
