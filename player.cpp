@@ -34,6 +34,11 @@ glm::vec3 Player::getOffset() {
 	return offset;
 }
 
+
+glm::vec3 Player::getOffsetCamera() {
+	return offset;
+}
+
 void Player::init() {
 	glUseProgram(programms["player"]);
 	for(auto &object: playerObject){ 
@@ -157,9 +162,9 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 	bool stillPressed = false;
 	if (glfwGetKey( window,GLFW_KEY_UP ) == GLFW_PRESS){
 		stillPressed = true;
-		distance += 0.2; 
-		if(distance > 10) {
-			distance = 10;
+		distance += 0.4; 
+		if(distance > 20) {
+			distance = 20;
 		}
 		speed += 1; 
 		if(speed > 20) {
@@ -169,8 +174,8 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 
 	if(!stillPressed) {
 		distance -= 0.2;
-		if(distance < 5) {
-			distance = 5;
+		if(distance < 10) {
+			distance = 10;
 		}
 	}
 
@@ -219,7 +224,7 @@ void Player::updatePos(GLFWwindow *window,float dt) {
 			cos(horizontalAngle - 3.14f/2.0f)
 			);
 
-	up = -glm::cross( right, direction );
+	up = glm::cross( right, direction );
 
 	dy -= gravity*dt;
 	position.y +=dy*dt;

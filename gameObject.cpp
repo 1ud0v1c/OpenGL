@@ -140,6 +140,7 @@ void GameObject::setType(GLuint type) {
 }
 
 void GameObject::draw() {
+	
 	GLfloat fLargest;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);

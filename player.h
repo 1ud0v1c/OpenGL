@@ -33,6 +33,7 @@ class Player {
 		glm::vec3 getDir();
 		void updatePos(GLFWwindow *window,float dt);
 		void resetPlayer();
+		glm::vec3 getOffsetCamera();
 
 	private:
 		int lives;
@@ -53,8 +54,8 @@ class Player {
 		float invicibleTime;
 		bool isInvicible = false;
 		float horizontalAngle = 3.14f;
-		float verticalAngle = 0.0f;
-		float distance = 5;
+		float verticalAngle = 3.14/8.0f;
+		float distance = 10;
 		float dy = 0;
 		bool isJumping = false;
 		glm::vec3 offset;
