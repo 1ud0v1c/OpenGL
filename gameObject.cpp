@@ -17,7 +17,7 @@ void GameObject::setUnit(int unit) {
 }
 
 
-void  GameObject::moveObject(glm::vec3 position) {
+void GameObject::moveObject(glm::vec3 position) {
 	glUseProgram(programm);
 	GLuint positionBuffer;
 	GLuint loc =glGetUniformLocation(programm, "moveOffset");
@@ -56,15 +56,15 @@ void GameObject::makeObject() {
 	}
 
 	points = mesh.getPositions();
-	if(this->angle!=0)
+	if(this->angle!=0) {
 		rotate(this->angle);
+	}
 
 	GLuint positionBuffer;
 	GLuint indexBuffer;
 	GLuint colorBuffer;
 	GLuint normalBuffer;
 	GLuint textureBuffer;
-
 
 	glGenBuffers(1, &instanceVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
@@ -140,7 +140,6 @@ void GameObject::setType(GLuint type) {
 }
 
 void GameObject::draw() {
-	
 	GLfloat fLargest;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);

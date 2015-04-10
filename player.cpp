@@ -57,6 +57,7 @@ void Player::resetPlayer() {
 	position = glm::vec3(0,0,0);
 	lives = 3;
 	score = 0;
+	cptScoreBonus = 0;
 }
 
 
